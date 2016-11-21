@@ -7,12 +7,11 @@ import (
 
 // O(n^2)
 func bubbleSort(arr []int) []int {
-	for i := 0; i < len(arr); i++ {
-		for j := 0; j < len(arr) - 1; j++ {
+	arrLen := len(arr);
+	for i := 0; i < arrLen; i++ {
+		for j := 0; j < arrLen - 1; j++ {
 			if arr[j] > arr[j + 1] {
-				tmp := arr[j]
-				arr[j] = arr[j + 1]
-				arr[j + 1] = tmp
+				arr[j], arr[j + 1] = arr[j + 1], arr[j]
 			}
 		}
 	}

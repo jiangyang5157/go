@@ -8,7 +8,7 @@ import (
 
 // O(n log n) -> O(n^2)
 func quickSort(arr []int) []int {
-	len := len(arr)
+	arrLen := len(arr)
 	if len <= 1 {
 		return arr
 	}
@@ -16,9 +16,9 @@ func quickSort(arr []int) []int {
 	// Avoid O(n^2) worst case
 	median := arr[rand.Intn(len)]
 
-	lowerPart := make([]int, 0, len)
-	middlePart := make([]int, 0, len)
-	higherPart := make([]int, 0, len)
+	lowerPart := make([]int, 0, arrLen)
+	middlePart := make([]int, 0, arrLen)
+	higherPart := make([]int, 0, arrLen)
 
 	// skip index, require value only
 	for _, item := range arr {
@@ -36,7 +36,6 @@ func quickSort(arr []int) []int {
 
 	lowerPart = append(lowerPart, middlePart...)
 	lowerPart = append(lowerPart, higherPart...)
-
 	return lowerPart
 }
 

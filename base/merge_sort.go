@@ -9,7 +9,6 @@ func merge(left, right []int) []int {
 	leftLen := len(left)
 	rightLen := len(right)
 	ret := make([]int, 0, leftLen + rightLen)
-
 	for ;leftLen > 0 || rightLen > 0; leftLen, rightLen = len(left), len(right) {
 		if leftLen == 0 {
 			return append(ret, right...)
@@ -26,18 +25,17 @@ func merge(left, right []int) []int {
 			left = left[1:]
 		}
 	}
-
 	return ret
 }
 
 // O(n log n)
 func mergeSort(arr []int) []int {
-	len := len(arr)
-	if len <= 1 {
+	arrLen := len(arr)
+	if arrLen <= 1 {
 		return arr
 	}
 
-	middleIndex := len / 2
+	middleIndex := arrLen / 2
 
 	leftPart := mergeSort(arr[:middleIndex])
 	rightPart := mergeSort(arr[middleIndex:])
