@@ -6,7 +6,7 @@ import (
 	"math/rand"
 )
 
-// O(n log n) average -> O(n^2) worst-case
+// O(n log n) average -> O(n^2) if in reversed order
 func quickSort(arr []int) []int {
 	arrLen := len(arr)
 	if len <= 1 {
@@ -32,7 +32,7 @@ func quickSort(arr []int) []int {
 		}
 	}
 
-	lowerPart, higherPart  = quickSort(lowerPart), quickSort(higherPart)
+	lowerPart, higherPart = quickSort(lowerPart), quickSort(higherPart)
 
 	lowerPart = append(lowerPart, middlePart...)
 	lowerPart = append(lowerPart, higherPart...)
