@@ -6,38 +6,38 @@ import (
 	"math/rand"
 )
 
+// O(n log n) -> O(n^2)
 func quickSort(arr []int) []int {
-	length := len(arr)
-	if length <= 1 {
+	len := len(arr)
+	if len <= 1 {
 		return arr
 	}
 
 	// Avoid O(n^2) worst case
-	median := arr[rand.Intn(length)]
+	median := arr[rand.Intn(len)]
 
-	lower := make([]int, 0, length)
-	middle := make([]int, 0, length)
-	higher := make([]int, 0, length)
+	lowerPart := make([]int, 0, len)
+	middlePart := make([]int, 0, len)
+	higherPart := make([]int, 0, len)
 
 	// skip index, require value only
 	for _, item := range arr {
 		switch {
 		case item < median:
-			lower = append(lower, item)
+			lowerPart = append(lowerPart, item)
 		case item == median:
-			middle = append(middle, item)
+			middlePart = append(middlePart, item)
 		case item > median:
-			higher = append(higher, item)
+			higherPart = append(higherPart, item)
 		}
 	}
 
-	lower = quickSort(lower)
-	higher = quickSort(higher)
+	lowerPart, higherPart  = quickSort(lowerPart), quickSort(higherPart)
 
-	lower = append(lower, middle...)
-	lower = append(lower, higher...)
+	lowerPart = append(lowerPart, middlePart...)
+	lowerPart = append(lowerPart, higherPart...)
 
-	return lower
+	return lowerPart
 }
 
 func main() {

@@ -5,6 +5,7 @@ import (
 	"github.com/jiangyang5157/go/utils"
 )
 
+// O(n^2)
 func bubbleSort(arr []int) []int {
 	for i := 0; i < len(arr); i++ {
 		for j := 0; j < len(arr) - 1; j++ {
