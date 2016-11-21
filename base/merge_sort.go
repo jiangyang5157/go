@@ -28,7 +28,7 @@ func merge(left, right []int) []int {
 	return ret
 }
 
-// O(n log n)
+// O(n log n) always
 func mergeSort(arr []int) []int {
 	arrLen := len(arr)
 	if arrLen <= 1 {

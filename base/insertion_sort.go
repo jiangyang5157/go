@@ -5,7 +5,7 @@ import (
 	"github.com/jiangyang5157/go/utils"
 )
 
-// O(n^2)
+// O(n^2) average
 func insertSort(arr []int) []int {
 	arrLen := len(arr)
 	for i := 1; i < arrLen; i++ {

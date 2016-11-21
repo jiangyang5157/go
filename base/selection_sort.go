@@ -5,7 +5,7 @@ import (
 	"github.com/jiangyang5157/go/utils"
 )
 
-// O(n^2)
+// O(n^2) average
 func selectionSort(arr []int) []int {
 	arrLen := len(arr)
 	for min, i := 0, 0; i < arrLen - 1; i++ {
