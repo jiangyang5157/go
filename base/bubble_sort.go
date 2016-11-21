@@ -5,9 +5,7 @@ import (
 	"github.com/jiangyang5157/go/utils"
 )
 
-func main() {
-	arr := utils.RandomArray(10)
-	fmt.Println("Initial array is:", arr)
+func bubbleSort(arr []int) []int {
 	for i := 0; i < len(arr); i++ {
 		for j := 0; j < len(arr) - 1; j++ {
 			if arr[j] > arr[j + 1] {
@@ -17,5 +15,11 @@ func main() {
 			}
 		}
 	}
-	fmt.Println("Bubble sorted array is: ", arr)
+	return arr
+}
+
+func main() {
+	arr := utils.RandomArray(10)
+	fmt.Println("Initial array is:", arr)
+	fmt.Println("Sorted array is: ", bubbleSort(arr))
 }
