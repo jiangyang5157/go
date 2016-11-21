@@ -6,14 +6,14 @@ import (
 	"math/rand"
 )
 
-// O(n log n) -> O(n^2)
+// O(n log n) average -> O(n^2) worst-case
 func quickSort(arr []int) []int {
 	arrLen := len(arr)
 	if len <= 1 {
 		return arr
 	}
 
-	// Avoid O(n^2) worst case
+	// Avoid O(n^2) worst-case
 	median := arr[rand.Intn(len)]
 
 	lowerPart := make([]int, 0, arrLen)
