@@ -7,7 +7,8 @@ import (
 
 // O(n^2)
 func selectionSort(arr []int) []int {
-	for arrLen, min, i := len(arr), 0, 0; i < arrLen - 1; i++ {
+	arrLen := len(arr)
+	for min, i := 0, 0; i < arrLen - 1; i++ {
 		min = i
 		for j := i + 1; j < arrLen; j++ {
 			if arr[j] < arr[min] {

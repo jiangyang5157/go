@@ -25,7 +25,8 @@ func countingSort(arr []int) []int {
 	k := getK(arr)
 	counts := make([]int, k)
 
-	for arrLen, i := len(arr), 0; i < arrLen; i++ {
+	arrLen := len(arr)
+	for i := 0; i < arrLen; i++ {
 		counts[arr[i]] += 1
 	}
 

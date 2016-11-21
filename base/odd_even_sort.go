@@ -7,7 +7,8 @@ import (
 
 // O(n^2)
 func oddEvenSort(arr []int) []int {
-	for arrLen, isSorted := len(arr), false; isSorted == false; {
+	arrLen := len(arr)
+	for isSorted := false; isSorted == false; {
 		isSorted = true
 		for i := 0; i < arrLen - 1; i += 2 {
 			if arr[i] > arr[i + 1] {
