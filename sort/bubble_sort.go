@@ -20,6 +20,6 @@ func bubbleSort(arr []int) []int {
 
 func main() {
 	arr := number.RandomArray(10)
-	fmt.Println("Initial array is:", arr)
+	fmt.Println("Unsorted array is: ", arr)
 	fmt.Println("Sorted array is: ", bubbleSort(arr))
 }
