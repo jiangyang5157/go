@@ -92,6 +92,7 @@ func (list *List) Remove(data interface{}) bool {
 	return false
 }
 
+// Insert to the last
 func (list *List) Insert(data interface{}) {
 	list.lock.Lock()
 	defer list.lock.Unlock()
