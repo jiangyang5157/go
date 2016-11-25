@@ -1,12 +1,7 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 // O(n log n) best case -> O(n) worst-case
-func shellSort(arr []int) []int {
+func ShellSort(arr []int) []int {
 	arrLen := len(arr);
 	for gap := int(arrLen / 2); gap > 0; gap /= 2 {
 		for i := gap; i < arrLen; i++ {
@@ -16,10 +11,4 @@ func shellSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", shellSort(arr))
 }

@@ -1,12 +1,7 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 // O(n^2)
-func cocktailSort(arr []int) []int {
+func CocktailSort(arr []int) []int {
 	arrLen := len(arr)
 	for i := 0; i < arrLen / 2; i++ {
 		for left, right := 0, arrLen - 1; left <= right; left, right = left + 1, right - 1 {
@@ -19,10 +14,4 @@ func cocktailSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", cocktailSort(arr))
 }

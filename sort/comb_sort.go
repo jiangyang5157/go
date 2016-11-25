@@ -1,12 +1,7 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 // O(n^2 / 2^p) average, where p is the number of increments -> O(n^2) worst-case -> O(n log n) best-case
-func combSort(arr []int) []int {
+func CombSort(arr []int) []int {
 	arrLen := len(arr);
 	gap := arrLen
 	for {
@@ -24,10 +19,4 @@ func combSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", combSort(arr))
 }

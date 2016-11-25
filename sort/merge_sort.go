@@ -1,9 +1,4 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 func merge(left, right []int) []int {
 	leftLen := len(left)
@@ -29,7 +24,7 @@ func merge(left, right []int) []int {
 }
 
 // O(n log n) always
-func mergeSort(arr []int) []int {
+func MergeSort(arr []int) []int {
 	arrLen := len(arr)
 	if arrLen <= 1 {
 		return arr
@@ -37,14 +32,8 @@ func mergeSort(arr []int) []int {
 
 	middleIndex := arrLen / 2
 
-	leftPart := mergeSort(arr[:middleIndex])
-	rightPart := mergeSort(arr[middleIndex:])
+	leftPart := MergeSort(arr[:middleIndex])
+	rightPart := MergeSort(arr[middleIndex:])
 
 	return merge(leftPart, rightPart)
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", mergeSort(arr))
 }

@@ -1,9 +1,4 @@
-package main
-
-import (
-	"github.com/jiangyang5157/go/number"
-	"fmt"
-)
+package sort
 
 func getK(arr []int) int {
 	arrLen := len(arr);
@@ -21,7 +16,7 @@ func getK(arr []int) int {
 }
 
 // O(n + k) where k is the range of numbers and n is the input size
-func countingSort(arr []int) []int {
+func CountingSort(arr []int) []int {
 	k := getK(arr)
 	counts := make([]int, k)
 
@@ -42,10 +37,4 @@ func countingSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", countingSort(arr))
 }

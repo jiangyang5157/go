@@ -1,13 +1,11 @@
-package main
+package sort
 
 import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
 	"math/rand"
 )
 
 // O(n log n) average -> O(n^2) if in reversed order
-func quickSort(arr []int) []int {
+func QuickSort(arr []int) []int {
 	arrLen := len(arr)
 	if arrLen <= 1 {
 		return arr
@@ -32,15 +30,9 @@ func quickSort(arr []int) []int {
 		}
 	}
 
-	lowerPart, higherPart = quickSort(lowerPart), quickSort(higherPart)
+	lowerPart, higherPart = QuickSort(lowerPart), QuickSort(higherPart)
 
 	lowerPart = append(lowerPart, middlePart...)
 	lowerPart = append(lowerPart, higherPart...)
 	return lowerPart
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", quickSort(arr))
 }

@@ -1,12 +1,7 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 // O(n^2) average
-func insertSort(arr []int) []int {
+func InsertSort(arr []int) []int {
 	arrLen := len(arr)
 	for i := 1; i < arrLen; i++ {
 		for j := i; j > 0 && arr[j] < arr[j - 1]; j-- {
@@ -14,10 +9,4 @@ func insertSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", insertSort(arr))
 }

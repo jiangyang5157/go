@@ -1,12 +1,7 @@
-package main
-
-import (
-	"fmt"
-	"github.com/jiangyang5157/go/number"
-)
+package sort
 
 // O(n^2)
-func oddEvenSort(arr []int) []int {
+func OddEvenSort(arr []int) []int {
 	arrLen := len(arr)
 	for isSorted := false; isSorted == false; {
 		isSorted = true
@@ -24,10 +19,4 @@ func oddEvenSort(arr []int) []int {
 		}
 	}
 	return arr
-}
-
-func main() {
-	arr := number.RandomArray(10)
-	fmt.Println("Unsorted array is: ", arr)
-	fmt.Println("Sorted array is: ", oddEvenSort(arr))
 }
