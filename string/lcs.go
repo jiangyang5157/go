@@ -1,7 +1,5 @@
 package string
 
-// Longest common subsequence recurrence http://introcs.cs.princeton.edu/java/23recursion/
-
 func max(a int, b int) int {
 	if a > b {
 		return a
@@ -10,6 +8,7 @@ func max(a int, b int) int {
 	}
 }
 
+// Longest common subsequence recurrence
 func Lcs(x string, y string) string {
 	m, n := len(x), len(y)
 
