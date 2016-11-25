@@ -6,28 +6,32 @@ type Queue struct {
 }
 
 func New() *Queue {
-	q := &Queue{}
-	q.data = make([]interface{}, 0)
-	q.len = 0
-	return q
+	queue := &Queue{}
+	queue.len = 0
+	queue.data = make([]interface{}, 0)
+	return queue
 }
 
-func (q *Queue) Length() int {
-	return q.len
+func (queue *Queue) Length() int {
+	return queue.len
 }
 
-func (q *Queue) Add(data interface{}) {
-	q.data = append(q.data, data)
-	q.len += 1
+func (queue *Queue) IsEmpty() bool {
+	return queue.len == 0
 }
 
-func (q *Queue) Remove() interface{} {
-	tmp := q.data[0]
-	q.data = q.data[1:]
-	q.len -= 1
+func (queue *Queue) Peek() interface{} {
+	return queue.data[0]
+}
+
+func (queue *Queue) Remove() interface{} {
+	tmp := queue.Peek()
+	queue.len -= 1
+	queue.data = queue.data[1:]
 	return tmp
 }
 
-func (q *Queue) Peek() interface{} {
-	return q.data[0]
+func (queue *Queue) Add(data interface{}) {
+	queue.len += 1
+	queue.data = append(queue.data, data)
 }
