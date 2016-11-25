@@ -7,8 +7,8 @@ import (
 func Test_Stack(t *testing.T) {
 	stack := New()
 
-	if !stack.IsEmpty() {
-		t.Error("IsEmpty is wrong")
+	if stack.IsEmpty() != true {
+		t.Error("IsEmpty doesn't work as expected")
 	}
 
 	stack.Push(1)
@@ -17,18 +17,18 @@ func Test_Stack(t *testing.T) {
 	stack.Push(4)
 
 	if stack.Length() != 4 {
-		t.Error("Length is wrong")
+		t.Error("Length doesn't work as expected")
 	}
 
 	if stack.Pop() != 4 {
-		t.Error("Pop is wrong")
+		t.Error("Pop doesn't work as expected")
 	}
 
 	if stack.Length() != 3 {
-		t.Error("Length is wrong after pop")
+		t.Error("Length doesn't work as expected")
 	}
 
 	if stack.Peek() != 3 {
-		t.Error("Peek is wrong")
+		t.Error("Peek doesn't work as expected")
 	}
 }

@@ -7,8 +7,8 @@ type Stack struct {
 
 func New() *Stack {
 	stack := &Stack{}
-	stack.len = 0
 	stack.data = make([]interface{}, 0)
+	stack.len = 0
 	return stack
 }
 
@@ -26,12 +26,12 @@ func (stack *Stack) Peek() interface{} {
 
 func (stack *Stack) Pop() interface{} {
 	tmp := stack.Peek()
-	stack.len -= 1
 	stack.data = stack.data[0:stack.len]
+	stack.len -= 1
 	return tmp
 }
 
 func (stack *Stack) Push(data interface{}) {
-	stack.len += 1
 	stack.data = append(stack.data, data)
+	stack.len += 1
 }

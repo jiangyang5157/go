@@ -10,7 +10,7 @@ func Test_RandomArray(t *testing.T) {
 		t.Error("RandomArray(10) returns nil")
 	}
 	if len(arr) != 10 {
-		t.Error("Lenth of RandomArray(10) is wrong")
+		t.Error("Lenth doesn't work as expected")
 	}
 
 	arr = RandomArray(0)
@@ -18,7 +18,7 @@ func Test_RandomArray(t *testing.T) {
 		t.Error("RandomArray(0) returns nil")
 	}
 	if len(arr) != 0 {
-		t.Error("Lenth of RandomArray(0) is wrong")
+		t.Error("Lenth doesn't work as expected")
 	}
 
 	arr = RandomArray(1)

@@ -7,28 +7,28 @@ import (
 func Test_Queue(t *testing.T) {
 	queue := New()
 
-	if !queue.IsEmpty() {
-		t.Error("IsEmpty is wrong")
+	if queue.IsEmpty() != true {
+		t.Error("IsEmpty doesn't work as expected")
 	}
 
-	queue.Add(1)
-	queue.Add(2)
-	queue.Add(3)
-	queue.Add(4)
+	queue.Insert(1)
+	queue.Insert(2)
+	queue.Insert(3)
+	queue.Insert(4)
 
 	if queue.Length() != 4 {
-		t.Error("length is wrong")
+		t.Error("length doesn't work as expected")
 	}
 
 	if queue.Remove() != 1 {
-		t.Error("remove is wrong")
+		t.Error("remove doesn't work as expected")
 	}
 
 	if queue.Length() != 3 {
-		t.Error("length is wrong after pop")
+		t.Error("Length doesn't work as expected")
 	}
 
 	if queue.Peek() != 2 {
-		t.Error("Peek is wrong")
+		t.Error("Peek doesn't work as expected")
 	}
 }

@@ -15,8 +15,12 @@ func New(less Comparable) *BinaryTree {
 	return tree
 }
 
+func (tree *BinaryTree) IsEmpty() bool {
+	return tree.node == nil
+}
+
 func (tree *BinaryTree) Insert(node interface{}) {
-	if tree.node == nil {
+	if tree.IsEmpty() {
 		tree.node = node
 		tree.right = New(tree.less)
 		tree.left = New(tree.less)
@@ -30,7 +34,7 @@ func (tree *BinaryTree) Insert(node interface{}) {
 }
 
 func (tree *BinaryTree) Search(node interface{}) *BinaryTree {
-	if tree.node == nil {
+	if tree.IsEmpty() {
 		return nil
 	}
 	if tree.node == node {
