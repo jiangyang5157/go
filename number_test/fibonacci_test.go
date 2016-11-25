@@ -5,37 +5,37 @@ import (
 	"github.com/jiangyang5157/go/number"
 )
 
-func Test_TopDoenFibonacci(t *testing.T) {
-	if number.TopDoenFibonacci(0) != 0 {
-		t.Error("TopDoenFibonacci(0) is wrong")
+func Test_TopDownFibonacci(t *testing.T) {
+	if number.TopDownFibonacci(0) != 0 {
+		t.Error("TopDownFibonacci(0) is wrong")
 	}
 
-	if number.TopDoenFibonacci(1) != 1 {
-		t.Error("TopDoenFibonacci(1) is wrong")
+	if number.TopDownFibonacci(1) != 1 {
+		t.Error("TopDownFibonacci(1) is wrong")
 	}
 
-	if number.TopDoenFibonacci(2) != 1 {
-		t.Error("TopDoenFibonacci(2) is wrong")
+	if number.TopDownFibonacci(2) != 1 {
+		t.Error("TopDownFibonacci(2) is wrong")
 	}
 
-	if number.TopDoenFibonacci(3) != 2 {
-		t.Error("TopDoenFibonacci(3) is wrong")
+	if number.TopDownFibonacci(3) != 2 {
+		t.Error("TopDownFibonacci(3) is wrong")
 	}
 
-	if number.TopDoenFibonacci(4) != 3 {
-		t.Error("TopDoenFibonacci(4) is wrong")
+	if number.TopDownFibonacci(4) != 3 {
+		t.Error("TopDownFibonacci(4) is wrong")
 	}
 
-	if number.TopDoenFibonacci(5) != 5 {
-		t.Error("TopDoenFibonacci(5) is wrong")
+	if number.TopDownFibonacci(5) != 5 {
+		t.Error("TopDownFibonacci(5) is wrong")
 	}
 
-	if number.TopDoenFibonacci(6) != 8 {
-		t.Error("TopDoenFibonacci(6) is wrong")
+	if number.TopDownFibonacci(6) != 8 {
+		t.Error("TopDownFibonacci(6) is wrong")
 	}
 
-	if number.TopDoenFibonacci(7) != 13 {
-		t.Error("TopDoenFibonacci(7) is wrong")
+	if number.TopDownFibonacci(7) != 13 {
+		t.Error("TopDownFibonacci(7) is wrong")
 	}
 }
 

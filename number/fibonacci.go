@@ -1,18 +1,18 @@
 package number
 
-func TopDoenFibonacci(n int) int {
+func TopDownFibonacci(n int) int {
 	fibonacci := make([]int, n + 1)
-	return topDoenFibonacci(n, fibonacci)
+	return topDownFibonacci(n, fibonacci)
 }
 
-func topDoenFibonacci(n int, fibonacci []int) int {
+func topDownFibonacci(n int, fibonacci []int) int {
 	if (fibonacci[n] > 0) {
 		return fibonacci[n]
 	} else {
 		if (n == 0 || n == 1) {
 			fibonacci[n] = n;
 		} else {
-			fibonacci[n] = topDoenFibonacci(n - 1, fibonacci) + topDoenFibonacci(n - 2, fibonacci)
+			fibonacci[n] = topDownFibonacci(n - 1, fibonacci) + topDownFibonacci(n - 2, fibonacci)
 		}
 		return fibonacci[n];
 	}
