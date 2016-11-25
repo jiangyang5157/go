@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jiangyang5157/go/utils"
+	"github.com/jiangyang5157/go/number"
 	"fmt"
 )
 
@@ -45,7 +45,7 @@ func countingSort(arr []int) []int {
 }
 
 func main() {
-	arr := utils.RandomArray(10)
+	arr := number.RandomArray(10)
 	fmt.Println("Initial array is:", arr)
 	fmt.Println("Sorted array is: ", countingSort(arr))
 }

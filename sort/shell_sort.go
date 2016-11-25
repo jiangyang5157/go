@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jiangyang5157/go/utils"
+	"github.com/jiangyang5157/go/number"
 )
 
 // O(n log n) best case -> O(n) worst-case
@@ -19,7 +19,7 @@ func shellSort(arr []int) []int {
 }
 
 func main() {
-	arr := utils.RandomArray(10)
+	arr := number.RandomArray(10)
 	fmt.Println("Initial array is:", arr)
 	fmt.Println("Sorted array is: ", shellSort(arr))
 }
