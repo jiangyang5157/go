@@ -18,7 +18,7 @@ func Lcs(x string, y string) string {
 		opt[i] = make([]int, n + 1)
 	}
 
-	// Compute length of LCS for all subproblems
+	// Compute length of LCS for all sub-problems
 	for i := m - 1; i >= 0; i-- {
 		for j := n - 1; j >= 0; j-- {
 			if x[i] == y[j] {

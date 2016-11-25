@@ -1,0 +1,32 @@
+package binarytree
+
+import (
+	"testing"
+)
+
+func less(a interface{}, b interface{}) bool {
+	if a.(int) < b.(int) {
+		return true
+	} else {
+		return false
+	}
+}
+
+func Test_BinaryTree(t *testing.T) {
+	tree := New(less)
+
+	tree.Insert(1)
+	tree.Insert(2)
+	tree.Insert(3)
+	tree.Insert(4)
+
+	findTree := tree.Search(3)
+	if findTree.node != 3 {
+		t.Error("Search error")
+	}
+
+	findNilTree := tree.Search(222)
+	if findNilTree != nil {
+		t.Error("Search error")
+	}
+}
