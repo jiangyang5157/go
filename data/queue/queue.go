@@ -1,34 +1,34 @@
 package queue
 
 type Queue struct {
-	value []interface{}
-	size  int
+	data   []interface{}
+	length int
 }
 
 func New() *Queue {
-	return &Queue{value: make([]interface{}, 0), size: 0}
+	return &Queue{data: make([]interface{}, 0), length: 0}
 }
 
-func (queue *Queue) Size() int {
-	return queue.size
+func (queue *Queue) Length() int {
+	return queue.length
 }
 
 func (queue *Queue) IsEmpty() bool {
-	return queue.size == 0
+	return queue.length == 0
 }
 
 func (queue *Queue) Peek() interface{} {
-	return queue.value[0]
+	return queue.data[0]
 }
 
 func (queue *Queue) Pop() interface{} {
 	tmp := queue.Peek()
-	queue.value = queue.value[1:]
-	queue.size--
+	queue.data = queue.data[1:]
+	queue.length--
 	return tmp
 }
 
-func (queue *Queue) Push(value interface{}) {
-	queue.value = append(queue.value, value)
-	queue.size++
+func (queue *Queue) Push(data interface{}) {
+	queue.data = append(queue.data, data)
+	queue.length++
 }

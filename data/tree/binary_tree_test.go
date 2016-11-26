@@ -2,7 +2,6 @@ package tree
 
 import (
 	"testing"
-	"github.com/timtadh/data-structures/tree"
 )
 
 func compare(a interface{}, b interface{}) int {

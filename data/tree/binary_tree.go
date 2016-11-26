@@ -13,12 +13,8 @@ func New(compare Comparable) *Node {
 	return &Node{compare: compare}
 }
 
-func (node *Node) IsEmpty() bool {
-	return node.value == nil
-}
-
 func (node *Node) Insert(value interface{}) {
-	if node.IsEmpty() {
+	if node.value == nil {
 		node.value = value
 		node.right = New(node.compare)
 		node.left = New(node.compare)
@@ -32,10 +28,9 @@ func (node *Node) Insert(value interface{}) {
 }
 
 func (node *Node) Search(value interface{}) *Node {
-	if node.IsEmpty() {
+	if node.value == nil {
 		return nil
-	}
-	if node.value == value {
+	} else if node.value == value {
 		return node
 	} else {
 		if node.compare(value, node.value) < 0 {

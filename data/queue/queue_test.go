@@ -16,16 +16,16 @@ func Test_Queue(t *testing.T) {
 	queue.Push(3)
 	queue.Push(4)
 
-	if queue.Size() != 4 {
-		t.Error("Size doesn't work as expected")
+	if queue.Length() != 4 {
+		t.Error("Length doesn't work as expected")
 	}
 
 	if queue.Pop() != 1 {
 		t.Error("remove doesn't work as expected")
 	}
 
-	if queue.Size() != 3 {
-		t.Error("Size doesn't work as expected")
+	if queue.Length() != 3 {
+		t.Error("Length doesn't work as expected")
 	}
 
 	if queue.Peek() != 2 {
