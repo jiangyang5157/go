@@ -24,7 +24,7 @@ func Test_BinaryTree(t *testing.T) {
 	tree.Insert(4)
 
 	findTree := tree.Search(3)
-	if findTree.data != 3 {
+	if findTree.value != 3 {
 		t.Error("Search doesn't work as expected")
 	}
 

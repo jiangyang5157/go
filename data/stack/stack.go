@@ -1,13 +1,13 @@
 package stack
 
 type Stack struct {
-	data []interface{}
+	value []interface{}
 	len  int
 }
 
 func New() *Stack {
 	stack := &Stack{}
-	stack.data = make([]interface{}, 0)
+	stack.value = make([]interface{}, 0)
 	stack.len = 0
 	return stack
 }
@@ -21,17 +21,17 @@ func (stack *Stack) IsEmpty() bool {
 }
 
 func (stack *Stack) Peek() interface{} {
-	return stack.data[stack.len - 1]
+	return stack.value[stack.len - 1]
 }
 
 func (stack *Stack) Pop() interface{} {
 	tmp := stack.Peek()
-	stack.data = stack.data[0:stack.len]
+	stack.value = stack.value[0:stack.len]
 	stack.len -= 1
 	return tmp
 }
 
-func (stack *Stack) Push(data interface{}) {
-	stack.data = append(stack.data, data)
+func (stack *Stack) Push(value interface{}) {
+	stack.value = append(stack.value, value)
 	stack.len += 1
 }

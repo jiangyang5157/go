@@ -4,16 +4,16 @@ import (
 	"sync"
 )
 
-type Item struct {
-	data       interface{}
-	prev, next *Item
+type Element struct {
+	value       interface{}
+	prev, next *Element
 	list       *List // The list to which this element belongs.
 }
 
 // <--> A (first) <--> B <--> C <--> D (last) <-->
 type List struct {
-	first *Item
-	last  *Item
+	first *Element
+	last  *Element
 	len   int
 	lock  sync.RWMutex
 }
@@ -30,29 +30,29 @@ func (list *List) IsEmpty() bool {
 	return list.len == 0
 }
 
-func (list *List) First() *Item {
+func (list *List) First() *Element {
 	return list.first
 }
 
-func (list *List) Last() *Item {
+func (list *List) Last() *Element {
 	return list.last
 }
 
-func (item *Item) Prev() *Item {
-	if p := item.prev; item.list != nil && p != item.list.last {
+func (e *Element) Prev() *Element {
+	if p := e.prev; e.list != nil && p != e.list.last {
 		return p
 	}
 	return nil
 }
 
-func (item *Item) Next() *Item {
-	if p := item.next; item.list != nil && p != item.list.first {
+func (e *Element) Next() *Element {
+	if p := e.next; e.list != nil && p != e.list.first {
 		return p
 	}
 	return nil
 }
 
-func (list *List) Has(data interface{}) bool {
+func (list *List) Has(value interface{}) bool {
 	list.lock.RLock()
 	defer list.lock.RUnlock()
 
@@ -61,7 +61,7 @@ func (list *List) Has(data interface{}) bool {
 	}
 
 	for cur, last := list.First(), list.Last(); cur != nil; cur = cur.next {
-		if cur.data == data {
+		if cur.value == value {
 			return true
 		} else if (cur == last) {
 			return false
@@ -70,7 +70,7 @@ func (list *List) Has(data interface{}) bool {
 	return false
 }
 
-func (list *List) Remove(data interface{}) bool {
+func (list *List) Remove(value interface{}) bool {
 	list.lock.Lock()
 	defer list.lock.Unlock()
 
@@ -79,13 +79,13 @@ func (list *List) Remove(data interface{}) bool {
 	}
 
 	for cur, last := list.First(), list.Last(); cur != nil; cur = cur.next {
-		if cur.data == data {
+		if cur.value == value {
 			cur.prev.next = cur.next
 			if cur.next != nil {
 				cur.next.prev = cur.prev
 			}
 			list.len--
-			cur.data = nil
+			cur.value = nil
 			cur.prev = nil
 			cur.next = nil
 			cur.list = nil
@@ -98,22 +98,22 @@ func (list *List) Remove(data interface{}) bool {
 }
 
 // Insert to the last
-func (list *List) Insert(data interface{}) {
+func (list *List) Insert(value interface{}) {
 	list.lock.Lock()
 	defer list.lock.Unlock()
 
-	newItem := &Item{data: data, list: list}
+	newElement := &Element{value: value, list: list}
 	if list.IsEmpty() {
-		newItem.prev = newItem
-		newItem.next = newItem
-		list.first = newItem
-		list.last = newItem
+		newElement.prev = newElement
+		newElement.next = newElement
+		list.first = newElement
+		list.last = newElement
 	} else {
-		newItem.prev = list.last
-		newItem.next = list.first
-		list.first.prev = newItem
-		list.last.next = newItem
-		list.last = newItem
+		newElement.prev = list.last
+		newElement.next = list.first
+		list.first.prev = newElement
+		list.last.next = newElement
+		list.last = newElement
 	}
 	list.len++
 }
