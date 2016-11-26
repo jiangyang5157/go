@@ -44,10 +44,15 @@ func Test_Heap(t *testing.T) {
 	heap.Insert(0)
 	heap.Insert(2)
 	heap.Insert(4)
+	heap.Insert(9)
 	heap.Insert(5)
-	heap.Insert(5)
+	heap.Insert(111)
+	heap.Insert(555)
+	heap.Insert(444)
+	heap.Insert(333)
+	heap.Insert(222)
 
-	if heap.Length() != 10 {
+	if heap.Length() != 15 {
 		t.Error("Length doesn't work as expected")
 	}
 
