@@ -47,14 +47,14 @@ func Test_List(t *testing.T) {
 	list.Append(6)
 
 	if list.Size() != 6 {
-		t.Error("Length doesn't work as expected")
+		t.Error("Size doesn't work as expected")
 	}
 
 	if err := list.Remove(222); err == nil {
 		t.Error("Remove doesn't work as expected")
 	}
 	if list.Size() != 6 {
-		t.Error("Length doesn't work as expected")
+		t.Error("Size doesn't work as expected")
 	}
 
 	list.Each(func(e *Element) {

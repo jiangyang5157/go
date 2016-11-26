@@ -16,16 +16,16 @@ func Test_Stack(t *testing.T) {
 	stack.Push(3)
 	stack.Push(4)
 
-	if stack.Length() != 4 {
-		t.Error("Length doesn't work as expected")
+	if stack.Size() != 4 {
+		t.Error("Size doesn't work as expected")
 	}
 
 	if stack.Pop() != 4 {
 		t.Error("Pop doesn't work as expected")
 	}
 
-	if stack.Length() != 3 {
-		t.Error("Length doesn't work as expected")
+	if stack.Size() != 3 {
+		t.Error("Size doesn't work as expected")
 	}
 
 	if stack.Peek() != 3 {
