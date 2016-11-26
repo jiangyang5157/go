@@ -5,9 +5,9 @@ import (
 )
 
 type Item struct {
-	data interface{}
-	prev *Item
-	next *Item
+	data       interface{}
+	prev, next *Item
+	list       *List // The list to which this element belongs.
 }
 
 // <--> A (first) <--> B <--> C <--> D (last) <-->
@@ -19,9 +19,7 @@ type List struct {
 }
 
 func New() *List {
-	list := &List{}
-	list.len = 0
-	return list
+	return &List{}
 }
 
 func (list *List) Length() int {
@@ -41,11 +39,17 @@ func (list *List) Last() *Item {
 }
 
 func (item *Item) Prev() *Item {
-	return item.prev
+	if p := item.prev; item.list != nil && p != item.list.last {
+		return p
+	}
+	return nil
 }
 
 func (item *Item) Next() *Item {
-	return item.next
+	if p := item.next; item.list != nil && p != item.list.first {
+		return p
+	}
+	return nil
 }
 
 func (list *List) Has(data interface{}) bool {
@@ -80,10 +84,11 @@ func (list *List) Remove(data interface{}) bool {
 			if cur.next != nil {
 				cur.next.prev = cur.prev
 			}
+			list.len--
+			cur.data = nil
 			cur.prev = nil
 			cur.next = nil
-			cur.data = nil
-			list.len--
+			cur.list = nil
 			return true
 		} else if (cur == last) {
 			return false
@@ -97,8 +102,7 @@ func (list *List) Insert(data interface{}) {
 	list.lock.Lock()
 	defer list.lock.Unlock()
 
-	newItem := &Item{}
-	newItem.data = data
+	newItem := &Item{data: data, list: list}
 	if list.IsEmpty() {
 		newItem.prev = newItem
 		newItem.next = newItem
