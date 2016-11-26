@@ -48,21 +48,6 @@ func (element *Element) Next() *Element {
 	return element.next
 }
 
-func (list *List) Clear() {
-	list.Each(func(e *Element) {
-		if (e.next != nil) {
-			e.next.prev = e.prev
-		}
-		if (e.prev != nil) {
-			e.prev.next = e.next
-		}
-		e.value = nil
-		list.size--
-	})
-	list.first = nil
-	list.last = nil
-}
-
 func (list *List) Concat(that *List) {
 	list.last.next, that.first.prev = that.first, list.last
 	list.last = that.last
@@ -82,16 +67,6 @@ func (list *List) Find(value interface{}) (*Element, error) {
 		}
 	}
 	return nil, errors.New("Element not found")
-}
-
-func (list *List) Count(value interface{}) (int) {
-	count := 0
-	list.Each(func(e *Element) {
-		if e.value == value {
-			count++
-		}
-	})
-	return count
 }
 
 func (list *List) Get(index int) (*Element, error) {
@@ -180,4 +155,19 @@ func (list *List) Remove(value interface{}) error {
 		}
 	}
 	return errors.New("Element not found")
+}
+
+func (list *List) Clear() {
+	list.Each(func(e *Element) {
+		if (e.next != nil) {
+			e.next.prev = e.prev
+		}
+		if (e.prev != nil) {
+			e.prev.next = e.next
+		}
+		e.value = nil
+		list.size--
+	})
+	list.first = nil
+	list.last = nil
 }
