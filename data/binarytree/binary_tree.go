@@ -3,7 +3,7 @@ package binarytree
 type Comparable func(a interface{}, b interface{}) bool
 
 type BinaryTree struct {
-	node  interface{}
+	data  interface{}
 	left  *BinaryTree
 	right *BinaryTree
 	less  Comparable
@@ -16,34 +16,34 @@ func New(less Comparable) *BinaryTree {
 }
 
 func (tree *BinaryTree) IsEmpty() bool {
-	return tree.node == nil
+	return tree.data == nil
 }
 
-func (tree *BinaryTree) Insert(node interface{}) {
+func (tree *BinaryTree) Insert(data interface{}) {
 	if tree.IsEmpty() {
-		tree.node = node
+		tree.data = data
 		tree.right = New(tree.less)
 		tree.left = New(tree.less)
 	} else {
-		if tree.less(node, tree.node) {
-			tree.left.Insert(node)
+		if tree.less(data, tree.data) {
+			tree.left.Insert(data)
 		} else {
-			tree.right.Insert(node)
+			tree.right.Insert(data)
 		}
 	}
 }
 
-func (tree *BinaryTree) Search(node interface{}) *BinaryTree {
+func (tree *BinaryTree) Search(data interface{}) *BinaryTree {
 	if tree.IsEmpty() {
 		return nil
 	}
-	if tree.node == node {
+	if tree.data == data {
 		return tree
 	} else {
-		if tree.less(node, tree.node) {
-			return tree.left.Search(node)
+		if tree.less(data, tree.data) {
+			return tree.left.Search(data)
 		} else {
-			return tree.right.Search(node)
+			return tree.right.Search(data)
 		}
 	}
 }
