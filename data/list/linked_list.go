@@ -29,7 +29,7 @@ func (list *List) Size() int {
 }
 
 func (list *List) IsEmpty() bool {
-	return list.size == 0
+	return list.Size() == 0
 }
 
 func (list *List) First() *Element {

@@ -12,7 +12,7 @@ func New(compare Comparable) *Heap {
 }
 
 func (heap *Heap) IsEmpty() bool {
-	return len(heap.data) == 0
+	return heap.Length() == 0
 }
 
 func (heap *Heap) Length() int {
@@ -25,7 +25,7 @@ func (heap *Heap) Get(index int) interface{} {
 
 func (heap *Heap) siftUp() {
 	length := heap.Length()
-	for child, parent := length - 1, length - 1; child > 1; child = parent {
+	for child, parent := length - 1, length - 1; child > 0; child = parent {
 		// parent: (n - 1) / 2
 		parent = (child - 1) >> 1
 		if heap.compare(heap.Get(parent), heap.Get(child)) < 0 {

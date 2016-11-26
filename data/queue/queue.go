@@ -14,7 +14,7 @@ func (queue *Queue) Length() int {
 }
 
 func (queue *Queue) IsEmpty() bool {
-	return queue.length == 0
+	return queue.Length() == 0
 }
 
 func (queue *Queue) Peek() interface{} {

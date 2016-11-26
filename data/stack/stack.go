@@ -14,7 +14,7 @@ func (stack *Stack) Length() int {
 }
 
 func (stack *Stack) IsEmpty() bool {
-	return stack.length == 0
+	return stack.Length() == 0
 }
 
 func (stack *Stack) Peek() interface{} {
