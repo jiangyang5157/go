@@ -1,33 +1,35 @@
 package list
 
 import (
-	"sync"
+	"errors"
 )
 
-type Element struct {
-	value       interface{}
-	prev, next *Element
-	list       *List // The list to which this element belongs.
-}
-
-// <--> A (first) <--> B <--> C <--> D (last) <-->
+//  nil <-- A (first) <--> B <--> C <--> D (last) --> nil
 type List struct {
-	first *Element
-	last  *Element
-	len   int
-	lock  sync.RWMutex
+	first, last *Element
+	size        int
 }
 
-func New() *List {
-	return &List{}
+type Element struct {
+	list       *List
+	prev, next *Element
+	value      interface{}
 }
 
-func (list *List) Length() int {
-	return list.len
+func NewList() *List {
+	return &List{size: 0}
+}
+
+func NewElement(list *List, value interface{}) *Element {
+	return &Element{list: list, value: value}
+}
+
+func (list *List) Size() int {
+	return list.size
 }
 
 func (list *List) IsEmpty() bool {
-	return list.len == 0
+	return list.size == 0
 }
 
 func (list *List) First() *Element {
@@ -38,82 +40,144 @@ func (list *List) Last() *Element {
 	return list.last
 }
 
-func (e *Element) Prev() *Element {
-	if p := e.prev; e.list != nil && p != e.list.last {
-		return p
-	}
-	return nil
+func (element *Element) Prev() *Element {
+	return element.prev
 }
 
-func (e *Element) Next() *Element {
-	if p := e.next; e.list != nil && p != e.list.first {
-		return p
-	}
-	return nil
+func (element *Element) Next() *Element {
+	return element.next
 }
 
-func (list *List) Has(value interface{}) bool {
-	list.lock.RLock()
-	defer list.lock.RUnlock()
+func (list *List) Clear() {
+	list.Each(func(e *Element) {
+		if (e.next != nil) {
+			e.next.prev = e.prev
+		}
+		if (e.prev != nil) {
+			e.prev.next = e.next
+		}
+		e.value = nil
+		list.size--
+	})
+	list.first = nil
+	list.last = nil
+}
 
-	if (list.IsEmpty()) {
-		return false
+func (list *List) Concat(that *List) {
+	list.last.next, that.first.prev = that.first, list.last
+	list.last = that.last
+	list.size += that.size
+}
+
+func (list *List) Each(f func(element *Element)) {
+	for e := list.first; e != nil; e = e.next {
+		f(e)
 	}
+}
 
-	for cur, last := list.First(), list.Last(); cur != nil; cur = cur.next {
-		if cur.value == value {
-			return true
-		} else if (cur == last) {
-			return false
+func (list *List) Find(value interface{}) (*Element, error) {
+	for e := list.first; e != nil; e = e.next {
+		if e.value == value {
+			return e, nil
 		}
 	}
-	return false
+	return nil, errors.New("Element not found")
 }
 
-func (list *List) Remove(value interface{}) bool {
-	list.lock.Lock()
-	defer list.lock.Unlock()
-
-	if (list.IsEmpty()) {
-		return false
-	}
-
-	for cur, last := list.First(), list.Last(); cur != nil; cur = cur.next {
-		if cur.value == value {
-			cur.prev.next = cur.next
-			if cur.next != nil {
-				cur.next.prev = cur.prev
-			}
-			list.len--
-			cur.value = nil
-			cur.prev = nil
-			cur.next = nil
-			cur.list = nil
-			return true
-		} else if (cur == last) {
-			return false
+func (list *List) Count(value interface{}) (int) {
+	count := 0
+	list.Each(func(e *Element) {
+		if e.value == value {
+			count++
 		}
-	}
-	return false
+	})
+	return count
 }
 
-// Insert to the last
-func (list *List) Insert(value interface{}) {
-	list.lock.Lock()
-	defer list.lock.Unlock()
+func (list *List) Get(index int) (*Element, error) {
+	if index > list.size - 1 {
+		return nil, errors.New("Index out of range")
+	}
+	node := list.first
+	for i := 0; i < index; i++ {
+		node = node.next
+	}
+	return node, nil
+}
 
-	newElement := &Element{value: value, list: list}
-	if list.IsEmpty() {
-		newElement.prev = newElement
-		newElement.next = newElement
-		list.first = newElement
-		list.last = newElement
+func (list *List) Prepend(value interface{}) {
+	e := NewElement(list, value)
+	if list.size == 0 {
+		list.first = e
+		list.last = list.first
 	} else {
-		newElement.prev = list.last
-		newElement.next = list.first
-		list.first.prev = newElement
-		list.last.next = newElement
-		list.last = newElement
+		list.first.prev = e
+		e.next = list.first
+		list.first = e
 	}
-	list.len++
+	list.size++
+}
+
+func (list *List) Append(value interface{}) {
+	e := NewElement(list, value)
+	if list.size == 0 {
+		list.first = e
+		list.last = list.first
+	} else {
+		list.last.next = e
+		e.prev = list.last
+		list.last = e
+	}
+	list.size++
+}
+
+func (list *List) Add(value interface{}, index int) error {
+	if index > list.size {
+		return errors.New("Index out of range")
+	}
+
+	if (index == 0) {
+		list.Prepend(value)
+		return nil
+	}
+
+	if index == list.size {
+		list.Append(value)
+		return nil
+	}
+
+	next, _ := list.Get(index)
+	prev := next.prev
+
+	e := NewElement(list, value)
+	prev.next = e
+	e.prev = prev
+	next.prev = e
+	e.next = next
+	list.size++
+	return nil
+}
+
+func (list *List) Remove(value interface{}) error {
+	if list.size == 1 && list.first.value == value {
+		list.first = nil
+		list.last = nil
+		list.size = 0
+		return nil
+	}
+
+	for e := list.first; e != nil; e = e.next {
+		if e.value == value {
+			if (e.next != nil) {
+				e.next.prev = e.prev
+			}
+			if (e.prev != nil) {
+				e.prev.next = e.next
+			}
+			e.value = nil
+			list.size--
+			return nil
+		}
+	}
+	return errors.New("Element not found")
 }
