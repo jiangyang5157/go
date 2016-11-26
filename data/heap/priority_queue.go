@@ -43,26 +43,29 @@ func (pq *PriorityQueue) Peek() Element {
 }
 
 func (pq *PriorityQueue) ChangePriority(value interface{}, priority int) error {
-	if (pq.Length() == 0) {
+	length := pq.Length()
+	if (length == 0) {
 		return errors.New("Empty priority queue")
 	}
 
-	var err error
 	tmp := queue.New()
-	popped := pq.Extract()
-	for value != popped.value {
-		if pq.Length() == 0 {
-			err = errors.New("Element not found")
-			break
+	var popped Element
+	for pq.Length() > 0 {
+		popped = pq.Extract();
+		if (popped.value == value) {
+			popped.priority = priority
+			pq.data.Insert(popped)
+			break;
+		} else {
+			tmp.Push(popped)
 		}
-		tmp.Push(popped)
-		popped = pq.Extract()
 	}
-	popped.priority = priority
-	pq.data.Insert(popped)
-
-	// re-insert tmp into pq
+	var err error
+	if (tmp.Length() == length) {
+		err = errors.New("Element not found")
+	}
 	for tmp.Length() > 0 {
+		// recover pq
 		pq.data.Insert(tmp.Pop().(Element))
 	}
 	return err
