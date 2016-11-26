@@ -2,6 +2,7 @@ package tree
 
 import (
 	"testing"
+	"github.com/timtadh/data-structures/tree"
 )
 
 func compare(a interface{}, b interface{}) int {
@@ -16,19 +17,19 @@ func compare(a interface{}, b interface{}) int {
 }
 
 func Test_BinaryTree(t *testing.T) {
-	tree := New(compare)
+	root := New(compare)
 
-	tree.Insert(1)
-	tree.Insert(2)
-	tree.Insert(3)
-	tree.Insert(4)
+	root.Insert(1)
+	root.Insert(2)
+	root.Insert(3)
+	root.Insert(4)
 
-	findTree := tree.Search(3)
+	findTree := root.Search(3)
 	if findTree.value != 3 {
 		t.Error("Search doesn't work as expected")
 	}
 
-	findNilTree := tree.Search(222)
+	findNilTree := root.Search(222)
 	if findNilTree != nil {
 		t.Error("Search doesn't work as expected")
 	}
