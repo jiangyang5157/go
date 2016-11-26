@@ -1,49 +1,47 @@
 package binarytree
 
-type Comparable func(a interface{}, b interface{}) bool
+type Comparable func(a interface{}, b interface{}) int
 
-type BinaryTree struct {
-	data  interface{}
-	left  *BinaryTree
-	right *BinaryTree
-	less  Comparable
+type Node struct {
+	data    interface{}
+	compare Comparable
+	left    *Node
+	right   *Node
 }
 
-func New(less Comparable) *BinaryTree {
-	tree := &BinaryTree{}
-	tree.less = less
-	return tree
+func New(compare Comparable) *Node {
+	return &Node{compare: compare}
 }
 
-func (tree *BinaryTree) IsEmpty() bool {
-	return tree.data == nil
+func (node *Node) IsEmpty() bool {
+	return node.data == nil
 }
 
-func (tree *BinaryTree) Insert(data interface{}) {
-	if tree.IsEmpty() {
-		tree.data = data
-		tree.right = New(tree.less)
-		tree.left = New(tree.less)
+func (node *Node) Insert(data interface{}) {
+	if node.IsEmpty() {
+		node.data = data
+		node.right = New(node.compare)
+		node.left = New(node.compare)
 	} else {
-		if tree.less(data, tree.data) {
-			tree.left.Insert(data)
+		if node.compare(data, node.data) < 0 {
+			node.left.Insert(data)
 		} else {
-			tree.right.Insert(data)
+			node.right.Insert(data)
 		}
 	}
 }
 
-func (tree *BinaryTree) Search(data interface{}) *BinaryTree {
-	if tree.IsEmpty() {
+func (node *Node) Search(data interface{}) *Node {
+	if node.IsEmpty() {
 		return nil
 	}
-	if tree.data == data {
-		return tree
+	if node.data == data {
+		return node
 	} else {
-		if tree.less(data, tree.data) {
-			return tree.left.Search(data)
+		if node.compare(data, node.data) < 0 {
+			return node.left.Search(data)
 		} else {
-			return tree.right.Search(data)
+			return node.right.Search(data)
 		}
 	}
 }

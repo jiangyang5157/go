@@ -4,16 +4,19 @@ import (
 	"testing"
 )
 
-func less(a interface{}, b interface{}) bool {
-	if a.(int) < b.(int) {
-		return true
-	} else {
-		return false
+func compare(a interface{}, b interface{}) int {
+	switch {
+	case a.(int) < b.(int):
+		return -1
+	case a.(int) > b.(int):
+		return 1
+	default:
+		return 0
 	}
 }
 
 func Test_BinaryTree(t *testing.T) {
-	tree := New(less)
+	tree := New(compare)
 
 	tree.Insert(1)
 	tree.Insert(2)
