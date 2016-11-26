@@ -53,26 +53,29 @@ func (heap *Heap) siftDown() {
 	}
 }
 
-// Insert to the last
+// Insert element into the next position
 func (heap *Heap) Insert(data interface{}) {
 	heap.data = append(heap.data, data)
+
 	heap.siftUp()
 }
 
-// Extract the first
+// Extract the root element
 func (heap *Heap) Extract() interface{} {
 	length := heap.Length()
 	if length == 0 {
 		return nil
 	}
 	data := heap.data[0]
+	// replace the root with the last element
 	heap.data[0] = heap.data[length - 1]
 	heap.data = heap.data[:length - 1]
+
 	heap.siftDown()
 	return data
 }
 
-// Peek at the first item
+// Peek at the root
 func (heap *Heap) Peek() interface{} {
 	if heap.Length() == 0 {
 		return nil
