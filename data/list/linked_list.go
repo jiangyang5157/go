@@ -48,10 +48,10 @@ func (element *Element) Next() *Element {
 	return element.next
 }
 
-func (list *List) Concat(that *List) {
-	list.last.next, that.first.prev = that.first, list.last
-	list.last = that.last
-	list.size += that.size
+func (list *List) Concat(other *List) {
+	list.last.next, other.first.prev = other.first, list.last
+	list.last = other.last
+	list.size += other.size
 }
 
 func (list *List) Each(f func(element *Element)) {
