@@ -45,6 +45,10 @@ func Test_sudoku(t *testing.T) {
 	d := newDlx(324)
 	for r, i := 0, 0; r < 9; r++ {
 		for c := 0; c < 9; c, i = c + 1, i + 1 {
+			// i:[0, 80]
+			// r: [0, 8]
+			// c: [0, 8]
+			// square: [0, 8]
 			square := r / 3 * 3 + c / 3
 			digit := int(raw[i] - '0')
 			if digit >= 1 && digit <= 9 {
