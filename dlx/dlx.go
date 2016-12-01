@@ -1,7 +1,8 @@
 package dlx
 
 /*
-Knuth's DLX
+Knuth's DLX data struct
+
                  |           |           |           |
 - columns 0 - columns 1 - columns 2 - ......... - columns i -
                  |           |           |           |
@@ -9,7 +10,8 @@ Knuth's DLX
                  |           |           |           |
                  x(x0)  -    x      -    x      -    x
                  |           |           |           |
- */
+
+*/
 
 // data object
 type x struct {
