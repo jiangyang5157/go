@@ -1,16 +1,18 @@
 package dlx
 
 /*
-Knuth's DLX data struct
 
                  |           |           |           |
 - columns 0 - columns 1 - columns 2 - ......... - columns i -
                  |           |           |           |
-                 x(x0)  -    x      -    x      -    x
+            -    x(x0)  -    x      -    x      -    x      -
                  |           |           |           |
-                 x(x0)  -    x      -    x      -    x
-                 |           |           |           |
-
+                                    -    x(x0)  -    x      -
+                                         |           |
+                        -    x(x0)  -    x      -    x      -
+                             |           |           |
+                        -    x(x0)  -    x      -    x      -
+                             |           |           |
 */
 
 // data object
@@ -172,18 +174,18 @@ func (d *dlx) search() bool {
 	}
 
 	cover(c)
-	length := len(d.o)
 	d.o = append(d.o, nil) // expend d.o length at the end
+	length := len(d.o)
 	for r := c.d; r != &c.x; r = r.d {
 		// set the new item at the end of d.o
-		d.o[length] = r
+		d.o[length - 1] = r
 		for j := r.r; j != r; j = j.r {
 			cover(j.c)
 		}
 		if d.search() {
 			return true
 		}
-		r = d.o[length]
+		r = d.o[length - 1]
 		c = r.c
 		for j := r.l; j != r; j = j.l {
 			uncover(j.c)
