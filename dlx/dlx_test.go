@@ -5,6 +5,18 @@ import (
 	"fmt"
 )
 
+func Test_stuff(t *testing.T) {
+	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
+	fmt.Println("#### printSudoku")
+	printSudoku3(raw)
+
+	fmt.Println("#### ascii")
+	//0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  .
+	//48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 46
+	fmt.Printf("%v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v\n", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".")
+	fmt.Printf("%v, %v, %v, %v, %v, %v, %v, %v, %v, %v, %v\n", int('0'), int('1'), int('2'), int('3'), int('4'), int('5'), int('6'), int('7'), int('8'), int('9'), int('.'))
+}
+
 func Test_NewDlx(t *testing.T) {
 	fmt.Println("#### test newDlx")
 	d := newDlx(5)
@@ -21,8 +33,24 @@ func Test_NewDlx(t *testing.T) {
 	fmt.Println("\n####")
 }
 
-func printRawSudoku3(title, raw string) {
-	fmt.Println(title)
+func printSudoku1(raw string) {
+	for r, i := 0, 0; r < 1; r, i = r + 1, i + 1 {
+		fmt.Printf("%c\n", raw[i])
+	}
+}
+
+func printSudoku2(raw string) {
+	for r, i := 0, 0; r < 4; r, i = r + 1, i + 4 {
+		fmt.Printf("%c %c | %c %c\n",
+			raw[i], raw[i + 1],
+			raw[i + 2], raw[i + 3])
+		if r == 1 {
+			fmt.Println("----+----")
+		}
+	}
+}
+
+func printSudoku3(raw string) {
 	for r, i := 0, 0; r < 9; r, i = r + 1, i + 9 {
 		fmt.Printf("%c %c %c | %c %c %c | %c %c %c\n",
 			raw[i], raw[i + 1], raw[i + 2],
@@ -34,22 +62,139 @@ func printRawSudoku3(title, raw string) {
 	}
 }
 
-func Test_stuff(t *testing.T) {
-	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
-	printRawSudoku3("#### test printRawSudoku3", raw)
-
-	fmt.Println("#### ascii")
-	//0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  .
-	//48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 46
-	fmt.Printf("%v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v\n", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".")
-	fmt.Printf("%v, %v, %v, %v, %v, %v, %v, %v, %v, %v, %v\n", int('0'), int('1'), int('2'), int('3'), int('4'), int('5'), int('6'), int('7'), int('8'), int('9'), int('.'))
+// the ascii for chars after '9' should convert into integer by minus '0' for display.
+func printSudoku4(raw string) {
+	for r, i := 0, 0; r < 16; r, i = r + 1, i + 16 {
+		fmt.Printf("%c %c %c %c | %c %c %c %c | %c %c %c %c | %c %c %c %c\n",
+			raw[i], raw[i + 1], raw[i + 2], raw[i + 3],
+			raw[i + 4], raw[i + 5], raw[i + 6], raw[i + 7],
+			raw[i + 8], raw[i + 9], raw[i + 10], raw[i + 11],
+			raw[i + 12], raw[i + 13], raw[i + 14], raw[i + 15])
+		if r == 3 || r == 7 || r == 11 {
+			fmt.Println("--------+---------+---------+--------")
+		}
+	}
 }
 
-func Test_sudoku(t *testing.T) {
-	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
-	printRawSudoku3("#### raw", raw)
-	solution := solve(3, raw)
-	printRawSudoku3("#### solution", solution)
+func Test_sudoku4(t *testing.T) {
+	raw4 :=
+		"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................" +
+			"................"
+	fmt.Println("#### raw")
+	printSudoku4(raw4)
+	solution4 := solve(4, raw4)
+	fmt.Println("#### solution")
+	if (len(solution4) == 16 * 16) {
+		printSudoku4(solution4)
+	} else {
+		fmt.Println(solution4)
+	}
+}
+
+
+func Test_sudoku3(t *testing.T) {
+	raw3 :=
+		"....7.94." +
+			".7..9...5" +
+			"3....5.7." +
+			"..74..1.." +
+			"463.8...." +
+			".....7.8." +
+			"8..7....." +
+			"7......28" +
+			".5..68..."
+	fmt.Println("#### raw")
+	printSudoku3(raw3)
+	solution3 := solve(3, raw3)
+	fmt.Println("#### solution")
+	if (len(solution3) == 81) {
+		printSudoku3(solution3)
+	} else {
+		fmt.Println(solution3)
+	}
+}
+
+func Test_sudoku3withZeroSolution(t *testing.T) {
+	raw3 :=
+		"......123" +
+			"..9......" +
+			".....9..." +
+			"........." +
+			"........." +
+			"........." +
+			"........." +
+			"........." +
+			"........."
+	fmt.Println("#### raw")
+	printSudoku3(raw3)
+	solution3 := solve(3, raw3)
+	fmt.Println("#### solution")
+	if (len(solution3) == 81) {
+		printSudoku3(solution3)
+	} else {
+		fmt.Println(solution3)
+	}
+}
+
+func Test_sudoku2(t *testing.T) {
+	raw2 :=
+		"...." +
+			".4.." +
+			"2..." +
+			"...3"
+	fmt.Println("#### raw")
+	printSudoku2(raw2)
+	solution2 := solve(2, raw2)
+	fmt.Println("#### solution")
+	if (len(solution2) == 16) {
+		printSudoku2(solution2)
+	} else {
+		fmt.Println(solution2)
+	}
+}
+
+func Test_sudoku2WithZeroSolution(t *testing.T) {
+	raw2 :=
+		"...." +
+			".4.." +
+			"2..." +
+			"..43"
+	fmt.Println("#### raw")
+	printSudoku2(raw2)
+	solution2 := solve(2, raw2)
+	fmt.Println("#### solution")
+	if (len(solution2) == 16) {
+		printSudoku2(solution2)
+	} else {
+		fmt.Println(solution2)
+	}
+}
+
+func Test_sudoku1(t *testing.T) {
+	raw1 := "."
+	fmt.Println("#### raw")
+	printSudoku1(raw1)
+	solution1 := solve(1, raw1)
+	fmt.Println("#### solution")
+	if (len(solution1) == 1) {
+		printSudoku1(solution1)
+	} else {
+		fmt.Println(solution1)
+	}
 }
 
 /*
@@ -105,13 +250,61 @@ func solve(s int, raw string) string {
 		}
 	}
 
-	d.search()
+	ok := d.search()
+	if (!ok) {
+		return ""
+	}
 	bs := make([]byte, len(d.o))
 	for _, o := range d.o {
 		x0 := o.x0
 		x0ci := x0.c.i // [offsetConstraint1 + 1, offsetConstraint2] cell constraints - index for byte
 		x0rci := x0.r.c.i // [offsetConstraint2 + 1, offsetConstraint3] row constraints - append by raw
-		bs[x0ci - 1] = byte(x0rci % edgeLength) + '0'
+		bs[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
 	}
 	return string(bs)
 }
+
+// Eg: 9x9 sudoku
+// 0 sulution
+//"......123" +
+//"..9......" +
+//".....9..." +
+//"........." +
+//"........." +
+//"........." +
+//"........." +
+//"........." +
+//"........."
+//
+// 1 sulution
+//"........." +
+//"..41.26.." +
+//".3..5..2." +
+//".2..1..3." +
+//"..65.41.." +
+//".8..7..4." +
+//".7..2..6." +
+//"..14.35.." +
+//"........."
+//
+// 2 sulutions
+//"..3456789" +
+//"456789123" +
+//"789123456" +
+//"..4365897" +
+//"365897214" +
+//"897214365" +
+//"531642978" +
+//"642978531" +
+//"978531642"
+//
+// 188 sulutions
+//"....7.94." +
+//".7..9...5" +
+//"3....5.7." +
+//"..74..1.." +
+//"463.8...." +
+//".....7.8." +
+//"8..7....." +
+//"7......28" +
+//".5..68..."
