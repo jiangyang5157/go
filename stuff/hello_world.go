@@ -177,13 +177,6 @@ Hello, World`
 	fmt.Println(strAwesome)
 
 	var x int = 10
-	if x == 5 {
-		fmt.Println("x is 5")
-	} else if x == 10 {
-		fmt.Println("x is 10")
-	} else {
-		fmt.Println("x is not 5 or 10")
-	}
 	x = 11
 	switch x {
 	case 5: fmt.Println("x is 5")

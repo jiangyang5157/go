@@ -38,7 +38,7 @@ type dlx struct {
 	o       []*x     // solution
 }
 
-func newDlx(size int) *dlx {
+func NewDlx(size int) *dlx {
 	if (size <= 0) {
 		return nil
 	}

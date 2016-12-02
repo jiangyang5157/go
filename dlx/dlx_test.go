@@ -20,7 +20,7 @@ func Test_stuff(t *testing.T) {
 
 func Test_NewDlx(t *testing.T) {
 	fmt.Println("#### test newDlx")
-	d := newDlx(5)
+	d := NewDlx(5)
 	columns := d.columns;
 	for i := range columns {
 		fmt.Print(columns[i].i)
@@ -226,7 +226,7 @@ func solve(s int, raw string) string {
 	offsetConstraint3 := offsetConstraint2 + cellSize
 	offsetConstraint4 := offsetConstraint3 + cellSize
 	columnSize := offsetConstraint4 + cellSize
-	d := newDlx(columnSize)
+	d := NewDlx(columnSize)
 
 	for r, i := 0, 0; r < edgeLength; r++ {
 		// r = [0, edgeLength - 1]
