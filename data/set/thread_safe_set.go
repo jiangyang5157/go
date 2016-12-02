@@ -11,10 +11,10 @@ func newThreadSafeSet() threadSafeSet {
 	return threadSafeSet{data: newThreadUnsafeSet()}
 }
 
-func (set *threadSafeSet) ToString() string {
+func (set *threadSafeSet) String() string {
 	set.RLock()
 	defer set.RUnlock()
-	return set.data.ToString()
+	return set.data.String()
 }
 
 func (set *threadSafeSet) Equals(other Set) bool {

@@ -11,7 +11,7 @@ func newThreadUnsafeSet() threadUnsafeSet {
 	return make(threadUnsafeSet)
 }
 
-func (set *threadUnsafeSet) ToString() string {
+func (set *threadUnsafeSet) String() string {
 	pairs := make([]string, 0, set.Size())
 	for e := range *set {
 		pairs = append(pairs, fmt.Sprintf("%v", e))

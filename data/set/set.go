@@ -1,7 +1,7 @@
 package set
 
 type Set interface {
-	ToString() string
+	String() string
 	Equals(other Set) bool
 	Size() int
 	Clear()

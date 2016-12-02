@@ -3,6 +3,7 @@ package dlx
 import (
 	"testing"
 	"fmt"
+	"strings"
 )
 
 func Test_stuff(t *testing.T) {
@@ -77,7 +78,7 @@ func printSudoku4(raw string) {
 }
 
 func Test_sudoku4(t *testing.T) {
-	raw4 :=
+	raw :=
 		"................" +
 			"................" +
 			"................" +
@@ -95,19 +96,19 @@ func Test_sudoku4(t *testing.T) {
 			"................" +
 			"................"
 	fmt.Println("#### raw")
-	printSudoku4(raw4)
-	solution4 := solve(4, raw4)
-	fmt.Println("#### solution")
-	if (len(solution4) == 16 * 16) {
-		printSudoku4(solution4)
-	} else {
-		fmt.Println(solution4)
+	printSudoku4(raw)
+	solutions := strings.Split(solve(4, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku4(solutions[i])
+		}
 	}
 }
 
-
 func Test_sudoku3(t *testing.T) {
-	raw3 :=
+	raw :=
 		"....7.94." +
 			".7..9...5" +
 			"3....5.7." +
@@ -118,18 +119,19 @@ func Test_sudoku3(t *testing.T) {
 			"7......28" +
 			".5..68..."
 	fmt.Println("#### raw")
-	printSudoku3(raw3)
-	solution3 := solve(3, raw3)
-	fmt.Println("#### solution")
-	if (len(solution3) == 81) {
-		printSudoku3(solution3)
-	} else {
-		fmt.Println(solution3)
+	printSudoku3(raw)
+	solutions := strings.Split(solve(3, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku3(solutions[i])
+		}
 	}
 }
 
 func Test_sudoku3withZeroSolution(t *testing.T) {
-	raw3 :=
+	raw :=
 		"......123" +
 			"..9......" +
 			".....9..." +
@@ -140,60 +142,64 @@ func Test_sudoku3withZeroSolution(t *testing.T) {
 			"........." +
 			"........."
 	fmt.Println("#### raw")
-	printSudoku3(raw3)
-	solution3 := solve(3, raw3)
-	fmt.Println("#### solution")
-	if (len(solution3) == 81) {
-		printSudoku3(solution3)
-	} else {
-		fmt.Println(solution3)
+	printSudoku3(raw)
+	solutions := strings.Split(solve(3, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku3(solutions[i])
+		}
 	}
 }
 
 func Test_sudoku2(t *testing.T) {
-	raw2 :=
+	raw :=
 		"...." +
 			".4.." +
 			"2..." +
 			"...3"
 	fmt.Println("#### raw")
-	printSudoku2(raw2)
-	solution2 := solve(2, raw2)
-	fmt.Println("#### solution")
-	if (len(solution2) == 16) {
-		printSudoku2(solution2)
-	} else {
-		fmt.Println(solution2)
+	printSudoku2(raw)
+	solutions := strings.Split(solve(2, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku2(solutions[i])
+		}
 	}
 }
 
 func Test_sudoku2WithZeroSolution(t *testing.T) {
-	raw2 :=
+	raw :=
 		"...." +
 			".4.." +
 			"2..." +
 			"..43"
 	fmt.Println("#### raw")
-	printSudoku2(raw2)
-	solution2 := solve(2, raw2)
-	fmt.Println("#### solution")
-	if (len(solution2) == 16) {
-		printSudoku2(solution2)
-	} else {
-		fmt.Println(solution2)
+	printSudoku2(raw)
+	solutions := strings.Split(solve(2, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku2(solutions[i])
+		}
 	}
 }
 
 func Test_sudoku1(t *testing.T) {
-	raw1 := "."
+	raw := "."
 	fmt.Println("#### raw")
-	printSudoku1(raw1)
-	solution1 := solve(1, raw1)
-	fmt.Println("#### solution")
-	if (len(solution1) == 1) {
-		printSudoku1(solution1)
-	} else {
-		fmt.Println(solution1)
+	printSudoku1(raw)
+	solutions := strings.Split(solve(1, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku1(solutions[i])
+		}
 	}
 }
 
@@ -250,39 +256,44 @@ func solve(s int, raw string) string {
 		}
 	}
 
+	var buffer []byte
 	count := 0
 	need := 1
 	ok := d.search(func(o []*x) bool {
 		fmt.Println("FOUND")
 		count++
+
+		b := make([]byte, len(o))
+		for _, o := range d.o {
+			x0 := o.x0
+			x0ci := x0.c.i // [offsetConstraint1 + 1, offsetConstraint2] cell constraints - index for byte
+			x0rci := x0.r.c.i // [offsetConstraint2 + 1, offsetConstraint3] row constraints - append by raw
+			b[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
+		}
+		buffer = append(buffer, b...)
+		buffer = append(buffer, ',')
+
 		return count >= need
 	})
 	fmt.Println(ok)
 	if (!ok) {
 		return ""
 	}
-	bs := make([]byte, len(d.o))
-	for _, o := range d.o {
-		x0 := o.x0
-		x0ci := x0.c.i // [offsetConstraint1 + 1, offsetConstraint2] cell constraints - index for byte
-		x0rci := x0.r.c.i // [offsetConstraint2 + 1, offsetConstraint3] row constraints - append by raw
-		bs[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
-	}
-	return string(bs)
+	return string(buffer)
 }
 
 func Test_sudoku(t *testing.T) {
-	raw3 :=
+	raw :=
 	// 188 sulutions
-	"....7.94." +
-	".7..9...5" +
-	"3....5.7." +
-	"..74..1.." +
-	"463.8...." +
-	".....7.8." +
-	"8..7....." +
-	"7......28" +
-	".5..68..."
+		"....7.94." +
+			".7..9...5" +
+			"3....5.7." +
+			"..74..1.." +
+			"463.8...." +
+			".....7.8." +
+			"8..7....." +
+			"7......28" +
+			".5..68..."
 	// 2 sulutions
 	//"..3456789" +
 	//"456789123" +
@@ -304,13 +315,14 @@ func Test_sudoku(t *testing.T) {
 	//"..14.35.." +
 	//"........."
 	fmt.Println("#### raw")
-	printSudoku3(raw3)
-	solution3 := solve(3, raw3)
-	fmt.Println("#### solution")
-	if (len(solution3) == 81) {
-		printSudoku3(solution3)
-	} else {
-		fmt.Println(solution3)
+	printSudoku3(raw)
+	solutions := strings.Split(solve(3, raw), ",")
+	length := len(solutions)
+	if length >= 2 {
+		for i := 0; i < length - 1; i++ {
+			fmt.Println("#### solution")
+			printSudoku3(solutions[i])
+		}
 	}
 }
 

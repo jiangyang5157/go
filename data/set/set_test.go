@@ -13,30 +13,30 @@ type Person struct {
 func Test_ThreadUnsafeSet(t *testing.T) {
 	i1, i2, i3, i4, i33 := 1, 2, 3, 4, 3
 	intSet := NewThreadUnsafeSet(i1, i3, i2, i4, i33)
-	fmt.Println(intSet.ToString())
+	fmt.Println(intSet.String())
 	intAddressSet := NewThreadUnsafeSet(&i1, &i3, &i2, &i4, &i33)
-	fmt.Println(intAddressSet.ToString())
+	fmt.Println(intAddressSet.String())
 
 	int2Set := intSet.Clone()
 	fmt.Println(int2Set.Add(4))
 	fmt.Println(int2Set.Add(5))
 	fmt.Println(int2Set.Add(6))
-	fmt.Println("intSet: ", intSet.ToString())
-	fmt.Println("int2Set: ", int2Set.ToString())
+	fmt.Println("intSet: ", intSet.String())
+	fmt.Println("int2Set: ", int2Set.String())
 	fmt.Println("intSet.IsSubset(int2Set): ", intSet.IsSubset(int2Set))
 	fmt.Println("int2Set.IsSubset(intSet): ", int2Set.IsSubset(intSet))
 	fmt.Println("intSet.IsSuperset(int2Set): ", intSet.IsSuperset(int2Set))
 	fmt.Println("int2Set.IsSuperset(intSet): ", int2Set.IsSuperset(intSet))
-	fmt.Println("intSet.Difference(int2Set).ToString(): ", intSet.Difference(int2Set).ToString())
-	fmt.Println("int2Set.Difference(intSet).ToString(): ", int2Set.Difference(intSet).ToString())
-	fmt.Println("intSet.SymmetricDifference(int2Set).ToString(): ", intSet.SymmetricDifference(int2Set).ToString())
-	fmt.Println("int2Set.SymmetricDifference(intSet).ToString(): ", int2Set.SymmetricDifference(intSet).ToString())
+	fmt.Println("intSet.Difference(int2Set).String(): ", intSet.Difference(int2Set).String())
+	fmt.Println("int2Set.Difference(intSet).String(): ", int2Set.Difference(intSet).String())
+	fmt.Println("intSet.SymmetricDifference(int2Set).String(): ", intSet.SymmetricDifference(int2Set).String())
+	fmt.Println("int2Set.SymmetricDifference(intSet).String(): ", int2Set.SymmetricDifference(intSet).String())
 
 	sa, sb, sc, sd, scc := "a", "b", "c", "d", "c"
 	stringSet := NewThreadUnsafeSet(sa, sc, sb, sd, scc)
-	fmt.Println(stringSet.ToString())
+	fmt.Println(stringSet.String())
 	stringAddressSet := NewThreadUnsafeSet(&sa, &sc, &sb, &sd, &scc)
-	fmt.Println(stringAddressSet.ToString())
+	fmt.Println(stringAddressSet.String())
 
 	personSet := NewThreadUnsafeSet(
 		Person{name: "Alise", age: 11},
@@ -45,7 +45,7 @@ func Test_ThreadUnsafeSet(t *testing.T) {
 		Person{name: "Nick", age: 44},
 		Person{name: "Bob", age: 33},
 	)
-	fmt.Println(personSet.ToString())
+	fmt.Println(personSet.String())
 	personAddressSet := NewThreadUnsafeSet(
 		&Person{name: "Alise", age: 11},
 		&Person{name: "Bob", age: 33},
@@ -53,41 +53,41 @@ func Test_ThreadUnsafeSet(t *testing.T) {
 		&Person{name: "Nick", age: 44},
 		&Person{name: "Bob", age: 33},
 	)
-	fmt.Println(personAddressSet.ToString())
+	fmt.Println(personAddressSet.String())
 
 	personSet.Remove(Person{name: "John", age: 22})
-	fmt.Println(personSet.ToString())
+	fmt.Println(personSet.String())
 	personAddressSet.Remove(&Person{name: "John", age: 22})
-	fmt.Println(personAddressSet.ToString())
+	fmt.Println(personAddressSet.String())
 }
 
 func Test_ThreadSafeSet(t *testing.T) {
 	i1, i2, i3, i4, i33 := 1, 2, 3, 4, 3
 	intSet := NewThreadSafeSet(i1, i3, i2, i4, i33)
-	fmt.Println(intSet.ToString())
+	fmt.Println(intSet.String())
 	intAddressSet := NewThreadSafeSet(&i1, &i3, &i2, &i4, &i33)
-	fmt.Println(intAddressSet.ToString())
+	fmt.Println(intAddressSet.String())
 
 	int2Set := intSet.Clone()
 	fmt.Println(int2Set.Add(4))
 	fmt.Println(int2Set.Add(5))
 	fmt.Println(int2Set.Add(6))
-	fmt.Println("intSet: ", intSet.ToString())
-	fmt.Println("int2Set: ", int2Set.ToString())
+	fmt.Println("intSet: ", intSet.String())
+	fmt.Println("int2Set: ", int2Set.String())
 	fmt.Println("intSet.IsSubset(int2Set): ", intSet.IsSubset(int2Set))
 	fmt.Println("int2Set.IsSubset(intSet): ", int2Set.IsSubset(intSet))
 	fmt.Println("intSet.IsSuperset(int2Set): ", intSet.IsSuperset(int2Set))
 	fmt.Println("int2Set.IsSuperset(intSet): ", int2Set.IsSuperset(intSet))
-	fmt.Println("intSet.Difference(int2Set).ToString(): ", intSet.Difference(int2Set).ToString())
-	fmt.Println("int2Set.Difference(intSet).ToString(): ", int2Set.Difference(intSet).ToString())
-	fmt.Println("intSet.SymmetricDifference(int2Set).ToString(): ", intSet.SymmetricDifference(int2Set).ToString())
-	fmt.Println("int2Set.SymmetricDifference(intSet).ToString(): ", int2Set.SymmetricDifference(intSet).ToString())
+	fmt.Println("intSet.Difference(int2Set).String(): ", intSet.Difference(int2Set).String())
+	fmt.Println("int2Set.Difference(intSet).String(): ", int2Set.Difference(intSet).String())
+	fmt.Println("intSet.SymmetricDifference(int2Set).String(): ", intSet.SymmetricDifference(int2Set).String())
+	fmt.Println("int2Set.SymmetricDifference(intSet).String(): ", int2Set.SymmetricDifference(intSet).String())
 
 	sa, sb, sc, sd, scc := "a", "b", "c", "d", "c"
 	stringSet := NewThreadSafeSet(sa, sc, sb, sd, scc)
-	fmt.Println(stringSet.ToString())
+	fmt.Println(stringSet.String())
 	stringAddressSet := NewThreadSafeSet(&sa, &sc, &sb, &sd, &scc)
-	fmt.Println(stringAddressSet.ToString())
+	fmt.Println(stringAddressSet.String())
 
 	personSet := NewThreadSafeSet(
 		Person{name: "Alise", age: 11},
@@ -96,7 +96,7 @@ func Test_ThreadSafeSet(t *testing.T) {
 		Person{name: "Nick", age: 44},
 		Person{name: "Bob", age: 33},
 	)
-	fmt.Println(personSet.ToString())
+	fmt.Println(personSet.String())
 	personAddressSet := NewThreadSafeSet(
 		&Person{name: "Alise", age: 11},
 		&Person{name: "Bob", age: 33},
@@ -104,12 +104,12 @@ func Test_ThreadSafeSet(t *testing.T) {
 		&Person{name: "Nick", age: 44},
 		&Person{name: "Bob", age: 33},
 	)
-	fmt.Println(personAddressSet.ToString())
+	fmt.Println(personAddressSet.String())
 
 	personSet.Remove(Person{name: "John", age: 22})
-	fmt.Println(personSet.ToString())
+	fmt.Println(personSet.String())
 	personAddressSet.Remove(&Person{name: "John", age: 22})
-	fmt.Println(personAddressSet.ToString())
+	fmt.Println(personAddressSet.String())
 }
 
 func Test_Iterator(t *testing.T) {
@@ -128,9 +128,9 @@ func Test_Iterator(t *testing.T) {
 			personSetIter.Stop()
 		}
 	}
-	fmt.Printf("personSetFound %+v in %v\n", personSetFound, personSet.ToString())
+	fmt.Printf("personSetFound %+v in %v\n", personSetFound, personSet.String())
 	personSet.Remove(personSetFound)
-	fmt.Printf("After remove the personSetFound, %v\n", personSet.ToString())
+	fmt.Printf("After remove the personSetFound, %v\n", personSet.String())
 
 	personAddressSet := NewThreadSafeSet(
 		&Person{name: "Alise", age: 11},
@@ -147,7 +147,7 @@ func Test_Iterator(t *testing.T) {
 			personAddressSetIter.Stop()
 		}
 	}
-	fmt.Printf("personAddressSetFound %+v in %v\n", personAddressSetFound, personAddressSet.ToString())
+	fmt.Printf("personAddressSetFound %+v in %v\n", personAddressSetFound, personAddressSet.String())
 	personAddressSet.Remove(personAddressSetFound)
-	fmt.Printf("After remove the personAddressSetFound, %v\n", personAddressSet.ToString())
+	fmt.Printf("After remove the personAddressSetFound, %v\n", personAddressSet.String())
 }
