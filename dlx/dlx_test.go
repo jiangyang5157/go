@@ -48,100 +48,70 @@ func Test_stuff(t *testing.T) {
 func Test_sudoku(t *testing.T) {
 	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
 	printRawSudoku3("#### raw", raw)
-	d := newDlx(324)
-	for r, i := 0, 0; r < 9; r++ {
-		for c := 0; c < 9; c, i = c + 1, i + 1 {
-			// i:[0, 80]
-			// r: [0, 8]
-			// c: [0, 8]
-			// square: [0, 8]
-			square := r / 3 * 3 + c / 3
-			digit := int(raw[i] - '0')
-			if digit >= 1 && digit <= 9 {
-				d.addRow([]int{
-					0 + i + 1,
-					81 + r * 9 + digit,
-					162 + c * 9 + digit,
-					243 + square * 9 + digit})
-			} else {
-				// consider all possibilities
-				for digit = 1; digit <= 9; digit++ {
-					d.addRow([]int{
-						0 + i + 1,
-						81 + r * 9 + digit,
-						162 + c * 9 + digit,
-						243 + square * 9 + digit})
-				}
-			}
-		}
-	}
-	d.search()
-	length := len(d.o)
-	b := make([]byte, length)
-	for _, o := range d.o {
-		x0 := o.x0
-		x0ci := x0.c.i // [1, 81] cell constraints - index for byte
-		x0rci := x0.r.c.i // [82, 162] row constraints - append by raw
-		b[x0ci - 1] = byte(x0rci % 9) + '0'
-	}
-	printRawSudoku3("#### solution", string(b))
+	solution := solve(3, raw)
+	printRawSudoku3("#### solution", solution)
 }
 
 /*
-eg: 9x9 sudoku (s = 3)
+Eg: 9x9 sudoku (s = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
 2. Each row must has [1, 9]: 9 * 9 = 81 constraints in column 82-162
 3. Each column must has [1, 9]: 9 * 9 = 81 constraints in column 163-243
 4. Each square must has [1, 9]: 9 * 9 = 81 constraints in column 244-324
 */
 func solve(s int, raw string) string {
-	if (level <= 0) {
-		return “error: s is wrong”
+	if (s <= 0) {
+		return "error: s"
 	}
 
-	if (raw == nil) {
-		return “error: raw is nil”
-	}
-
-	edgeLength := level * level
+	edgeLength := s * s
 	cellSize := edgeLength * edgeLength
 	if (len(raw) != cellSize) {
-		return “error: raw length is wrong”
+		return "error: raw"
 	}
 
 	offsetConstraint1 := 0
-	offsetConstraint2 := offsetConstraint1 + edgeLength
-	offsetConstraint3 := offsetConstraint2 + edgeLength
-	offsetConstraint4 := offsetConstraint3 + edgeLength
-	columnSize := offsetConstraint4 + edgeLength
-
+	offsetConstraint2 := offsetConstraint1 + cellSize
+	offsetConstraint3 := offsetConstraint2 + cellSize
+	offsetConstraint4 := offsetConstraint3 + cellSize
+	columnSize := offsetConstraint4 + cellSize
 	d := newDlx(columnSize)
+
 	for r, i := 0, 0; r < edgeLength; r++ {
+		// r = [0, edgeLength - 1]
+		// i = [0, cellSize - 1]
 		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
-			// i:[0, cellSize - 1]
-			// r: [0, edgeLength - 1]
 			// c: [0, edgeLength - 1]
 			// square: [0, edgeLength - 1]
-			square := r / 3 * 3 + c / 3
+			square := r / s * s + c / s
 
 			digit := int(raw[i] - '0')
-			if digit >= 1 && digit <= 9 {
+			if digit >= 1 && digit <= edgeLength {
 				d.addRow([]int{
-					0 + i + 1,
-					81 + r * 9 + digit,
-					162 + c * 9 + digit,
-					243 + square * 9 + digit})
+					offsetConstraint1 + i + 1,
+					offsetConstraint2 + r * edgeLength + digit,
+					offsetConstraint3 + c * edgeLength + digit,
+					offsetConstraint4 + square * edgeLength + digit})
 			} else {
 				// consider all possibilities
-				for digit = 1; digit <= 9; digit++ {
+				for digit = 1; digit <= edgeLength; digit++ {
 					d.addRow([]int{
-						0 + i + 1,
-						81 + r * 9 + digit,
-						162 + c * 9 + digit,
-						243 + square * 9 + digit})
+						offsetConstraint1 + i + 1,
+						offsetConstraint2 + r * edgeLength + digit,
+						offsetConstraint3 + c * edgeLength + digit,
+						offsetConstraint4 + square * edgeLength + digit})
 				}
 			}
 		}
 	}
 
+	d.search()
+	bs := make([]byte, len(d.o))
+	for _, o := range d.o {
+		x0 := o.x0
+		x0ci := x0.c.i // [offsetConstraint1 + 1, offsetConstraint2] cell constraints - index for byte
+		x0rci := x0.r.c.i // [offsetConstraint2 + 1, offsetConstraint3] row constraints - append by raw
+		bs[x0ci - 1] = byte(x0rci % edgeLength) + '0'
+	}
+	return string(bs)
 }

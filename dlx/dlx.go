@@ -162,7 +162,7 @@ func (d *dlx) search() bool {
 
 	c := hrc
 	min := c.n
-	// find the column has minimum x size, it improves overall performance by compare with linear pick
+	// find the column has minimum x size, it improves overall performance by compare with linear iterator
 	for {
 		hrc = hrc.r.c
 		if hrc == h {
