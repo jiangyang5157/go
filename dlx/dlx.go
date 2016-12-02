@@ -153,11 +153,13 @@ func uncover(c *column) {
 }
 
 // the dlx algorithm
-func (d *dlx) search() bool {
+// f(): whether or not stop searching after found a solution. true: stop searching
+// If f() return false, it will keep searching next solution. Cache the data in f() if necessary
+func (d *dlx) search(f func(o []*x) bool) bool {
 	h := &d.columns[0]
 	hrc := h.r.c
 	if hrc == h {
-		return true
+		return f(d.o)
 	}
 
 	c := hrc
@@ -182,7 +184,7 @@ func (d *dlx) search() bool {
 		for j := r.r; j != r; j = j.r {
 			cover(j.c)
 		}
-		if d.search() {
+		if d.search(f) {
 			return true
 		}
 		r = d.o[length - 1]

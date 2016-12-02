@@ -250,7 +250,14 @@ func solve(s int, raw string) string {
 		}
 	}
 
-	ok := d.search()
+	count := 0
+	need := 1
+	ok := d.search(func(o []*x) bool {
+		fmt.Println("FOUND")
+		count++
+		return count >= need
+	})
+	fmt.Println(ok)
 	if (!ok) {
 		return ""
 	}
@@ -262,6 +269,49 @@ func solve(s int, raw string) string {
 		bs[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
 	}
 	return string(bs)
+}
+
+func Test_sudoku(t *testing.T) {
+	raw3 :=
+	// 188 sulutions
+	"....7.94." +
+	".7..9...5" +
+	"3....5.7." +
+	"..74..1.." +
+	"463.8...." +
+	".....7.8." +
+	"8..7....." +
+	"7......28" +
+	".5..68..."
+	// 2 sulutions
+	//"..3456789" +
+	//"456789123" +
+	//"789123456" +
+	//"..4365897" +
+	//"365897214" +
+	//"897214365" +
+	//"531642978" +
+	//"642978531" +
+	//"978531642"
+	// 1 sulution
+	//"........." +
+	//"..41.26.." +
+	//".3..5..2." +
+	//".2..1..3." +
+	//"..65.41.." +
+	//".8..7..4." +
+	//".7..2..6." +
+	//"..14.35.." +
+	//"........."
+	fmt.Println("#### raw")
+	printSudoku3(raw3)
+	solution3 := solve(3, raw3)
+	fmt.Println("#### solution")
+	if (len(solution3) == 81) {
+		printSudoku3(solution3)
+	} else {
+		fmt.Println(solution3)
+	}
 }
 
 // Eg: 9x9 sudoku
