@@ -5,17 +5,6 @@ import (
 	"fmt"
 )
 
-func Test_stuff(t *testing.T) {
-	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
-	printRaw("#### test printRaw", raw)
-
-	fmt.Println("#### ascii")
-	//0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  .
-	//48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 46
-	fmt.Printf("%v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v\n", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".")
-	fmt.Printf("%v, %v, %v, %v, %v, %v, %v, %v, %v, %v, %v\n", int('0'), int('1'), int('2'), int('3'), int('4'), int('5'), int('6'), int('7'), int('8'), int('9'), int('.'))
-}
-
 func Test_NewDlx(t *testing.T) {
 	fmt.Println("#### test newDlx")
 	d := newDlx(5)
@@ -32,16 +21,33 @@ func Test_NewDlx(t *testing.T) {
 	fmt.Println("\n####")
 }
 
-func Test_sudoku(t *testing.T) {
-	/*
-	eg: 9 x 9 sudoku (Level 3)
-        1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
-        2. Each row must has [1, 9]: 9 * 9 = 81 constraints in column 82-162
-        3. Each column must has [1, 9]: 9 * 9 = 81 constraints in column 163-243
-        4. Each square must has [1, 9]: 9 * 9 = 81 constraints in column 244-324
-	*/
+func printRawSudoku3(title, raw string) {
+	fmt.Println(title)
+	for r, i := 0, 0; r < 9; r, i = r + 1, i + 9 {
+		fmt.Printf("%c %c %c | %c %c %c | %c %c %c\n",
+			raw[i], raw[i + 1], raw[i + 2],
+			raw[i + 3], raw[i + 4], raw[i + 5],
+			raw[i + 6], raw[i + 7], raw[i + 8])
+		if r == 2 || r == 5 {
+			fmt.Println("------+-------+------")
+		}
+	}
+}
+
+func Test_stuff(t *testing.T) {
 	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
-	printRaw("#### raw", raw)
+	printRawSudoku3("#### test printRawSudoku3", raw)
+
+	fmt.Println("#### ascii")
+	//0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  .
+	//48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 46
+	fmt.Printf("%v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v,  %v\n", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".")
+	fmt.Printf("%v, %v, %v, %v, %v, %v, %v, %v, %v, %v, %v\n", int('0'), int('1'), int('2'), int('3'), int('4'), int('5'), int('6'), int('7'), int('8'), int('9'), int('.'))
+}
+
+func Test_sudoku(t *testing.T) {
+	raw := ".......12........3..23..4....18....5.6..7.8.......9.....85.....9...4.5..47...6..."
+	printRawSudoku3("#### raw", raw)
 	d := newDlx(324)
 	for r, i := 0, 0; r < 9; r++ {
 		for c := 0; c < 9; c, i = c + 1, i + 1 {
@@ -53,7 +59,7 @@ func Test_sudoku(t *testing.T) {
 			digit := int(raw[i] - '0')
 			if digit >= 1 && digit <= 9 {
 				d.addRow([]int{
-					i + 1,
+					0 + i + 1,
 					81 + r * 9 + digit,
 					162 + c * 9 + digit,
 					243 + square * 9 + digit})
@@ -61,7 +67,7 @@ func Test_sudoku(t *testing.T) {
 				// consider all possibilities
 				for digit = 1; digit <= 9; digit++ {
 					d.addRow([]int{
-						i + 1,
+						0 + i + 1,
 						81 + r * 9 + digit,
 						162 + c * 9 + digit,
 						243 + square * 9 + digit})
@@ -78,18 +84,64 @@ func Test_sudoku(t *testing.T) {
 		x0rci := x0.r.c.i // [82, 162] row constraints - append by raw
 		b[x0ci - 1] = byte(x0rci % 9) + '0'
 	}
-	printRaw("#### solution", string(b))
+	printRawSudoku3("#### solution", string(b))
 }
 
-func printRaw(title, raw string) {
-	fmt.Println(title)
-	for r, i := 0, 0; r < 9; r, i = r + 1, i + 9 {
-		fmt.Printf("%c %c %c | %c %c %c | %c %c %c\n",
-			raw[i], raw[i + 1], raw[i + 2],
-			raw[i + 3], raw[i + 4], raw[i + 5],
-			raw[i + 6], raw[i + 7], raw[i + 8])
-		if r == 2 || r == 5 {
-			fmt.Println("------+-------+------")
+/*
+eg: 9x9 sudoku (s = 3)
+1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
+2. Each row must has [1, 9]: 9 * 9 = 81 constraints in column 82-162
+3. Each column must has [1, 9]: 9 * 9 = 81 constraints in column 163-243
+4. Each square must has [1, 9]: 9 * 9 = 81 constraints in column 244-324
+*/
+func solve(s int, raw string) string {
+	if (level <= 0) {
+		return “error: s is wrong”
+	}
+
+	if (raw == nil) {
+		return “error: raw is nil”
+	}
+
+	edgeLength := level * level
+	cellSize := edgeLength * edgeLength
+	if (len(raw) != cellSize) {
+		return “error: raw length is wrong”
+	}
+
+	offsetConstraint1 := 0
+	offsetConstraint2 := offsetConstraint1 + edgeLength
+	offsetConstraint3 := offsetConstraint2 + edgeLength
+	offsetConstraint4 := offsetConstraint3 + edgeLength
+	columnSize := offsetConstraint4 + edgeLength
+
+	d := newDlx(columnSize)
+	for r, i := 0, 0; r < edgeLength; r++ {
+		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
+			// i:[0, cellSize - 1]
+			// r: [0, edgeLength - 1]
+			// c: [0, edgeLength - 1]
+			// square: [0, edgeLength - 1]
+			square := r / 3 * 3 + c / 3
+
+			digit := int(raw[i] - '0')
+			if digit >= 1 && digit <= 9 {
+				d.addRow([]int{
+					0 + i + 1,
+					81 + r * 9 + digit,
+					162 + c * 9 + digit,
+					243 + square * 9 + digit})
+			} else {
+				// consider all possibilities
+				for digit = 1; digit <= 9; digit++ {
+					d.addRow([]int{
+						0 + i + 1,
+						81 + r * 9 + digit,
+						162 + c * 9 + digit,
+						243 + square * 9 + digit})
+				}
+			}
 		}
 	}
+
 }
