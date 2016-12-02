@@ -82,7 +82,7 @@ func (d *dlx) addRow(cis []int) {
 	}
 
 	xs := make([]x, length)
-	r := &xs[0]
+	row := &xs[0]
 
 	for i, ci := range cis {
 		c := &d.columns[ci]
@@ -101,7 +101,7 @@ func (d *dlx) addRow(cis []int) {
 		// x.up.down & x.down.up & x.right.left & x.left.right = x itself
 		x.u.d, x.d.u, x.r.l, x.l.r = x, x, x, x
 		// reference to first x of the raw
-		x.x0 = r
+		x.x0 = row
 	}
 }
 
