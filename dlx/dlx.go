@@ -38,11 +38,6 @@ type dlx struct {
 	o       []*x     // solution
 }
 
-// reset d.o without wipe out existing columns and rows
-func (d *dlx) resetO() {
-	d.o = d.o[:0]
-}
-
 func newDlx(size int) *dlx {
 	if (size <= 0) {
 		return nil

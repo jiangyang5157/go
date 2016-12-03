@@ -36,6 +36,11 @@ func solveSudoku(squareLength int, raw string, solutionSize int) string {
 	return string(ret)
 }
 
+// reset d.o without wipe out existing columns and rows
+func (d *dlx) reset() {
+	d.o = d.o[:0]
+}
+
 /*
 Constraints example: 9x9 Sudoku (squareLength = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
