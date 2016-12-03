@@ -38,7 +38,12 @@ type dlx struct {
 	o       []*x     // solution
 }
 
-func NewDlx(size int) *dlx {
+// reset d.o without wipe out existing columns and rows
+func (d *dlx) resetO() {
+	d.o = d.o[:0]
+}
+
+func newDlx(size int) *dlx {
 	if (size <= 0) {
 		return nil
 	}
@@ -95,9 +100,9 @@ func (d *dlx) addRow(cis []int) {
 		x.u = c.u
 		// x.down = the column
 		x.d = &c.x
-		// x.left = prev x in the xs
-		// x.right = next x in the xs
-		x.l, x.r = &xs[getPrevIndex(i, length)], &xs[getNextIndex(i, length)]
+		// x.left = left x in the xs
+		// x.right = right x in the xs
+		x.l, x.r = &xs[getLeftIndex(i, length)], &xs[getRightIndex(i, length)]
 		// x.up.down & x.down.up & x.right.left & x.left.right = x itself
 		x.u.d, x.d.u, x.r.l, x.l.r = x, x, x, x
 		// reference to first x of the raw
@@ -105,7 +110,7 @@ func (d *dlx) addRow(cis []int) {
 	}
 }
 
-func getPrevIndex(i int, length int) int {
+func getLeftIndex(i int, length int) int {
 	ret := i - 1
 	if ret >= 0 {
 		return ret
@@ -114,7 +119,7 @@ func getPrevIndex(i int, length int) int {
 	}
 }
 
-func getNextIndex(i int, length int) int {
+func getRightIndex(i int, length int) int {
 	ret := i + 1
 	if ret < length {
 		return ret
@@ -152,13 +157,14 @@ func uncover(c *column) {
 	c.r.l, c.l.r = &c.x, &c.x
 }
 
-// the dlx algorithm
-// f(): whether or not stop searching after found a solution. true: stop searching
+// The dlx algorithm
+// f(): whether or not stop searching after found a solution.
 // If f() return false, it will abandon this solution and continue to search next solution. Cache solution data in f() if necessary
 func (d *dlx) search(f func(o []*x) bool) bool {
 	h := &d.columns[0]
 	hrc := h.r.c
 	if hrc == h {
+		// a valid solution cache in d.o
 		return f(d.o)
 	}
 
@@ -175,18 +181,20 @@ func (d *dlx) search(f func(o []*x) bool) bool {
 		}
 	}
 
+	ret := false
 	cover(c)
 	d.o = append(d.o, nil) // expend d.o length at the end
 	length := len(d.o)
 	for r := c.d; r != &c.x; r = r.d {
+		if (ret) {
+			break; // not further searching required
+		}
 		// set the new item at the end of d.o
 		d.o[length - 1] = r
 		for j := r.r; j != r; j = j.r {
 			cover(j.c)
 		}
-		if d.search(f) {
-			return true
-		}
+		ret = d.search(f)
 		r = d.o[length - 1]
 		c = r.c
 		for j := r.l; j != r; j = j.l {
@@ -195,5 +203,5 @@ func (d *dlx) search(f func(o []*x) bool) bool {
 	}
 	d.o = d.o[:length - 1] // remove last item from d.o
 	uncover(c)
-	return false
+	return ret
 }
