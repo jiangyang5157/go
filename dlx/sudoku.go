@@ -1,49 +1,7 @@
 package dlx
 
 // prefix <'0' && prefix != whatever representing unknown digit
-const PREFIX_SOLUTION byte = '#'
-
-func SimpleSolveSudoku(squareLength int, raw string) string {
-	return SolveSudoku(squareLength, raw, 1)
-}
-
-func SolveSudoku(squareLength int, raw string, solutionSize int) string {
-	if (solutionSize < 1) {
-		return "No action required"
-	}
-	if (squareLength < 1) {
-		return "Invalid Sudoku puzzle"
-	}
-	edgeLength := squareLength * squareLength
-	cellSize := edgeLength * edgeLength
-	if (len(raw) != cellSize) {
-		return "Invalid Sudoku raw"
-	}
-
-	d := newSudokuDlx(raw, squareLength, edgeLength, cellSize)
-	var ret []byte
-	solutionCount := 0
-	d.search(func(o []*x) bool {
-		bs := make([]byte, len(o)) // o.len = cellSize
-		for _, o := range d.o {
-			x0 := o.x0
-			x0ci := x0.c.i // x0ci = [offset1 + 1, offset2]
-			x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
-			// bytes append by raw, index = [0, cellSize - 1]
-			bs[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
-		}
-		ret = append(ret, PREFIX_SOLUTION)
-		ret = append(ret, bs...)
-		solutionCount++
-		return solutionCount >= solutionSize
-	})
-	return string(ret)
-}
-
-// reset d.o without wipe out existing columns and rows
-func (d *dlx) reset() {
-	d.o = d.o[:0]
-}
+const PUZZLE_PREFIX byte = '#'
 
 /*
 Constraints example: 9x9 Sudoku (squareLength = 3)
@@ -101,8 +59,7 @@ func newSudokuDlx(raw string, squareLength int, edgeLength int, cellSize int) *d
 	return d
 }
 
-// Generate Sudoku puzzle that has unique solution
-func newSudoku(squareLength int) string {
-	// todo
-	return ""
+// reset d.o without wipe out existing columns and rows
+func (d *dlx) reset() {
+	d.o = d.o[:0]
 }
