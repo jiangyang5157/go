@@ -1,9 +1,21 @@
 package dlx
 
+import "context"
+
 // prefix <'0' && prefix != whatever representing unknown digit
 const PREFIX_SOLUTION byte = '#'
 
-func solveSudoku(squareLength int, raw string, solutionSize int) string {
+// Generate Sudoku puzzle that has unique solution
+func newSudoku(squareLength int) string {
+	context.TODO()
+	return ""
+}
+
+func SimpleSolveSudoku(squareLength int, raw string) string {
+	return SolveSudoku(squareLength, raw, 1)
+}
+
+func SolveSudoku(squareLength int, raw string, solutionSize int) string {
 	if (solutionSize < 1) {
 		return "No action required"
 	}

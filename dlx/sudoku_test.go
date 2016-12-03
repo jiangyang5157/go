@@ -58,7 +58,7 @@ func printSudoku(squareLength int, raw string) {
 
 func solveSudukuTest(squareLength int, raw string, solutionSize int) {
 	printSudoku(squareLength, raw)
-	solutions := strings.Split(solveSudoku(squareLength, raw, solutionSize), string(PREFIX_SOLUTION))
+	solutions := strings.Split(SolveSudoku(squareLength, raw, solutionSize), string(PREFIX_SOLUTION))
 	length := len(solutions)
 	// [0] contains massage
 	fmt.Printf("%v\n", solutions[0])
