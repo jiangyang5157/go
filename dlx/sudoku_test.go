@@ -70,7 +70,7 @@ func solveSudukuTest(squareLength int, raw string, solutionSize int) {
 
 func Test_solve(t *testing.T) {
 	squareLength := 3
-	solutionSize := 2
+	solutionSize := 5
 	raw :=
 	//"......123" +
 	//"..9......" +

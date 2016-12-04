@@ -14,23 +14,23 @@ func SolveSudoku(squareLength int, raw string, solutionSize int) string {
 	if (squareLength < 1) {
 		return "Invalid Sudoku puzzle"
 	}
-	edgeLength := squareLength * squareLength
-	cellSize := edgeLength * edgeLength
-	if (len(raw) != cellSize) {
+
+	sd := newSudokuDlx(squareLength)
+	if (len(raw) != sd.cellSize) {
 		return "Invalid Sudoku raw"
 	}
 
-	d := newSudokuDlx(raw, squareLength, edgeLength, cellSize)
+	sd.initializeDlx(raw)
 	var ret []byte
 	solutionCount := 0
-	d.search(func(o []*x) bool {
+	sd.search(func(o []*x) bool {
 		bs := make([]byte, len(o)) // o.len = cellSize
-		for _, o := range d.o {
+		for _, o := range sd.o {
 			x0 := o.x0
 			x0ci := x0.c.i // x0ci = [offset1 + 1, offset2]
 			x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
 			// bytes append by raw, index = [0, cellSize - 1]
-			bs[x0ci - 1] = byte((x0rci - 1) % edgeLength) + '1'
+			bs[x0ci - 1] = byte((x0rci - 1) % sd.edgeLength) + '1'
 		}
 		ret = append(ret, SOLUTION_PREFIX)
 		ret = append(ret, bs...)
