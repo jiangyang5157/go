@@ -1,8 +1,5 @@
 package dlx
 
-// prefix <'0' && prefix != whatever representing unknown digit
-const PUZZLE_PREFIX byte = '#'
-
 /*
 Constraints example: 9x9 Sudoku (squareLength = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
@@ -59,7 +56,7 @@ func newSudokuDlx(raw string, squareLength int, edgeLength int, cellSize int) *d
 	return d
 }
 
-// reset d.o without wipe out existing columns and rows
+// reset d.o without wipe out columns and rows structure
 func (d *dlx) reset() {
 	d.o = d.o[:0]
 }
