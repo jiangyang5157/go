@@ -19,6 +19,24 @@ offset2 := offset1 + cellSize
 offset3 := offset2 + cellSize
 offset4 := offset3 + cellSize
  */
+
+func newSudokuDlx(raw string, squareLength int, edgeLength int, cellSize int) *dlx {
+	offset1 := 0
+	offset2 := offset1 + cellSize
+	offset3 := offset2 + cellSize
+	offset4 := offset3 + cellSize
+	columnSize := offset4 + cellSize
+	d := newDlx(columnSize)
+	for r, i := 0, 0; r < edgeLength; r++ {
+		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
+			s := squareIndex(squareLength, r, c)
+			digit := int(raw[i] - '0')
+			d.addSudokuDigit(digit, i, r, c, s, edgeLength, offset1, offset2, offset3, offset4)
+		}
+	}
+	return d
+}
+
 func (d *dlx)addSudokuDigit(digit int, i int, r int, c int, s int, edgeLength int, offset1 int, offset2 int, offset3 int, offset4 int) {
 	if digit >= 1 && digit <= edgeLength {
 		// valid digit
@@ -39,24 +57,11 @@ func (d *dlx)addSudokuDigit(digit int, i int, r int, c int, s int, edgeLength in
 	}
 }
 
-func newSudokuDlx(raw string, squareLength int, edgeLength int, cellSize int) *dlx {
-	offset1 := 0
-	offset2 := offset1 + cellSize
-	offset3 := offset2 + cellSize
-	offset4 := offset3 + cellSize
-	columnSize := offset4 + cellSize
-	d := newDlx(columnSize)
-	for r, i := 0, 0; r < edgeLength; r++ {
-		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
-			s := r / squareLength * squareLength + c / squareLength
-			digit := int(raw[i] - '0')
-			d.addSudokuDigit(digit, i, r, c, s, edgeLength, offset1, offset2, offset3, offset4)
-		}
-	}
-	return d
-}
-
 // reset d.o without wipe out columns and rows structure
 func (d *dlx) reset() {
 	d.o = d.o[:0]
+}
+
+func squareIndex(squareLength int, r int, c int) int {
+	return r / squareLength * squareLength + c / squareLength
 }
