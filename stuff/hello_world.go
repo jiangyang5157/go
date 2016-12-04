@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+	"math/rand"
+)
 
 /*
 int: either 32 or 64 bits depending on architecture
@@ -192,4 +196,10 @@ Hello, World`
 	p = &j         // point to j
 	*p = *p / 37   // divide j through the pointer
 	fmt.Println(j) // see the new value of j
+
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < 111; i++ {
+		fmt.Printf("%v", rand.Intn(9) + 1)
+	}
+	fmt.Println()
 }

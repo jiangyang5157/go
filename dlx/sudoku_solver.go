@@ -1,13 +1,18 @@
 package dlx
 
-// prefix <'0' && prefix != whatever representing unknown digit in the raw
+// prefix < '0' && prefix != whatever representing unknown digit in the raw
 const SOLUTION_PREFIX byte = '#'
 
-func SimpleSolveSudoku(squareLength int, raw string) string {
-	return SolveSudoku(squareLength, raw, 1)
+func SolveSudoku(squareLength int, raw string, solutionSize int) string {
+	rawLength := len(raw)
+	var digits []int = make([]int, rawLength)
+	for i := 0; i < rawLength; i++ {
+		digits[i] = int(raw[i] - '0')
+	}
+	return solveSudoku(squareLength, digits, solutionSize)
 }
 
-func SolveSudoku(squareLength int, raw string, solutionSize int) string {
+func solveSudoku(squareLength int, digits []int, solutionSize int) string {
 	if (solutionSize < 1) {
 		return "No action required"
 	}
@@ -15,12 +20,12 @@ func SolveSudoku(squareLength int, raw string, solutionSize int) string {
 		return "Invalid Sudoku puzzle"
 	}
 
-	p := newSudokuDlx(squareLength)
-	if (len(raw) != p.cellSize) {
-		return "Invalid Sudoku raw"
+	p := newSudoku(squareLength)
+	if (len(digits) != p.cellSize) {
+		return "Invalid Sudoku data"
 	}
+	p.init(digits)
 
-	p.initializeDlx(raw)
 	var ret []byte
 	solutionCount := 0
 	p.search(func(o []*x) bool {
@@ -38,4 +43,17 @@ func SolveSudoku(squareLength int, raw string, solutionSize int) string {
 		return solutionCount >= solutionSize
 	})
 	return string(ret)
+}
+
+func (p *puzzle) uniqueSolution(digits []int) bool {
+	solutionCount := 0
+	p.search(func(o []*x) bool {
+		solutionCount++
+		return solutionCount > 1
+	})
+	return solutionCount == 1
+}
+
+func (p *puzzle) resetSolution() {
+	p.o = p.o[:0]
 }

@@ -18,7 +18,7 @@ type puzzle struct {
 	offset4      int // offset3 + cellSize
 }
 
-func newSudokuDlx(squareLength int) *puzzle {
+func newSudoku(squareLength int) *puzzle {
 	edgeLength := squareLength * squareLength
 	cellSize := edgeLength * edgeLength
 	return &puzzle{
@@ -32,13 +32,13 @@ func newSudokuDlx(squareLength int) *puzzle {
 	}
 }
 
-func (p *puzzle) initializeDlx(raw string) {
+func (p *puzzle) init(digits []int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
 		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
-			s := p.squareIndex(r, c)
-			digit := int(raw[i] - '0')
+			s := p.getSquareIndex(r, c)
+			digit := digits[i]
 			p.addDigit(digit, i, r, c, s)
 		}
 	}
@@ -64,10 +64,6 @@ func (p *puzzle)addDigit(digit int, i int, r int, c int, s int) {
 	}
 }
 
-func (p *puzzle) resetSolution() {
-	p.o = p.o[:0]
-}
-
-func (p *puzzle) squareIndex(r int, c int) int {
+func (p *puzzle) getSquareIndex(r int, c int) int {
 	return r / p.squareLength * p.squareLength + c / p.squareLength
 }
