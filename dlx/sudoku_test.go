@@ -80,7 +80,7 @@ func Test_solve(t *testing.T) {
 	//"........." +
 	//"........." +
 	//"........." +
-	//"........." // 0 solutions Sudoku Puzzle
+	//"........." // 0 solutions puzzle
 
 	//"........." +
 	//"..41.26.." +
@@ -90,7 +90,7 @@ func Test_solve(t *testing.T) {
 	//".8..7..4." +
 	//".7..2..6." +
 	//"..14.35.." +
-	//"........." // 1 solutions Sudoku Puzzle
+	//"........." // 1 solutions puzzle
 
 	"..3456789" +
 	"456789123" +
@@ -100,7 +100,7 @@ func Test_solve(t *testing.T) {
 	"897214365" +
 	"531642978" +
 	"642978531" +
-	"978531642" // 2 solutions Sudoku Puzzle
+	"978531642" // 2 solutions puzzle
 
 	//"....7.94." +
 	//".7..9...5" +
@@ -110,19 +110,19 @@ func Test_solve(t *testing.T) {
 	//".....7.8." +
 	//"8..7....." +
 	//"7......28" +
-	//".5..68..." // 188 solutions Sudoku puzzle
+	//".5..68..." // 188 solutions puzzle
 
-	//"." // 1 solutions Sudoku puzzle
-
-	//"...." +
-	//".4.." +
-	//"2..." +
-	//"..43" // 0 solutions Sudoku puzzle
+	//"." // 1 solutions puzzle
 
 	//"...." +
 	//".4.." +
 	//"2..." +
-	//"...3" // 3 solutions Sudoku puzzle
+	//"..43" // 0 solutions puzzle
+
+	//"...." +
+	//".4.." +
+	//"2..." +
+	//"...3" // 3 solutions puzzle
 
 	//"................" +
 	//"................" +
@@ -139,7 +139,7 @@ func Test_solve(t *testing.T) {
 	//"................" +
 	//"................" +
 	//"................" +
-	//"................" // ? solutions Sudoku puzzle
+	//"................" // ? solutions puzzle
 
 	solveSudukuTest(squareLength, raw, solutionSize)
 }
