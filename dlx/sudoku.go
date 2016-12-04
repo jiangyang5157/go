@@ -67,3 +67,7 @@ func (p *puzzle)addDigit(digit int, i int, r int, c int, s int) {
 func (p *puzzle) getSquareIndex(r int, c int) int {
 	return r / p.squareLength * p.squareLength + c / p.squareLength
 }
+
+func (p *puzzle) resetSolution() {
+	p.o = p.o[:0]
+}

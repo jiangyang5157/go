@@ -3,16 +3,16 @@ package dlx
 // prefix < '0' && prefix != whatever representing unknown digit in the raw
 const SOLUTION_PREFIX byte = '#'
 
-func SolveSudoku(squareLength int, raw string, solutionSize int) string {
+func SolveSudokuByRaw(squareLength int, raw string, solutionSize int) string {
 	rawLength := len(raw)
 	var digits []int = make([]int, rawLength)
 	for i := 0; i < rawLength; i++ {
 		digits[i] = int(raw[i] - '0')
 	}
-	return solveSudoku(squareLength, digits, solutionSize)
+	return SolveSudokuByDigits(squareLength, digits, solutionSize)
 }
 
-func solveSudoku(squareLength int, digits []int, solutionSize int) string {
+func SolveSudokuByDigits(squareLength int, digits []int, solutionSize int) string {
 	if (solutionSize < 1) {
 		return "No action required"
 	}
@@ -52,8 +52,4 @@ func (p *puzzle) uniqueSolution(digits []int) bool {
 		return solutionCount > 1
 	})
 	return solutionCount == 1
-}
-
-func (p *puzzle) resetSolution() {
-	p.o = p.o[:0]
 }
