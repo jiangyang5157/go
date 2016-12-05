@@ -6,6 +6,9 @@ import (
 	"fmt"
 )
 
+// prefix < '0' && prefix != whatever representing unknown digit in the raw
+const SOLUTION_PREFIX byte = '#'
+
 // Generate unique solution puzzle
 func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxSubGivens int) string {
 	if squareLength < 1 {

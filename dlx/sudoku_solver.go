@@ -1,8 +1,5 @@
 package dlx
 
-// prefix < '0' && prefix != whatever representing unknown digit in the raw
-const SOLUTION_PREFIX byte = '#'
-
 func SolvePuzzleByRaw(squareLength int, raw string, solutionSize int) string {
 	return SolvePuzzleByDigits(squareLength, raw2digits(&raw), solutionSize)
 }
