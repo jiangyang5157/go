@@ -1,8 +1,8 @@
 package heap
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func maxHeapCompare(a interface{}, b interface{}) int {

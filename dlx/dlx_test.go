@@ -1,13 +1,13 @@
 package dlx
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_newDlx(t *testing.T) {
 	d := newDlx(5)
-	columns := d.columns;
+	columns := d.columns
 	for i := range columns {
 		fmt.Print(columns[i].i)
 	}

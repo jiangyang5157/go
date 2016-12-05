@@ -3,7 +3,7 @@ package tree
 type Comparable func(a interface{}, b interface{}) int
 
 type Node struct {
-	value    interface{}
+	value   interface{}
 	compare Comparable
 	left    *Node
 	right   *Node

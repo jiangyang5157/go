@@ -1,8 +1,8 @@
 package set
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 type Person struct {

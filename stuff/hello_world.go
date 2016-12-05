@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"math/rand"
+	"time"
 )
 
 /*
@@ -163,16 +163,16 @@ me := Author{
 
 me.incrementAge() // Now properties and methods from Person can be used with Author
 fmt.Println(me.age) // Output: 30
- */
+*/
 func main() {
 	var two int = 2
 	var three int = 3
-	fmt.Println("2 + 3 =", two + three)
-	fmt.Println("3 / 2 =", three / two)
+	fmt.Println("2 + 3 =", two+three)
+	fmt.Println("3 / 2 =", three/two)
 
 	var seven float64 = 7.0
 	var twoandahalf float64 = 2.5
-	fmt.Println("7.0 / 2.5 =", seven / twoandahalf)
+	fmt.Println("7.0 / 2.5 =", seven/twoandahalf)
 
 	var strAwesome string = "Go is awesome!\nHello, World"
 	fmt.Println(strAwesome)
@@ -183,9 +183,12 @@ Hello, World`
 	var x int = 10
 	x = 11
 	switch x {
-	case 5: fmt.Println("x is 5")
-	case 10: fmt.Println("x is 10")
-	default: fmt.Println("x is not 5 or 10")
+	case 5:
+		fmt.Println("x is 5")
+	case 10:
+		fmt.Println("x is 10")
+	default:
+		fmt.Println("x is not 5 or 10")
 	}
 
 	i, j := 42, 2701
@@ -193,13 +196,13 @@ Hello, World`
 	fmt.Println(*p) // read i through the pointer
 	*p = 21         // set i through the pointer
 	fmt.Println(i)  // see the new value of i
-	p = &j         // point to j
-	*p = *p / 37   // divide j through the pointer
-	fmt.Println(j) // see the new value of j
+	p = &j          // point to j
+	*p = *p / 37    // divide j through the pointer
+	fmt.Println(j)  // see the new value of j
 
 	rand.Seed(time.Now().Unix())
 	for i := 0; i < 111; i++ {
-		fmt.Printf("%v", rand.Intn(9) + 1)
+		fmt.Printf("%v", rand.Intn(9)+1)
 	}
 	fmt.Println()
 }

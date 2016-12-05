@@ -129,7 +129,7 @@ func (set *threadUnsafeSet) SymmetricDifference(other Set) Set {
 func (set *threadUnsafeSet) Iterator() *Iterator {
 	iterator, itemChan, stopCh := newIterator()
 	go func() {
-		A:
+	A:
 		for e := range *set {
 			select {
 			case <-stopCh:

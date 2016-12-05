@@ -1,8 +1,8 @@
 package list
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_List(t *testing.T) {
@@ -62,7 +62,7 @@ func Test_List(t *testing.T) {
 	})
 	fmt.Println("")
 	list.Each(func(e *Element) {
-		e.value = 111;
+		e.value = 111
 	})
 	list.Each(func(e *Element) {
 		fmt.Printf("%v, ", e.value)

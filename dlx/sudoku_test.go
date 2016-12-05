@@ -1,9 +1,9 @@
 package dlx
 
 import (
-	"testing"
 	"fmt"
 	"strings"
+	"testing"
 )
 
 func Test_Ascii(t *testing.T) {
@@ -17,36 +17,36 @@ func printSudoku(squareLength int, raw string) {
 	fmt.Println("================================================================")
 	switch squareLength {
 	case 1:
-		for r, i := 0, 0; r < 1; r, i = r + 1, i + 1 {
+		for r, i := 0, 0; r < 1; r, i = r+1, i+1 {
 			fmt.Printf("%c\n", raw[i])
 		}
 	case 2:
-		for r, i := 0, 0; r < 4; r, i = r + 1, i + 4 {
+		for r, i := 0, 0; r < 4; r, i = r+1, i+4 {
 			fmt.Printf("%c %c | %c %c\n",
-				raw[i], raw[i + 1],
-				raw[i + 2], raw[i + 3])
+				raw[i], raw[i+1],
+				raw[i+2], raw[i+3])
 			if r == 1 {
 				fmt.Println("----+----")
 			}
 		}
 	case 3:
-		for r, i := 0, 0; r < 9; r, i = r + 1, i + 9 {
+		for r, i := 0, 0; r < 9; r, i = r+1, i+9 {
 			fmt.Printf("%c %c %c | %c %c %c | %c %c %c\n",
-				raw[i], raw[i + 1], raw[i + 2],
-				raw[i + 3], raw[i + 4], raw[i + 5],
-				raw[i + 6], raw[i + 7], raw[i + 8])
+				raw[i], raw[i+1], raw[i+2],
+				raw[i+3], raw[i+4], raw[i+5],
+				raw[i+6], raw[i+7], raw[i+8])
 			if r == 2 || r == 5 {
 				fmt.Println("------+-------+------")
 			}
 		}
 	case 4:
 		// Ascii for chars after '9' can convert into integer by minus '0' for clear display.
-		for r, i := 0, 0; r < 16; r, i = r + 1, i + 16 {
+		for r, i := 0, 0; r < 16; r, i = r+1, i+16 {
 			fmt.Printf("%c %c %c %c | %c %c %c %c | %c %c %c %c | %c %c %c %c\n",
-				raw[i], raw[i + 1], raw[i + 2], raw[i + 3],
-				raw[i + 4], raw[i + 5], raw[i + 6], raw[i + 7],
-				raw[i + 8], raw[i + 9], raw[i + 10], raw[i + 11],
-				raw[i + 12], raw[i + 13], raw[i + 14], raw[i + 15])
+				raw[i], raw[i+1], raw[i+2], raw[i+3],
+				raw[i+4], raw[i+5], raw[i+6], raw[i+7],
+				raw[i+8], raw[i+9], raw[i+10], raw[i+11],
+				raw[i+12], raw[i+13], raw[i+14], raw[i+15])
 			if r == 3 || r == 7 || r == 11 {
 				fmt.Println("--------+---------+---------+--------")
 			}
@@ -62,7 +62,7 @@ func solveSudukuTest(squareLength int, raw string, solutionSize int) {
 	length := len(solutions)
 	// [0] contains massage
 	fmt.Printf("%v\n", solutions[0])
-	fmt.Printf("Looking for %d solutions, found %d solutions.\n", solutionSize, length - 1)
+	fmt.Printf("Looking for %d solutions, found %d solutions.\n", solutionSize, length-1)
 	for i := 1; i < length; i++ {
 		printSudoku(squareLength, solutions[i])
 	}
@@ -72,25 +72,25 @@ func Test_solve(t *testing.T) {
 	squareLength := 3
 	solutionSize := 5
 	raw :=
-	//"......123" +
-	//"..9......" +
-	//".....9..." +
-	//"........." +
-	//"........." +
-	//"........." +
-	//"........." +
-	//"........." +
-	//"........." // 0 solutions puzzle
+		//"......123" +
+		//"..9......" +
+		//".....9..." +
+		//"........." +
+		//"........." +
+		//"........." +
+		//"........." +
+		//"........." +
+		//"........." // 0 solutions puzzle
 
-	//"........." +
-	//"..41.26.." +
-	//".3..5..2." +
-	//".2..1..3." +
-	//"..65.41.." +
-	//".8..7..4." +
-	//".7..2..6." +
-	//"..14.35.." +
-	//"........." // 1 solutions puzzle
+		//"........." +
+		//"..41.26.." +
+		//".3..5..2." +
+		//".2..1..3." +
+		//"..65.41.." +
+		//".8..7..4." +
+		//".7..2..6." +
+		//"..14.35.." +
+		//"........." // 1 solutions puzzle
 
 		"..3456789" +
 			"456789123" +

@@ -1,9 +1,10 @@
 package sort
 
 import (
-	"testing"
-	"github.com/jiangyang5157/go/number"
 	"fmt"
+	"testing"
+
+	"github.com/jiangyang5157/go/number"
 )
 
 func Test_Sort(t *testing.T) {

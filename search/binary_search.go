@@ -1,12 +1,12 @@
 package search
 
 func BinarySearch(arr []int, find int) int {
-	low, high := arr[0], arr[len(arr) - 1]
+	low, high := arr[0], arr[len(arr)-1]
 	if find < low || high < find {
 		return -1
 	}
 
-	for ; low <= high; {
+	for low <= high {
 		mid := (low + high) / 2
 		switch {
 		case arr[mid] < find:

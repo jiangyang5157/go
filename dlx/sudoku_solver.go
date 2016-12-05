@@ -13,15 +13,15 @@ func SolveSudokuByRaw(squareLength int, raw string, solutionSize int) string {
 }
 
 func SolveSudokuByDigits(squareLength int, digits *[]int, solutionSize int) string {
-	if (solutionSize < 1) {
+	if solutionSize < 1 {
 		return "No action required"
 	}
-	if (squareLength < 1) {
+	if squareLength < 1 {
 		return "Invalid Sudoku puzzle"
 	}
 
 	p := newSudoku(squareLength)
-	if (len(*digits) != p.cellSize) {
+	if len(*digits) != p.cellSize {
 		return "Invalid Sudoku data"
 	}
 	p.init(digits)
@@ -32,10 +32,10 @@ func SolveSudokuByDigits(squareLength int, digits *[]int, solutionSize int) stri
 		bs := make([]byte, len(o)) // o.len = cellSize
 		for _, o := range p.o {
 			x0 := o.x0
-			x0ci := x0.c.i // x0ci = [offset1 + 1, offset2]
+			x0ci := x0.c.i    // x0ci = [offset1 + 1, offset2]
 			x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
 			// bytes append by raw, index = [0, cellSize - 1]
-			bs[x0ci - 1] = byte((x0rci - 1) % p.edgeLength) + '1'
+			bs[x0ci-1] = byte((x0rci-1)%p.edgeLength) + '1'
 		}
 		ret = append(ret, SOLUTION_PREFIX)
 		ret = append(ret, bs...)
@@ -44,4 +44,3 @@ func SolveSudokuByDigits(squareLength int, digits *[]int, solutionSize int) stri
 	})
 	return string(ret)
 }
-

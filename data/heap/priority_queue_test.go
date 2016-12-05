@@ -1,8 +1,8 @@
 package heap
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func maxPqCompare(a interface{}, b interface{}) int {
@@ -110,10 +110,10 @@ func TestChangePriority(t *testing.T) {
 	pq.Insert(*NewElement(9, 16))
 	pq.Insert(*NewElement(5, 15))
 
-	if (pq.ChangePriority(22, 222) == nil) {
+	if pq.ChangePriority(22, 222) == nil {
 		t.Error("ChangePriority doesn't work as expected")
 	}
-	if (pq.ChangePriority(2, 222) == nil) {
+	if pq.ChangePriority(2, 222) == nil {
 		popped := pq.Extract()
 		if popped.value != 2 {
 			t.Error("ChangePriority doesn't work as expected")

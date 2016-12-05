@@ -4,8 +4,8 @@ package sort
 func GnomeSort(arr []int) []int {
 	arrLen := len(arr)
 	for i := 1; i < arrLen; {
-		if arr[i - 1] > arr[i] {
-			arr[i - 1], arr[i] = arr[i], arr[i - 1]
+		if arr[i-1] > arr[i] {
+			arr[i-1], arr[i] = arr[i], arr[i-1]
 			if i > 1 {
 				i--
 			}

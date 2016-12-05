@@ -18,7 +18,7 @@ func (stack *Stack) IsEmpty() bool {
 }
 
 func (stack *Stack) Peek() interface{} {
-	return stack.data[stack.length - 1]
+	return stack.data[stack.length-1]
 }
 
 func (stack *Stack) Pop() interface{} {

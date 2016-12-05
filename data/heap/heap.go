@@ -25,7 +25,7 @@ func (heap *Heap) Get(index int) interface{} {
 
 func (heap *Heap) siftUp() {
 	length := heap.Length()
-	for child, parent := length - 1, length - 1; child > 0; child = parent {
+	for child, parent := length-1, length-1; child > 0; child = parent {
 		// parent: (n - 1) / 2
 		parent = (child - 1) >> 1
 		if heap.compare(heap.Get(parent), heap.Get(child)) < 0 {
@@ -39,10 +39,10 @@ func (heap *Heap) siftUp() {
 
 func (heap *Heap) siftDown() {
 	length := heap.Length()
-	for parent, child := 0, 1; parent < length && (parent << 1) + 1 < length; parent = child {
+	for parent, child := 0, 1; parent < length && (parent<<1)+1 < length; parent = child {
 		// left: 2n + 1, right: 2n + 2
 		child = (parent << 1) + 1
-		if child + 1 < length && heap.compare(heap.Get(child), heap.Get(child + 1)) < 0 {
+		if child+1 < length && heap.compare(heap.Get(child), heap.Get(child+1)) < 0 {
 			// left child "less" then the right child, position to right child
 			child++
 		}
@@ -70,8 +70,8 @@ func (heap *Heap) Extract() interface{} {
 	}
 	data := heap.data[0]
 	// replace the root with the last element
-	heap.data[0] = heap.data[length - 1]
-	heap.data = heap.data[:length - 1]
+	heap.data[0] = heap.data[length-1]
+	heap.data = heap.data[:length-1]
 
 	heap.siftDown()
 	return data

@@ -3,8 +3,8 @@ package sort
 func merge(left, right []int) []int {
 	leftLen := len(left)
 	rightLen := len(right)
-	ret := make([]int, 0, leftLen + rightLen)
-	for ;leftLen > 0 || rightLen > 0; leftLen, rightLen = len(left), len(right) {
+	ret := make([]int, 0, leftLen+rightLen)
+	for ; leftLen > 0 || rightLen > 0; leftLen, rightLen = len(left), len(right) {
 		if leftLen == 0 {
 			return append(ret, right...)
 		}

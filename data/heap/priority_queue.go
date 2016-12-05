@@ -1,8 +1,9 @@
 package heap
 
 import (
-	"github.com/jiangyang5157/go/data/queue"
 	"errors"
+
+	"github.com/jiangyang5157/go/data/queue"
 )
 
 type PriorityQueue struct {
@@ -44,24 +45,24 @@ func (pq *PriorityQueue) Peek() Element {
 
 func (pq *PriorityQueue) ChangePriority(value interface{}, priority int) error {
 	length := pq.Length()
-	if (length == 0) {
+	if length == 0 {
 		return errors.New("Empty priority queue")
 	}
 
 	tmp := queue.New()
 	var popped Element
 	for pq.Length() > 0 {
-		popped = pq.Extract();
-		if (popped.value == value) {
+		popped = pq.Extract()
+		if popped.value == value {
 			popped.priority = priority
 			pq.data.Insert(popped)
-			break;
+			break
 		} else {
 			tmp.Push(popped)
 		}
 	}
 	var err error
-	if (tmp.Length() == length) {
+	if tmp.Length() == length {
 		err = errors.New("Element not found")
 	}
 	for tmp.Length() > 0 {

@@ -1,15 +1,15 @@
 package set
 
 type Iterator struct {
-	ch    <-chan interface{}
+	ch   <-chan interface{}
 	stop chan struct{}
 }
 
-func newIterator() (*Iterator, chan <- interface{}, <-chan struct{}) {
+func newIterator() (*Iterator, chan<- interface{}, <-chan struct{}) {
 	itemChan := make(chan interface{})
 	stopChan := make(chan struct{})
 	return &Iterator{
-		ch:    itemChan,
+		ch:   itemChan,
 		stop: stopChan,
 	}, itemChan, stopChan
 }

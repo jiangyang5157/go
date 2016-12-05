@@ -116,7 +116,7 @@ func (set *threadSafeSet) Iterator() *Iterator {
 	iterator, itemChan, stopCh := newIterator()
 	go func() {
 		set.RLock()
-		A:
+	A:
 		for e := range set.data {
 			select {
 			case <-stopCh:

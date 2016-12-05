@@ -1,16 +1,17 @@
 package search
 
 import (
-	"testing"
-	"github.com/jiangyang5157/go/number"
 	"fmt"
+	"testing"
+
+	"github.com/jiangyang5157/go/number"
 	"github.com/jiangyang5157/go/sort"
 )
 
 func Test_Sort(t *testing.T) {
-	arr := sort.MergeSort(number.RandomArray(10));
+	arr := sort.MergeSort(number.RandomArray(10))
 	canBefind := arr[3]
-	canNotBefind := 222;
+	canNotBefind := 222
 	fmt.Printf("Search %v and %v in the sorted arrya %v\n", canBefind, canNotBefind, arr)
 
 	fmt.Printf("Search %v, index %v by LinearSearch\n", canBefind, LinearSearch(arr, canBefind))

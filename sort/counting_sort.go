@@ -1,7 +1,7 @@
 package sort
 
 func getK(arr []int) int {
-	arrLen := len(arr);
+	arrLen := len(arr)
 	if arrLen == 0 {
 		return 1
 	}

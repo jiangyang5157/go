@@ -70,7 +70,7 @@ func (list *List) Find(value interface{}) (*Element, error) {
 }
 
 func (list *List) Get(index int) (*Element, error) {
-	if index > list.size - 1 {
+	if index > list.size-1 {
 		return nil, errors.New("Index out of range")
 	}
 	node := list.first
@@ -111,7 +111,7 @@ func (list *List) Add(value interface{}, index int) error {
 		return errors.New("Index out of range")
 	}
 
-	if (index == 0) {
+	if index == 0 {
 		list.Prepend(value)
 		return nil
 	}
@@ -143,10 +143,10 @@ func (list *List) Remove(value interface{}) error {
 
 	for e := list.first; e != nil; e = e.next {
 		if e.value == value {
-			if (e.next != nil) {
+			if e.next != nil {
 				e.next.prev = e.prev
 			}
-			if (e.prev != nil) {
+			if e.prev != nil {
 				e.prev.next = e.next
 			}
 			e.value = nil
@@ -159,10 +159,10 @@ func (list *List) Remove(value interface{}) error {
 
 func (list *List) Clear() {
 	list.Each(func(e *Element) {
-		if (e.next != nil) {
+		if e.next != nil {
 			e.next.prev = e.prev
 		}
-		if (e.prev != nil) {
+		if e.prev != nil {
 			e.prev.next = e.next
 		}
 		e.value = nil
