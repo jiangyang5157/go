@@ -36,7 +36,7 @@ func (p *puzzle) init(digits *[]int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
-		for c := 0; c < p.edgeLength; c, i = c+1, i+1 {
+		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
 			s := p.getSquareIndex(r, c)
 			digit := (*digits)[i]
 			p.addDigit(digit, i, r, c, s)
@@ -49,23 +49,23 @@ func (p *puzzle) addDigit(digit int, i int, r int, c int, s int) {
 		// valid digit
 		p.addRow([]int{
 			p.offset1 + i + 1,
-			p.offset2 + r*p.edgeLength + digit,
-			p.offset3 + c*p.edgeLength + digit,
-			p.offset4 + s*p.edgeLength + digit})
+			p.offset2 + r * p.edgeLength + digit,
+			p.offset3 + c * p.edgeLength + digit,
+			p.offset4 + s * p.edgeLength + digit})
 	} else {
 		// unknown digit, consider all possibilities
 		for digit = 1; digit <= p.edgeLength; digit++ {
 			p.addRow([]int{
 				p.offset1 + i + 1,
-				p.offset2 + r*p.edgeLength + digit,
-				p.offset3 + c*p.edgeLength + digit,
-				p.offset4 + s*p.edgeLength + digit})
+				p.offset2 + r * p.edgeLength + digit,
+				p.offset3 + c * p.edgeLength + digit,
+				p.offset4 + s * p.edgeLength + digit})
 		}
 	}
 }
 
 func (p *puzzle) getSquareIndex(r int, c int) int {
-	return r/p.squareLength*p.squareLength + c/p.squareLength
+	return r / p.squareLength * p.squareLength + c / p.squareLength
 }
 
 func (p *puzzle) resetSolution() {

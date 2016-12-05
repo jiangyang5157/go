@@ -143,3 +143,7 @@ func Test_solve(t *testing.T) {
 
 	solveSudukuTest(squareLength, raw, solutionSize)
 }
+
+func Test_randomArray(t *testing.T) {
+	fmt.Println(randomArray(111, 1, 9))
+}
