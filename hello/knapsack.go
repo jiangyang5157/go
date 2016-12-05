@@ -12,7 +12,7 @@ func max(a int, b int) int {
 	}
 }
 
-func main() {
+func knapsack() {
 	const c = 10                       // capacity
 	const n = 5                        // number of items
 	v := [n + 1]int{0, 2, 4, 8, 10, 6} // value of items
