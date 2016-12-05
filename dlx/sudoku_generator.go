@@ -28,6 +28,7 @@ func (p *puzzle) randomTerminalPattern() *[]int {
 	var ret []int = make([]int, p.cellSize)
 	var digits []int = make([]int, p.cellSize)
 
+	// some times the random number for squares cause zero solution, particularly 2x2 puzzle
 	for ok := false; ok != true; {
 		for i := 0; i < p.edgeLength; i += p.squareLength + 1 {
 			var tmp []int = make([]int, p.edgeLength)
