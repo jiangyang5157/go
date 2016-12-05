@@ -9,10 +9,10 @@ func SolveSudokuByRaw(squareLength int, raw string, solutionSize int) string {
 	for i := 0; i < rawLength; i++ {
 		digits[i] = int(raw[i] - '0')
 	}
-	return SolveSudokuByDigits(squareLength, digits, solutionSize)
+	return SolveSudokuByDigits(squareLength, &digits, solutionSize)
 }
 
-func SolveSudokuByDigits(squareLength int, digits []int, solutionSize int) string {
+func SolveSudokuByDigits(squareLength int, digits *[]int, solutionSize int) string {
 	if (solutionSize < 1) {
 		return "No action required"
 	}
@@ -21,7 +21,7 @@ func SolveSudokuByDigits(squareLength int, digits []int, solutionSize int) strin
 	}
 
 	p := newSudoku(squareLength)
-	if (len(digits) != p.cellSize) {
+	if (len(*digits) != p.cellSize) {
 		return "Invalid Sudoku data"
 	}
 	p.init(digits)
@@ -45,11 +45,3 @@ func SolveSudokuByDigits(squareLength int, digits []int, solutionSize int) strin
 	return string(ret)
 }
 
-func (p *puzzle) uniqueSolution(digits []int) bool {
-	solutionCount := 0
-	p.search(func(o []*x) bool {
-		solutionCount++
-		return solutionCount > 1
-	})
-	return solutionCount == 1
-}

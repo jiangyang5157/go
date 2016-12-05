@@ -32,13 +32,13 @@ func newSudoku(squareLength int) *puzzle {
 	}
 }
 
-func (p *puzzle) init(digits []int) {
+func (p *puzzle) init(digits *[]int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
 		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
 			s := p.getSquareIndex(r, c)
-			digit := digits[i]
+			digit := (*digits)[i]
 			p.addDigit(digit, i, r, c, s)
 		}
 	}
@@ -70,4 +70,13 @@ func (p *puzzle) getSquareIndex(r int, c int) int {
 
 func (p *puzzle) resetSolution() {
 	p.o = p.o[:0]
+}
+
+func (p *puzzle) hasUniqueSolution() bool {
+	solutionCount := 0
+	p.search(func(o []*x) bool {
+		solutionCount++
+		return solutionCount > 1
+	})
+	return solutionCount == 1
 }
