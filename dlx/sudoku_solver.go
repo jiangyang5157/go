@@ -3,29 +3,24 @@ package dlx
 // prefix < '0' && prefix != whatever representing unknown digit in the raw
 const SOLUTION_PREFIX byte = '#'
 
-func SolveSudokuByRaw(squareLength int, raw string, solutionSize int) string {
-	rawLength := len(raw)
-	var digits []int = make([]int, rawLength)
-	for i := 0; i < rawLength; i++ {
-		digits[i] = int(raw[i] - '0')
-	}
-	return SolveSudokuByDigits(squareLength, &digits, solutionSize)
+func SolvePuzzleByRaw(squareLength int, raw string, solutionSize int) string {
+	return SolvePuzzleByDigits(squareLength, raw2digits(&raw), solutionSize)
 }
 
-func SolveSudokuByDigits(squareLength int, digits *[]int, solutionSize int) string {
+func SolvePuzzleByDigits(squareLength int, digits *[]int, solutionSize int) string {
 	if solutionSize < 1 {
 		return "No action required"
 	}
 	if squareLength < 1 {
-		return "Invalid Sudoku puzzle"
+		return "Invalid puzzle"
 	}
 
-	p := newSudoku(squareLength)
+	p := newPuzzle(squareLength)
 	if len(*digits) != p.cellSize {
-		return "Invalid Sudoku data"
+		return "Invalid data"
 	}
-	p.init(digits)
 
+	p.init(digits)
 	var ret []byte
 	solutionCount := 0
 	p.search(func(o []*x) bool {

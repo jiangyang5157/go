@@ -1,7 +1,7 @@
 package dlx
 
 /*
-Constraints example: 9x9 Sudoku (squareLength = 3)
+Constraints example: 9x9 puzzle (squareLength = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
 2. Each row must has [1, 9]: 9 * 9 = 81 constraints in column 82-162
 3. Each column must has [1, 9]: 9 * 9 = 81 constraints in column 163-243
@@ -18,7 +18,7 @@ type puzzle struct {
 	offset4      int // offset3 + cellSize
 }
 
-func newSudoku(squareLength int) *puzzle {
+func newPuzzle(squareLength int) *puzzle {
 	edgeLength := squareLength * squareLength
 	cellSize := edgeLength * edgeLength
 	return &puzzle{
@@ -68,6 +68,10 @@ func (p *puzzle) getSquareIndex(r int, c int) int {
 	return r / p.squareLength * p.squareLength + c / p.squareLength
 }
 
+func (p *puzzle) getCellIndex(r int, c int) int {
+	return r * p.edgeLength + c
+}
+
 func (p *puzzle) resetSolution() {
 	p.o = p.o[:0]
 }
@@ -80,4 +84,13 @@ func (p *puzzle) hasUniqueSolution() bool {
 	})
 
 	return solutionCount == 1
+}
+
+func raw2digits(raw *string) *[]int {
+	rawLength := len(*raw)
+	var digits []int = make([]int, rawLength)
+	for i := 0; i < rawLength; i++ {
+		digits[i] = int((*raw)[i] - '0')
+	}
+	return &digits
 }
