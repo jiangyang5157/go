@@ -11,8 +11,7 @@ func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string
 	}
 
 	p := newPuzzle(squareLength)
-	//mtg := minSubGivens(p.edgeLength)
-
+	//mtg := minTotalGivens(p.edgeLength)
 	var rtp []int = p.randomTerminalPattern()
 
 
