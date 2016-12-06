@@ -1,4 +1,10 @@
 package dlx
+
+import (
+	"time"
+	"math/rand"
+)
+
 /*
 Constraints example: 9x9 puzzle (squareLength = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
@@ -76,10 +82,29 @@ func (p *puzzle) resetSolution() {
 }
 
 func raw2digits(raw string) []int {
-	rawLength := len(raw)
-	var digits []int = make([]int, rawLength)
-	for i := 0; i < rawLength; i++ {
+	length := len(raw)
+	var digits []int = make([]int, length)
+	for i := 0; i < length; i++ {
 		digits[i] = int(raw[i] - '0')
 	}
 	return digits
+}
+
+func digits2raw(digits []int) string {
+	length := len(digits)
+	var bs []byte = make([]byte, length)
+	for i := 0; i < length; i++ {
+		bs[i] = byte(digits[i]) + '0'
+	}
+	return string(bs)
+}
+
+func disorderArray(array []int) []int {
+	rand.Seed(time.Now().Unix())
+	length := len(array)
+	for i := 0; i < length; i++ {
+		random := rand.Intn(length)
+		array[i], array[random] = array[random], array[i]
+	}
+	return array
 }

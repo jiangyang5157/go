@@ -4,10 +4,10 @@ package dlx
 const SOLUTION_PREFIX byte = '#'
 
 func SolvePuzzleByRaw(squareLength int, raw string, solutionSize int) string {
-	return SolvePuzzleByDigits(squareLength, raw2digits(raw), solutionSize)
+	return solvePuzzleByDigits(squareLength, raw2digits(raw), solutionSize)
 }
 
-func SolvePuzzleByDigits(squareLength int, digits []int, solutionSize int) string {
+func solvePuzzleByDigits(squareLength int, digits []int, solutionSize int) string {
 	if solutionSize < 1 {
 		return "No action required"
 	}

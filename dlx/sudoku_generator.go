@@ -1,8 +1,6 @@
 package dlx
 
 import (
-	"time"
-	"math/rand"
 	"fmt"
 )
 
@@ -55,14 +53,4 @@ func (p *puzzle) randomTerminalPattern() []int {
 		})
 	}
 	return ret
-}
-
-func disorderArray(array []int) []int {
-	rand.Seed(time.Now().Unix())
-	length := len(array)
-	for i := 0; i < length; i++ {
-		random := rand.Intn(length)
-		array[i], array[random] = array[random], array[i]
-	}
-	return array
 }
