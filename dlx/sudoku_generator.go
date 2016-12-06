@@ -6,9 +6,6 @@ import (
 	"fmt"
 )
 
-// prefix < '0' && prefix != whatever representing unknown digit in the raw
-const SOLUTION_PREFIX byte = '#'
-
 // Generate unique solution puzzle
 func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxSubGivens int) string {
 	if squareLength < 1 {
@@ -16,7 +13,7 @@ func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxS
 	}
 
 	p := newPuzzle(squareLength)
-	var rtp []int = *p.randomTerminalPattern()
+	var rtp []int = p.randomTerminalPattern()
 
 
 
@@ -25,20 +22,18 @@ func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxS
 	return ""
 }
 
-func (p *puzzle) randomTerminalPattern() *[]int {
+func (p *puzzle) randomTerminalPattern() []int {
 	// fill diagonal squares by disorder digits
-	rand.Seed(time.Now().Unix())
 	var ret []int = make([]int, p.cellSize)
 	var digits []int = make([]int, p.cellSize)
-
+	var tmp []int = make([]int, p.edgeLength)
+	for i := range tmp {
+		tmp[i] = i + 1
+	}
 	// some times the random number for squares cause zero solution, particularly 2x2 puzzle
 	for ok := false; ok != true; {
 		for i := 0; i < p.edgeLength; i += p.squareLength + 1 {
-			var tmp []int = make([]int, p.edgeLength)
-			for i := range tmp {
-				tmp[i] = i + 1
-			}
-			var d []int = *disorderArray(&tmp)
+			var d []int = disorderArray(tmp)
 			for j := 0; j < p.edgeLength; j++ {
 				r := j / p.squareLength + (i / p.squareLength) * p.squareLength
 				c := j % p.squareLength + (i / p.squareLength) * p.squareLength
@@ -47,7 +42,7 @@ func (p *puzzle) randomTerminalPattern() *[]int {
 		}
 
 		// solve
-		p.init(&digits)
+		p.init(digits)
 		p.search(func(o []*x) bool {
 			for _, o := range p.o {
 				x0 := o.x0
@@ -59,14 +54,15 @@ func (p *puzzle) randomTerminalPattern() *[]int {
 			return true
 		})
 	}
-	return &ret
+	return ret
 }
 
-func disorderArray(array *[]int) *[]int {
-	length := len(*array)
+func disorderArray(array []int) []int {
+	rand.Seed(time.Now().Unix())
+	length := len(array)
 	for i := 0; i < length; i++ {
 		random := rand.Intn(length)
-		(*array)[i], (*array)[random] = (*array)[random], (*array)[i]
+		array[i], array[random] = array[random], array[i]
 	}
 	return array
 }

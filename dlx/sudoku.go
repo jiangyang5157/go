@@ -1,5 +1,4 @@
 package dlx
-
 /*
 Constraints example: 9x9 puzzle (squareLength = 3)
 1. Each cell must has a digit: 9 * 9 = 81 constraints in column 1-81
@@ -32,13 +31,13 @@ func newPuzzle(squareLength int) *puzzle {
 	}
 }
 
-func (p *puzzle) init(digits *[]int) {
+func (p *puzzle) init(digits []int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
 		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
 			s := p.getSquareIndex(r, c)
-			digit := (*digits)[i]
+			digit := digits[i]
 			p.addDigit(digit, i, r, c, s)
 		}
 	}
@@ -76,33 +75,11 @@ func (p *puzzle) resetSolution() {
 	p.o = p.o[:0]
 }
 
-func (p *puzzle) hasUniqueSolution() bool {
-	solutionCount := 0
-	p.search(func(o []*x) bool {
-		solutionCount++
-		return solutionCount > 1
-	})
-
-	return solutionCount == 1
-}
-
-func raw2digits(raw *string) *[]int {
-	rawLength := len(*raw)
+func raw2digits(raw string) []int {
+	rawLength := len(raw)
 	var digits []int = make([]int, rawLength)
 	for i := 0; i < rawLength; i++ {
-		digits[i] = int((*raw)[i] - '0')
+		digits[i] = int(raw[i] - '0')
 	}
-	return &digits
-}
-
-func digits2raw(digits *[]int) string {
-	digitLength := len(*digits)
-	var bs []byte = make([]byte, digitLength)
-    	for i := 0; i < digitLength; i++ {
-        	bs[i] = byte((*digits)[i])
-    	}
-	fmt.Println("bs", bs)
-	ret := string(bs)
-	fmt.Println("ret", ret)
-	return ret
+	return digits
 }

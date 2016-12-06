@@ -143,11 +143,3 @@ func Test_solve(t *testing.T) {
 
 	solveSudukuTest(squareLength, raw, solutionSize)
 }
-
-func Test_disorderArray(t *testing.T) {
-	var digits []int = make([]int, 9)
-	for i := range digits {
-		digits[i] = i
-	}
-	fmt.Println(disorderArray(&digits))
-}
