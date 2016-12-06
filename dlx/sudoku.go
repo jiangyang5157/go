@@ -77,10 +77,6 @@ func (p *puzzle) getCellIndex(r int, c int) int {
 	return r * p.edgeLength + c
 }
 
-func (p *puzzle) resetSolution() {
-	p.o = p.o[:0]
-}
-
 func raw2digits(raw string) []int {
 	length := len(raw)
 	var digits []int = make([]int, length)

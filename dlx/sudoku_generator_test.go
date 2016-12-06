@@ -2,7 +2,6 @@ package dlx
 
 import (
 	"testing"
-	"fmt"
 )
 
 func Test_GeneratePuzzle(t *testing.T) {
@@ -10,5 +9,12 @@ func Test_GeneratePuzzle(t *testing.T) {
 	minTotalGivens := 0
 	minSubGivens := 0
 	maxSubGivens := squareLength * squareLength
-	fmt.Println(GeneratePuzzle(squareLength, minTotalGivens, minSubGivens, maxSubGivens))
+	var puzzle string = GeneratePuzzle(squareLength, minTotalGivens, minSubGivens, maxSubGivens)
+	printSudokuByRaw(squareLength, puzzle)
+}
+
+func Test_randomTerminalPattern(t *testing.T) {
+	squareLength := 3
+	p := newPuzzle(squareLength)
+	printSudokuByDigits(squareLength, p.randomTerminalPattern())
 }

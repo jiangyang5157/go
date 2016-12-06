@@ -43,7 +43,7 @@ func newDlx(size int) *dlx {
 		return nil
 	}
 
-	columns := make([]column, size+1) // use column 0 as head
+	columns := make([]column, size + 1) // use column 0 as head
 	d := &dlx{columns: columns}
 
 	// init head
@@ -185,18 +185,18 @@ func (d *dlx) search(f func(o []*x) bool) bool {
 			break // not further searching required
 		}
 		// set the new item at the end of d.o
-		d.o[length-1] = r
+		d.o[length - 1] = r
 		for j := r.r; j != r; j = j.r {
 			cover(j.c)
 		}
 		ret = d.search(f)
-		r = d.o[length-1]
+		r = d.o[length - 1]
 		c = r.c
 		for j := r.l; j != r; j = j.l {
 			uncover(j.c)
 		}
 	}
-	d.o = d.o[:length-1] // remove last item from d.o
+	d.o = d.o[:length - 1] // remove last item from d.o
 	uncover(c)
 	return ret
 }

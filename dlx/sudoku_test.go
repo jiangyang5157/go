@@ -63,8 +63,8 @@ func Test_digits2raw2digits(t *testing.T) {
 	var digits []int = []int{1, 2, 13, 14, 5, 11, 7, 10, 2}
 	fmt.Println("digits", digits)
 	raw := digits2raw(digits)
-	fmt.Println("digits-raw", raw)
-	fmt.Println("raw-digits", raw2digits(raw))
+	fmt.Println("digits -> raw", raw)
+	fmt.Println("raw -> digits", raw2digits(raw))
 }
 
 func Test_disorderArray(t *testing.T) {
@@ -72,5 +72,5 @@ func Test_disorderArray(t *testing.T) {
 	for i := range digits {
 		digits[i] = i
 	}
-	fmt.Println("disorderArray(digits)", disorderArray(digits))
+	fmt.Printf("disorder %v -> %v", digits, disorderArray(digits))
 }

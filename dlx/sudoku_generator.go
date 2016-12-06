@@ -1,9 +1,5 @@
 package dlx
 
-import (
-	"fmt"
-)
-
 // Generate unique solution puzzle
 func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxSubGivens int) string {
 	if squareLength < 1 {
@@ -14,10 +10,8 @@ func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxS
 	var rtp []int = p.randomTerminalPattern()
 
 
-
 	//todo
-	fmt.Println(rtp)
-	return ""
+	return digits2raw(rtp)
 }
 
 func (p *puzzle) randomTerminalPattern() []int {
@@ -28,7 +22,8 @@ func (p *puzzle) randomTerminalPattern() []int {
 	for i := range tmp {
 		tmp[i] = i + 1
 	}
-	// some times the random number for squares cause zero solution, particularly 2x2 puzzle
+
+	// for-loop: some times the random number for squares cause zero solution, particularly 2x2 puzzle
 	for ok := false; ok != true; {
 		for i := 0; i < p.edgeLength; i += p.squareLength + 1 {
 			var d []int = disorderArray(tmp)
