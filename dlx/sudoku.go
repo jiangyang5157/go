@@ -94,3 +94,15 @@ func raw2digits(raw *string) *[]int {
 	}
 	return &digits
 }
+
+func digits2raw(digits *[]int) string {
+	digitLength := len(*digits)
+	var bs []byte = make([]byte, digitLength)
+    	for i := 0; i < digitLength; i++ {
+        	bs[i] = byte((*digits)[i])
+    	}
+	fmt.Println("bs", bs)
+	ret := string(bs)
+	fmt.Println("ret", ret)
+	return ret
+}
