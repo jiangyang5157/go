@@ -42,7 +42,7 @@ func (p *puzzle) init(digits []int) {
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
 		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
-			s := p.getSquareIndex(r, c)
+			s := p.squareIndex(r, c)
 			digit := digits[i]
 			p.addDigit(digit, i, r, c, s)
 		}
@@ -69,12 +69,16 @@ func (p *puzzle) addDigit(digit int, i int, r int, c int, s int) {
 	}
 }
 
-func (p *puzzle) getSquareIndex(r int, c int) int {
+func (p *puzzle) squareIndex(r int, c int) int {
 	return r / p.squareLength * p.squareLength + c / p.squareLength
 }
 
-func (p *puzzle) getCellIndex(r int, c int) int {
+func (p *puzzle) cellIndex(r int, c int) int {
 	return r * p.edgeLength + c
+}
+
+func (p *puzzle) rcIndex(cellIndex int) int {
+	return cellIndex / p.edgeLength, cellIndex % p.edgeLength
 }
 
 func raw2digits(raw string) []int {

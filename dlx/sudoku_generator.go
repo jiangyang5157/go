@@ -1,12 +1,18 @@
 package dlx
 
+func minTotalGivens(edgeLength int) int {
+	return edgeLength * 2 - 1 // unconfirmed
+}
+
 // Generate unique solution puzzle
-func GeneratePuzzle(squareLength int, minTotalGivens int, minSubGivens int, maxSubGivens int) string {
+func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string {
 	if squareLength < 1 {
 		return "Invalid puzzle"
 	}
 
 	p := newPuzzle(squareLength)
+	//mtg := minSubGivens(p.edgeLength)
+
 	var rtp []int = p.randomTerminalPattern()
 
 
@@ -30,7 +36,7 @@ func (p *puzzle) randomTerminalPattern() []int {
 			for j := 0; j < p.edgeLength; j++ {
 				r := j / p.squareLength + (i / p.squareLength) * p.squareLength
 				c := j % p.squareLength + (i / p.squareLength) * p.squareLength
-				digits[p.getCellIndex(r, c)] = d[j];
+				digits[p.cellIndex(r, c)] = d[j];
 			}
 		}
 
