@@ -15,9 +15,10 @@ func Test_GeneratePuzzle(t *testing.T) {
 
 	p := newPuzzle(squareLength)
 	p.init(raw2digits(raw))
-	var solutions []string = strings.Split(p.solvePuzzle(1), string(SOLUTION_PREFIX))
+	maxSolutionSize := 2
+	var solutions []string = strings.Split(p.solvePuzzle(maxSolutionSize), string(SOLUTION_PREFIX))
 	fmt.Printf("%v\n", solutions[0])
-	fmt.Printf("Looking for %d solutions, found %d solutions.\n", 2, len(solutions) - 1)
+	fmt.Printf("Looking for %d solutions, found %d solutions.\n", maxSolutionSize, len(solutions) - 1)
 	for i := 1; i < len(solutions); i++ {
 		printSudokuByRaw(squareLength, solutions[i])
 	}
