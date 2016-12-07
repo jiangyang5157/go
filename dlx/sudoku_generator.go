@@ -23,15 +23,21 @@ func GeneratePuzzle(squareLength int, minSubGivens int, minTotalGivens int) stri
 	}
 
 	// 0,1,...,edgeLength - 1
-	var tmp []int = make([]int, edgeLength)
-	for i := range tmp {
-		tmp[i] = i
+	var tmp1 []int = make([]int, edgeLength)
+	var tmp2 []int = make([]int, edgeLength)
+	for i := range tmp1 {
+		tmp1[i] = i
+	}
+	for i := range tmp2 {
+		tmp2[i] = i
 	}
 
-	for r := 0; r < edgeLength; r++ {
-		var d []int = disorderArray(tmp)
-		for di := 0; di < edgeLength; di++ {
-			c := d[di]
+	var d1 []int = disorderArray(tmp1)
+	for d1i := 0; d1i < edgeLength; d1i++ {
+		r := d1[d1i]
+		var d2 []int = disorderArray(tmp2)
+		for d2i := 0; d2i < edgeLength; d2i++ {
+			c := d2[d2i]
 			switch {
 			case remainTotalGivens <= minTotalGivens:
 				continue
