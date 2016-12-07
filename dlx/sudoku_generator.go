@@ -53,8 +53,9 @@ func (p *puzzle) randomTerminalPattern() []int {
 		p.search(func(o []*x) bool {
 			for _, x := range o {
 				x0 := x.x0
-				x0ci := x0.c.i
-				x0rci := x0.r.c.i
+				x0ci := x0.c.i    // x0ci = [offset1 + 1, offset2]
+				x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
+				// append by raw, index = [0, cellSize - 1]
 				ret[x0ci - 1] = (x0rci - 1) % edgeLength + 1
 			}
 			ok = true
