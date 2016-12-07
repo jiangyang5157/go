@@ -11,11 +11,17 @@ func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string
 	}
 
 	p := newPuzzle(squareLength)
-	//mtg := minTotalGivens(p.edgeLength)
 	var rtp []int = p.randomTerminalPattern()
 
+	//mtg := minTotalGivens(p.edgeLength)
+	//squareLength := p.squareLength
+	//edgeLength := p.edgeLength
+	//cellSize := p.cellSize
+	//var remainRowGivens []int = make([]int, edgeLength)
+	//var remainColumnGivens []int = make([]int, edgeLength)
 
-	//todo
+
+
 	return digits2raw(rtp)
 }
 
