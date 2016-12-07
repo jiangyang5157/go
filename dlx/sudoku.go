@@ -30,7 +30,6 @@ func newPuzzle(squareLength int) *puzzle {
 	offset2 := cellSize * 1
 	offset3 := cellSize * 2
 	offset4 := cellSize * 3
-	columnSize := offset4 + cellSize
 	p := &puzzle{
 		squareLength: squareLength,
 		edgeLength:   edgeLength,
@@ -40,15 +39,16 @@ func newPuzzle(squareLength int) *puzzle {
 		offset3:      offset3,
 		offset4:      offset4,
 	}
-	p.dlx = *newDlx(columnSize)
 	return p
 }
 
-func (p *puzzle) addDigits(digits []int) {
+func (p *puzzle) init(digits []int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
-	for r, i := 0, 0; r < p.edgeLength; r++ {
-		for c := 0; c < p.edgeLength; c, i = c + 1, i + 1 {
+
+	edgeLength := p.edgeLength
+	for r, i := 0, 0; r < edgeLength; r++ {
+		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
 			s := p.squareIndex(r, c)
 			digit := digits[i]
 			p.addDigit(digit, i, r, c, s)
@@ -57,27 +57,29 @@ func (p *puzzle) addDigits(digits []int) {
 }
 
 func (p *puzzle) addDigit(digit int, i int, r int, c int, s int) {
-	if digit >= 1 && digit <= p.edgeLength {
+	edgeLength := p.edgeLength
+	if digit >= 1 && digit <= edgeLength {
 		// valid digit
 		p.addRow([]int{
 			p.offset1 + i + 1,
-			p.offset2 + r * p.edgeLength + digit,
-			p.offset3 + c * p.edgeLength + digit,
-			p.offset4 + s * p.edgeLength + digit})
+			p.offset2 + r * edgeLength + digit,
+			p.offset3 + c * edgeLength + digit,
+			p.offset4 + s * edgeLength + digit})
 	} else {
 		// unknown digit, consider all possibilities
-		for digit = 1; digit <= p.edgeLength; digit++ {
+		for digit = 1; digit <= edgeLength; digit++ {
 			p.addRow([]int{
 				p.offset1 + i + 1,
-				p.offset2 + r * p.edgeLength + digit,
-				p.offset3 + c * p.edgeLength + digit,
-				p.offset4 + s * p.edgeLength + digit})
+				p.offset2 + r * edgeLength + digit,
+				p.offset3 + c * edgeLength + digit,
+				p.offset4 + s * edgeLength + digit})
 		}
 	}
 }
 
 func (p *puzzle) squareIndex(r int, c int) int {
-	return r / p.squareLength * p.squareLength + c / p.squareLength
+	squareLength := p.squareLength
+	return r / squareLength * squareLength + c / squareLength
 }
 
 func (p *puzzle) cellIndex(r int, c int) int {
@@ -85,7 +87,8 @@ func (p *puzzle) cellIndex(r int, c int) int {
 }
 
 func (p *puzzle) rcIndex(cellIndex int) (int, int) {
-	return cellIndex / p.edgeLength, cellIndex % p.edgeLength
+	edgeLength := p.edgeLength
+	return cellIndex / edgeLength, cellIndex % edgeLength
 }
 
 func raw2digits(raw string) []int {

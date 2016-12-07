@@ -19,17 +19,18 @@ func SolvePuzzleByDigits(squareLength int, digits []int, maxSolutionSize int) st
 	if len(digits) != p.cellSize {
 		return "Invalid data"
 	}
-	p.addDigits(digits)
+	p.init(digits)
 	return p.solvePuzzle(maxSolutionSize)
 }
 
+// puzzle needs to be initialized before
 func (p *puzzle) solvePuzzle(maxSolutionSize int) string {
 	var ret []byte
 	solutionCount := 0
 	p.search(func(o []*x) bool {
 		bs := make([]byte, p.cellSize)
-		for _, o := range p.o {
-			x0 := o.x0
+		for _, x := range o {
+			x0 := x.x0
 			x0ci := x0.c.i    // x0ci = [offset1 + 1, offset2]
 			x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
 			// bytes append by raw, index = [0, cellSize - 1]
@@ -43,6 +44,7 @@ func (p *puzzle) solvePuzzle(maxSolutionSize int) string {
 	return string(ret)
 }
 
+// puzzle needs to be initialized before
 func (p *puzzle) hasUniqueSolution() bool {
 	solutionCount := 0
 	p.search(func(o []*x) bool {

@@ -110,7 +110,7 @@ func Test_solvePuzzle(t *testing.T) {
 			"642978531" +
 			"978531642" // 2 solutions puzzle
 
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	solutions = strings.Split(p.solvePuzzle(2), string(SOLUTION_PREFIX))
 	fmt.Printf("%v\n", solutions[0])
 	fmt.Printf("Looking for %d solutions, found %d solutions.\n", 2, len(solutions) - 1)
@@ -129,7 +129,7 @@ func Test_solvePuzzle(t *testing.T) {
 			"7......28" +
 			".5..68..." // 188 solutions puzzle
 
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	solutions = strings.Split(p.solvePuzzle(1), string(SOLUTION_PREFIX))
 	fmt.Printf("%v\n", solutions[0])
 	fmt.Printf("Looking for %d solutions, found %d solutions.\n", 1, len(solutions) - 1)
@@ -154,7 +154,7 @@ func Test_hasUniqueSolution(t *testing.T) {
 			"642978531" +
 			"978531642" // 2 solutions puzzle
 
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	if p.hasUniqueSolution() == true {
 		t.Error("2 solutions puzzle, but hasUniqueSolution returns true")
 	}
@@ -170,7 +170,7 @@ func Test_hasUniqueSolution(t *testing.T) {
 			"7......28" +
 			".5..68..." // 188 solutions puzzle
 
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	if p.hasUniqueSolution() {
 		t.Error("188 solutions puzzle, but hasUniqueSolution returns true")
 	}
@@ -186,7 +186,7 @@ func Test_hasUniqueSolution(t *testing.T) {
 			"........." +
 			"........." // 0 solutions puzzle
 
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	if p.hasUniqueSolution() == true {
 		t.Error("0 solutions puzzle, but hasUniqueSolution returns true")
 	}
@@ -201,7 +201,7 @@ func Test_hasUniqueSolution(t *testing.T) {
 			".7..2..6." +
 			"..14.35.." +
 			"........." // 1 solutions puzzle
-	p.addDigits(raw2digits(raw))
+	p.init(raw2digits(raw))
 	if p.hasUniqueSolution() == false {
 		t.Error("1 solutions puzzle, but hasUniqueSolution returns false")
 	}
