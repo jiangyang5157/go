@@ -1,11 +1,7 @@
 package dlx
 
-func minTotalGivens(edgeLength int) int {
-	return edgeLength * 2 - 1 // unconfirmed
-}
-
 // Generate unique solution puzzle
-func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string {
+func GeneratePuzzle(squareLength int, minSubGivens int, minTotalGivens int) string {
 	if squareLength < 1 {
 		return "Invalid puzzle"
 	}
@@ -16,7 +12,6 @@ func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string
 	//squareLength := p.squareLength
 	edgeLength := p.edgeLength
 	cellSize := p.cellSize
-	mtg := minTotalGivens(p.edgeLength)
 	remainTotalGivens := cellSize
 	var remainRowGivens []int = make([]int, edgeLength)
 	for i := range remainRowGivens {
@@ -38,7 +33,7 @@ func GeneratePuzzle(squareLength int, minSubGivens int, maxSubGivens int) string
 		for di := 0; di < edgeLength; di++ {
 			c := d[di]
 			switch {
-			case remainTotalGivens <= mtg:
+			case remainTotalGivens <= minTotalGivens:
 				continue
 			case remainColumnGivens[c] <= minSubGivens:
 				continue

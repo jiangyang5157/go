@@ -9,8 +9,8 @@ import (
 func Test_GeneratePuzzle(t *testing.T) {
 	squareLength := 3
 	minSubGivens := 2
-	maxSubGivens := 6
-	var raw string = GeneratePuzzle(squareLength, minSubGivens, maxSubGivens)
+	minTotalGivens := 17
+	var raw string = GeneratePuzzle(squareLength, minSubGivens, minTotalGivens)
 	printSudokuByRaw(squareLength, raw)
 
 	p := newPuzzle(squareLength)
