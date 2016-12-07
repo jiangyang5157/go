@@ -72,5 +72,5 @@ func Test_disorderArray(t *testing.T) {
 	for i := range digits {
 		digits[i] = i
 	}
-	fmt.Printf("disorder %v -> %v", digits, disorderArray(digits))
+	fmt.Printf("disorder %v -> %v\n", digits, disorderArray(digits))
 }

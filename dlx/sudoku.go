@@ -26,18 +26,25 @@ type puzzle struct {
 func newPuzzle(squareLength int) *puzzle {
 	edgeLength := squareLength * squareLength
 	cellSize := edgeLength * edgeLength
-	return &puzzle{
+	offset1 := cellSize * 0
+	offset2 := cellSize * 1
+	offset3 := cellSize * 2
+	offset4 := cellSize * 3
+	columnSize := offset4 + cellSize
+	p := &puzzle{
 		squareLength: squareLength,
 		edgeLength:   edgeLength,
 		cellSize:     cellSize,
-		offset1:      cellSize * 0,
-		offset2:      cellSize * 1,
-		offset3:      cellSize * 2,
-		offset4:      cellSize * 3,
+		offset1:      offset1,
+		offset2:      offset2,
+		offset3:      offset3,
+		offset4:      offset4,
 	}
+	p.dlx = *newDlx(columnSize)
+	return p
 }
 
-func (p *puzzle) init(digits []int) {
+func (p *puzzle) addDigits(digits []int) {
 	columnSize := p.offset4 + p.cellSize
 	p.dlx = *newDlx(columnSize)
 	for r, i := 0, 0; r < p.edgeLength; r++ {
@@ -77,7 +84,7 @@ func (p *puzzle) cellIndex(r int, c int) int {
 	return r * p.edgeLength + c
 }
 
-func (p *puzzle) rcIndex(cellIndex int) int {
+func (p *puzzle) rcIndex(cellIndex int) (int, int) {
 	return cellIndex / p.edgeLength, cellIndex % p.edgeLength
 }
 

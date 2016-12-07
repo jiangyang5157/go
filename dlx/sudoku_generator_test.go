@@ -6,10 +6,9 @@ import (
 
 func Test_GeneratePuzzle(t *testing.T) {
 	squareLength := 3
-	minTotalGivens := 0
 	minSubGivens := 0
 	maxSubGivens := squareLength * squareLength
-	var puzzle string = GeneratePuzzle(squareLength, minTotalGivens, minSubGivens, maxSubGivens)
+	var puzzle string = GeneratePuzzle(squareLength, minSubGivens, maxSubGivens)
 	printSudokuByRaw(squareLength, puzzle)
 }
 

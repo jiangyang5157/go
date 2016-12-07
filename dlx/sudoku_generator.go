@@ -40,7 +40,7 @@ func (p *puzzle) randomTerminalPattern() []int {
 		}
 
 		// solve
-		p.init(digits)
+		p.addDigits(digits)
 		p.search(func(o []*x) bool {
 			for _, o := range p.o {
 				x0 := o.x0
