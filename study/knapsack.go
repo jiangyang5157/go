@@ -22,9 +22,9 @@ func knapsack() {
 	for i := 1; i <= n; i++ {
 		for j := 0; j <= c; j++ {
 			if w[i] > j {
-				m[i][j] = m[i-1][j]
+				m[i][j] = m[i - 1][j]
 			} else {
-				m[i][j] = max(m[i-1][j], m[i-1][j-w[i]]+v[i])
+				m[i][j] = max(m[i - 1][j], m[i - 1][j - w[i]] + v[i])
 			}
 		}
 	}
