@@ -1,4 +1,4 @@
-package bst
+package binarysearchtree
 
 type Comparable func(a interface{}, b interface{}) int
 
