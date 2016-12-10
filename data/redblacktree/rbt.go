@@ -107,10 +107,8 @@ func (t *Tree) FindValue(key KeyType) ValueType {
 
 // Insert the key-value pair into the rbtree
 func (t *Tree) Insert(key KeyType, value ValueType) {
-	x := t.root
 	var y *node
-
-	for x != nil {
+	for x := t.root; x != nil; {
 		y = x
 		if key.LessThan(x.Key) {
 			x = x.left
