@@ -1,6 +1,6 @@
 package sort
 
-// O(n^2)
+// O(n) already sorted; O(n^2); O(n^2)
 func BubbleSort(arr []int) []int {
 	arrLen := len(arr)
 	for i := 0; i < arrLen; i++ {

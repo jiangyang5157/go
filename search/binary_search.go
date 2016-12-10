@@ -1,5 +1,6 @@
 package search
 
+// O(log n) always
 func BinarySearch(arr []int, find int) int {
 	low, high := arr[0], arr[len(arr)-1]
 	if find < low || high < find {

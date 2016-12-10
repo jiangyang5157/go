@@ -4,7 +4,7 @@ import (
 	"math/rand"
 )
 
-// O(n log n) average -> O(n^2) if in reversed order
+// O(n log n); O(n log n); O(n^2) presorted
 func QuickSort(arr []int) []int {
 	arrLen := len(arr)
 	if arrLen <= 1 {
