@@ -1,150 +1,103 @@
 package study
-
-import (
-	"math"
-	"container/heap"
-)
-
 // O(|V|^2) Dijkstra's algorithm (Greedy algorithm) is an algorithm for finding the shortest paths between nodes in a graph
 
-type vertex interface{}
+import (
+	"bufio"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+)
+
+type graph struct {
+	edges map[int][]*edge
+	nodes map[int]struct{}
+}
 
 type edge struct {
-	v1, v2 interface{}
-	dist   int
-}
-
-type node struct {
-	v         interface{} // vertex name
-	neighbors []neighbor  // edges from this vertex
-	tent      int         // tentative distance
-	prev      *node       // previous node in shortest path back to start
-	done      bool        // true when tent and prev represent shortest path
-	rx        int         // heap remove/fix index
-}
-
-type neighbor struct {
-	theNode *node
-	dist    int
-}
-
-type path struct {
-	path   []vertex
+	head   int
 	length int
 }
 
-type nodeHeap []*node
+func (g *graph) load(filename string) error {
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
 
-func (nh nodeHeap) Len() int {
-	return len(nh)
-}
-func (nh nodeHeap) Less(i, j int) bool {
-	return nh[i].tent < nh[j].tent
-}
-func (nh nodeHeap) Swap(i, j int) {
-	nh[i], nh[j] = nh[j], nh[i]
-	nh[i].rx = i
-	nh[j].rx = j
-}
-func (nh *nodeHeap) Push(x interface{}) {
-	n := x.(*node)
-	n.rx = len(*nh)
-	*nh = append(*nh, n)
-}
-func (nh *nodeHeap) Pop() interface{} {
-	nhRef := *nh
-	lastIndex := len(nhRef) - 1
-	lastNode := nhRef[lastIndex]
-	*nh = nhRef[:lastIndex]
-	lastNode.rx = -1
-	return lastNode
-}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		edges := strings.Split(strings.TrimSpace(scanner.Text()), "\t")
 
-func linkGraph(edges []edge, directed bool, start vertex, end vertex) (nodes []*node, startNode *node, endNode *node) {
-	all := make(map[vertex]*node)
-	for _, e := range edges {
-		n1 := all[e.v1]
-		n2 := all[e.v2]
-		if n1 == nil {
-			n1 = &node{v: e.v1}
-			all[e.v1] = n1
+		// Convert tail vertex to number
+		tail, err := strconv.Atoi(edges[0])
+		if err != nil {
+			log.Fatal(err)
 		}
-		if n2 == nil {
-			n2 = &node{v: e.v2}
-			all[e.v2] = n2
-		}
-		n1.neighbors = append(n1.neighbors, neighbor{theNode: n2, dist: e.dist})
-		if !directed {
-			n2.neighbors = append(n2.neighbors, neighbor{theNode: n1, dist: e.dist})
+		g.nodes[tail] = struct{}{}
+
+		for i := 1; i < len(edges); i++ {
+			data := strings.Split(edges[i], ",")
+
+			// Convert adjacent vertex to number
+			head, err := strconv.Atoi(data[0])
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// Convert length to number
+			length, err := strconv.Atoi(data[1])
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			g.nodes[head] = struct{}{}
+			e := edge{head: head, length: length}
+			g.edges[tail] = append(g.edges[tail], &e)
 		}
 	}
-	nodes = make([]*node, len(all))
-	var n int
-	for _, nd := range all {
-		nodes[n] = nd
-		n++
-	}
-	return nodes, all[start], all[end]
+
+	return scanner.Err()
 }
 
-// dijkstra is a heap-enhanced version of Dijkstra's shortest path algorithm.
-// If endNode is specified, only a single path is returned.
-// If endNode is nil, paths to all nodes are returned.
-// Note input all nodes is needed to efficiently accomplish WP steps 1 and 2.
-// This initialization could be done in linkGraph, but is done here to more
-// closely follow the WP algorithm.
-func dijkstra(nodes []*node, startNode, endNode *node) (ret []path) {
-	// WP steps 1 and 2.
-	for _, n := range nodes {
-		n.tent = math.MaxInt32
-		n.done = false
-		n.prev = nil
-		n.rx = -1
-	}
-	current := startNode
-	current.tent = 0
-	var unvis nodeHeap
+// Return the map to track distances from source vertex
+func (g *graph) dijkstra(source int) map[int]int {
+	const MAX_DIST int = int(1 << 15) - 1 // 32767
 
+	dist := make(map[int]int)
+	for index := range g.nodes {
+		if index == source {
+			dist[source] = 0 // Distance from source to source is zero
+		} else {
+			dist[index] = MAX_DIST // Initalize distances to maximum
+		}
+	}
+
+	var tmpIndex int
 	for {
-		// WP step 3: update tentative distances to neighbors
-		for _, nb := range current.neighbors {
-			if nd := nb.theNode; !nd.done {
-				if d := current.tent + nb.dist; d < nd.tent {
-					nd.tent = d
-					nd.prev = current
-					if nd.rx < 0 {
-						heap.Push(&unvis, nd)
-					} else {
-						heap.Fix(&unvis, nd.rx)
-					}
-				}
+		if len(g.nodes) == 0 {
+			break
+		}
+		// Find vertex with minimum distance
+		min := MAX_DIST
+		for index := range g.nodes {
+			if dist[index] < min {
+				min = dist[index]
+				tmpIndex = index
 			}
 		}
-		// WP step 4: mark current node visited, record path and distance
-		current.done = true
-		if endNode == nil || current == endNode {
-			// record path and distance for return value
-			distance := current.tent
-			// recover path by tracing prev links,
-			var p []vertex
-			for ; current != nil; current = current.prev {
-				p = append(p, current.v)
-			}
-			// then reverse list
-			for i := (len(p) + 1) / 2; i > 0; i-- {
-				p[i - 1], p[len(p) - i] = p[len(p) - i], p[i - 1]
-			}
-			ret = append(ret, path{p, distance}) // pl is return value
-			// WP step 5 (case of end node reached)
-			if endNode != nil {
-				return
+
+		// Remove minimum vertex
+		delete(g.nodes, tmpIndex)
+
+		// Calculate minimum edge distance
+		for _, edge := range g.edges[tmpIndex] {
+			if dist[tmpIndex] + edge.length < dist[edge.head] {
+				dist[edge.head] = dist[tmpIndex] + edge.length
 			}
 		}
-		if len(unvis) == 0 {
-			break // WP step 5 (case of no more reachable nodes)
-		}
-		// WP step 6: new current is node with smallest tentative distance
-		current = heap.Pop(&unvis).(*node)
 	}
-	return
+
+	return dist
 }
