@@ -54,7 +54,7 @@ func Test_MaxPq(t *testing.T) {
 
 	sorted := make([]PriorityElement, 0)
 	for pq.Length() > 0 {
-		sorted = append(sorted, pq.Extract())
+		sorted = append(sorted, pq.Extract().(PriorityElement))
 	}
 	for i := 0; i < len(sorted); i++ {
 		fmt.Printf("%v, ", sorted[i])
@@ -89,7 +89,7 @@ func Test_MinPq(t *testing.T) {
 
 	sorted := make([]PriorityElement, 0)
 	for pq.Length() > 0 {
-		sorted = append(sorted, pq.Extract())
+		sorted = append(sorted, pq.Extract().(PriorityElement))
 	}
 	for i := 0; i < len(sorted); i++ {
 		fmt.Printf("%v, ", sorted[i])
@@ -114,7 +114,7 @@ func TestChangePriority(t *testing.T) {
 		t.Error("ChangePriority doesn't work as expected")
 	}
 	if pq.ChangePriority(2, 222) == nil {
-		popped := pq.Extract()
+		popped := pq.Extract().(PriorityElement)
 		if popped.value != 2 {
 			t.Error("ChangePriority doesn't work as expected")
 		}
