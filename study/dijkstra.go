@@ -63,6 +63,10 @@ func (g *graph) load(filename string) error {
 
 // Return the map to track distances from source vertex
 func (g *graph) dijkstra(source int) map[int]int {
+	if _, ok := g.nodes[source]; !ok {
+		return nil // source doesn't exist
+	}
+
 	const MAX_DIST int = int(1 << 15) - 1 // 32767
 
 	dist := make(map[int]int)
