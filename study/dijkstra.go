@@ -7,27 +7,33 @@ import (
 
 // O(|V|^2) Dijkstra's algorithm (Greedy algorithm) is an algorithm for finding the shortest paths between nodes in a graph
 
-// edge struct holds the bare data needed to define a graph.
+
+type vertex interface{}
+
 type edge struct {
-	vert1, vert2 vertex
-	dist         int
+	v1, v2 vertex
+	dist   int
 }
 
-// node and neighbor structs hold data useful for the heap-optimized
-// Dijkstra's shortest path algorithm
 type node struct {
-	vert vertex     // vertex name
-	tent int        // tentative distance
-	prev *node      // previous node in shortest path back to start
-	done bool       // true when tent and prev represent shortest path
-	nbs  []neighbor // edges from this vertex
-	rx   int        // heap.Remove index
+	v         vertex     // vertex name
+	neighbors []neighbor // edges from this vertex
+	tent      int        // tentative distance
+	prev      *node      // previous node in shortest path back to start
+	done      bool       // true when tent and prev represent shortest path
+	rx        int        // heap.Remove index
 }
 
 type neighbor struct {
-	nd   *node // node corresponding to vertex
-	dist int   // distance to this node (from whatever node references this)
+	host *node
+	dist int
 }
+
+type path struct {
+	path   []vertex
+	length int
+}
+
 
 // linkGraph constructs a linked representation of the input graph,
 // with additional fields needed by the shortest path algorithm.
@@ -42,21 +48,21 @@ start, end string) (allNodes []*node, startNode, endNode *node) {
 	all := make(map[interface{}]*node)
 	// one pass over graph to collect nodes and link neighbors
 	for _, e := range graph {
-		n1 := all[e.vert1]
-		n2 := all[e.vert2]
+		n1 := all[e.v1]
+		n2 := all[e.v2]
 		// add previously unseen nodes
 		if n1 == nil {
-			n1 = &node{vert: e.vert1}
-			all[e.vert1] = n1
+			n1 = &node{v: e.v1}
+			all[e.v1] = n1
 		}
 		if n2 == nil {
-			n2 = &node{vert: e.vert2}
-			all[e.vert2] = n2
+			n2 = &node{v: e.v2}
+			all[e.v2] = n2
 		}
 		// link neighbors
-		n1.nbs = append(n1.nbs, neighbor{n2, e.dist})
+		n1.neighbors = append(n1.neighbors, neighbor{n2, e.dist})
 		if !directed {
-			n2.nbs = append(n2.nbs, neighbor{n1, e.dist})
+			n2.neighbors = append(n2.neighbors, neighbor{n1, e.dist})
 		}
 	}
 	allNodes = make([]*node, len(all))
@@ -67,14 +73,6 @@ start, end string) (allNodes []*node, startNode, endNode *node) {
 	}
 	return allNodes, all[start], all[end]
 }
-
-// return type
-type path struct {
-	path   []vertex
-	length int
-}
-
-type vertex interface{}
 
 // dijkstra is a heap-enhanced version of Dijkstra's shortest path algorithm.
 //
@@ -98,8 +96,8 @@ func dijkstra(allNodes []*node, startNode, endNode *node) (pl []path) {
 
 	for {
 		// WP step 3: update tentative distances to neighbors
-		for _, nb := range current.nbs {
-			if nd := nb.nd; !nd.done {
+		for _, nb := range current.neighbors {
+			if nd := nb.host; !nd.done {
 				if d := current.tent + nb.dist; d < nd.tent {
 					nd.tent = d
 					nd.prev = current
@@ -119,7 +117,7 @@ func dijkstra(allNodes []*node, startNode, endNode *node) (pl []path) {
 			// recover path by tracing prev links,
 			var p []vertex
 			for ; current != nil; current = current.prev {
-				p = append(p, current.vert)
+				p = append(p, current.v)
 			}
 			// then reverse list
 			for i := (len(p) + 1) / 2; i > 0; i-- {
