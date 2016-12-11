@@ -10,22 +10,22 @@ import (
 type vertex interface{}
 
 type edge struct {
-	v1, v2 vertex
+	v1, v2 interface{}
 	dist   int
 }
 
 type node struct {
-	v         vertex     // vertex name
-	neighbors []neighbor // edges from this vertex
-	tent      int        // tentative distance
-	prev      *node      // previous node in shortest path back to start
-	done      bool       // true when tent and prev represent shortest path
-	rx        int        // heap.Remove index
+	v         interface{} // vertex name
+	neighbors []neighbor  // edges from this vertex
+	tent      int         // tentative distance
+	prev      *node       // previous node in shortest path back to start
+	done      bool        // true when tent and prev represent shortest path
+	rx        int         // heap remove/fix index
 }
 
 type neighbor struct {
-	host *node
-	dist int
+	theNode *node
+	dist    int
 }
 
 type path struct {
@@ -35,29 +35,29 @@ type path struct {
 
 type nodeHeap []*node
 
-func (n nodeHeap) Len() int {
-	return len(n)
+func (nh nodeHeap) Len() int {
+	return len(nh)
 }
-func (n nodeHeap) Less(i, j int) bool {
-	return n[i].tent < n[j].tent
+func (nh nodeHeap) Less(i, j int) bool {
+	return nh[i].tent < nh[j].tent
 }
-func (n nodeHeap) Swap(i, j int) {
-	n[i], n[j] = n[j], n[i]
-	n[i].rx = i
-	n[j].rx = j
+func (nh nodeHeap) Swap(i, j int) {
+	nh[i], nh[j] = nh[j], nh[i]
+	nh[i].rx = i
+	nh[j].rx = j
 }
-func (n *nodeHeap) Push(x interface{}) {
-	nd := x.(*node)
-	nd.rx = len(*n)
-	*n = append(*n, nd)
+func (nh *nodeHeap) Push(x interface{}) {
+	n := x.(*node)
+	n.rx = len(*nh)
+	*nh = append(*nh, n)
 }
-func (n *nodeHeap) Pop() interface{} {
-	s := *n
-	last := len(s) - 1
-	r := s[last]
-	*n = s[:last]
-	r.rx = -1
-	return r
+func (nh *nodeHeap) Pop() interface{} {
+	nhRef := *nh
+	lastIndex := len(nhRef) - 1
+	lastNode := nhRef[lastIndex]
+	*nh = nhRef[:lastIndex]
+	lastNode.rx = -1
+	return lastNode
 }
 
 func linkGraph(edges []edge, directed bool, start vertex, end vertex) (nodes []*node, startNode *node, endNode *node) {
@@ -73,10 +73,9 @@ func linkGraph(edges []edge, directed bool, start vertex, end vertex) (nodes []*
 			n2 = &node{v: e.v2}
 			all[e.v2] = n2
 		}
-		// link neighbors
-		n1.neighbors = append(n1.neighbors, neighbor{n2, e.dist})
+		n1.neighbors = append(n1.neighbors, neighbor{theNode: n2, dist: e.dist})
 		if !directed {
-			n2.neighbors = append(n2.neighbors, neighbor{n1, e.dist})
+			n2.neighbors = append(n2.neighbors, neighbor{theNode: n1, dist: e.dist})
 		}
 	}
 	nodes = make([]*node, len(all))
@@ -89,10 +88,8 @@ func linkGraph(edges []edge, directed bool, start vertex, end vertex) (nodes []*
 }
 
 // dijkstra is a heap-enhanced version of Dijkstra's shortest path algorithm.
-//
 // If endNode is specified, only a single path is returned.
 // If endNode is nil, paths to all nodes are returned.
-//
 // Note input all nodes is needed to efficiently accomplish WP steps 1 and 2.
 // This initialization could be done in linkGraph, but is done here to more
 // closely follow the WP algorithm.
@@ -111,7 +108,7 @@ func dijkstra(nodes []*node, startNode, endNode *node) (ret []path) {
 	for {
 		// WP step 3: update tentative distances to neighbors
 		for _, nb := range current.neighbors {
-			if nd := nb.host; !nd.done {
+			if nd := nb.theNode; !nd.done {
 				if d := current.tent + nb.dist; d < nd.tent {
 					nd.tent = d
 					nd.prev = current

@@ -19,10 +19,9 @@ func Test_(t *testing.T) {
 	}
 	start := "a"
 	end := "e"
-	directed := true
-
-	// construct linked representation of example data
+	directed := false
 	nodes, startNode, endNode := linkGraph(edges, directed, start, end)
+
 	if directed {
 		fmt.Print("Directed")
 	} else {
@@ -30,15 +29,14 @@ func Test_(t *testing.T) {
 	}
 	fmt.Printf(" graph with %d nodes, %d edges\n", len(nodes), len(edges))
 	if startNode == nil {
-		fmt.Printf("start node %q not found in graph\n", start)
+		fmt.Printf("Start node %q not found in graph\n", start)
 		return
 	}
 	if endNode == nil {
-		fmt.Printf("end node %q not found in graph\n", end)
+		fmt.Printf("End node %q not found in graph\n", end)
 		return
 	}
 
-	// run Dijkstra's shortest path algorithm
 	paths := dijkstra(nodes, startNode, endNode)
 	fmt.Println("Shortest path(s):")
 	for _, p := range paths {
