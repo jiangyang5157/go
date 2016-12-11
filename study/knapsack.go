@@ -20,6 +20,7 @@ func knapsack() {
 	w := [n + 1]int{0, 1, 2, 4, 5, 3}  // weight of items
 	m := [n + 1][c + 1]int{}
 
+	// Memoization: storing precomputed values
 	for i := 1; i <= n; i++ {
 		for j := 0; j <= c; j++ {
 			if w[i] > j {
