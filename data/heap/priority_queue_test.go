@@ -7,9 +7,9 @@ import (
 
 func maxPqCompare(a interface{}, b interface{}) int {
 	switch {
-	case a.(Element).priority < b.(Element).priority:
+	case a.(PriorityElement).priority < b.(PriorityElement).priority:
 		return -1
-	case a.(Element).priority > b.(Element).priority:
+	case a.(PriorityElement).priority > b.(PriorityElement).priority:
 		return 1
 	default:
 		return 0
@@ -18,9 +18,9 @@ func maxPqCompare(a interface{}, b interface{}) int {
 
 func minPqCompare(a interface{}, b interface{}) int {
 	switch {
-	case a.(Element).priority < b.(Element).priority:
+	case a.(PriorityElement).priority < b.(PriorityElement).priority:
 		return 1
-	case a.(Element).priority > b.(Element).priority:
+	case a.(PriorityElement).priority > b.(PriorityElement).priority:
 		return -1
 	default:
 		return 0
@@ -37,22 +37,22 @@ func Test_MaxPq(t *testing.T) {
 		t.Error("Length doesn't work as expected")
 	}
 
-	pq.Insert(*NewElement(8, 10))
-	pq.Insert(*NewElement(7, 11))
-	pq.Insert(*NewElement(6, 12))
-	pq.Insert(*NewElement(3, 13))
-	pq.Insert(*NewElement(1, 14))
-	pq.Insert(*NewElement(0, 19))
-	pq.Insert(*NewElement(2, 18))
-	pq.Insert(*NewElement(4, 17))
-	pq.Insert(*NewElement(9, 16))
-	pq.Insert(*NewElement(5, 15))
+	pq.Insert(*NewPriorityElement(8, 10))
+	pq.Insert(*NewPriorityElement(7, 11))
+	pq.Insert(*NewPriorityElement(6, 12))
+	pq.Insert(*NewPriorityElement(3, 13))
+	pq.Insert(*NewPriorityElement(1, 14))
+	pq.Insert(*NewPriorityElement(0, 19))
+	pq.Insert(*NewPriorityElement(2, 18))
+	pq.Insert(*NewPriorityElement(4, 17))
+	pq.Insert(*NewPriorityElement(9, 16))
+	pq.Insert(*NewPriorityElement(5, 15))
 
 	if pq.Length() != 10 {
 		t.Error("Length doesn't work as expected")
 	}
 
-	sorted := make([]Element, 0)
+	sorted := make([]PriorityElement, 0)
 	for pq.Length() > 0 {
 		sorted = append(sorted, pq.Extract())
 	}
@@ -72,22 +72,22 @@ func Test_MinPq(t *testing.T) {
 		t.Error("Length doesn't work as expected")
 	}
 
-	pq.Insert(*NewElement(8, 10))
-	pq.Insert(*NewElement(7, 11))
-	pq.Insert(*NewElement(6, 12))
-	pq.Insert(*NewElement(3, 13))
-	pq.Insert(*NewElement(1, 14))
-	pq.Insert(*NewElement(0, 19))
-	pq.Insert(*NewElement(2, 18))
-	pq.Insert(*NewElement(4, 17))
-	pq.Insert(*NewElement(9, 16))
-	pq.Insert(*NewElement(5, 15))
+	pq.Insert(*NewPriorityElement(8, 10))
+	pq.Insert(*NewPriorityElement(7, 11))
+	pq.Insert(*NewPriorityElement(6, 12))
+	pq.Insert(*NewPriorityElement(3, 13))
+	pq.Insert(*NewPriorityElement(1, 14))
+	pq.Insert(*NewPriorityElement(0, 19))
+	pq.Insert(*NewPriorityElement(2, 18))
+	pq.Insert(*NewPriorityElement(4, 17))
+	pq.Insert(*NewPriorityElement(9, 16))
+	pq.Insert(*NewPriorityElement(5, 15))
 
 	if pq.Length() != 10 {
 		t.Error("Length doesn't work as expected")
 	}
 
-	sorted := make([]Element, 0)
+	sorted := make([]PriorityElement, 0)
 	for pq.Length() > 0 {
 		sorted = append(sorted, pq.Extract())
 	}
@@ -99,16 +99,16 @@ func Test_MinPq(t *testing.T) {
 
 func TestChangePriority(t *testing.T) {
 	pq := NewPriorityQueue(maxPqCompare)
-	pq.Insert(*NewElement(8, 10))
-	pq.Insert(*NewElement(7, 11))
-	pq.Insert(*NewElement(6, 12))
-	pq.Insert(*NewElement(3, 13))
-	pq.Insert(*NewElement(1, 14))
-	pq.Insert(*NewElement(0, 19))
-	pq.Insert(*NewElement(2, 18))
-	pq.Insert(*NewElement(4, 17))
-	pq.Insert(*NewElement(9, 16))
-	pq.Insert(*NewElement(5, 15))
+	pq.Insert(*NewPriorityElement(8, 10))
+	pq.Insert(*NewPriorityElement(7, 11))
+	pq.Insert(*NewPriorityElement(6, 12))
+	pq.Insert(*NewPriorityElement(3, 13))
+	pq.Insert(*NewPriorityElement(1, 14))
+	pq.Insert(*NewPriorityElement(0, 19))
+	pq.Insert(*NewPriorityElement(2, 18))
+	pq.Insert(*NewPriorityElement(4, 17))
+	pq.Insert(*NewPriorityElement(9, 16))
+	pq.Insert(*NewPriorityElement(5, 15))
 
 	if pq.ChangePriority(22, 222) == nil {
 		t.Error("ChangePriority doesn't work as expected")

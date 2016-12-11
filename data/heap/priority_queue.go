@@ -10,13 +10,13 @@ type PriorityQueue struct {
 	data Heap
 }
 
-type Element struct {
+type PriorityElement struct {
 	value    interface{}
 	priority int
 }
 
-func NewElement(value interface{}, priority int) *Element {
-	return &Element{value: value, priority: priority}
+func NewPriorityElement(value interface{}, priority int) *PriorityElement {
+	return &PriorityElement{value: value, priority: priority}
 }
 
 func NewPriorityQueue(compare Comparable) *PriorityQueue {
@@ -31,16 +31,16 @@ func (pq *PriorityQueue) Length() int {
 	return pq.data.Length()
 }
 
-func (pq *PriorityQueue) Insert(e Element) {
+func (pq *PriorityQueue) Insert(e PriorityElement) {
 	pq.data.Insert(e)
 }
 
-func (pq *PriorityQueue) Extract() Element {
-	return pq.data.Extract().(Element)
+func (pq *PriorityQueue) Extract() PriorityElement {
+	return pq.data.Extract().(PriorityElement)
 }
 
-func (pq *PriorityQueue) Peek() Element {
-	return pq.data.Peek().(Element)
+func (pq *PriorityQueue) Peek() PriorityElement {
+	return pq.data.Peek().(PriorityElement)
 }
 
 func (pq *PriorityQueue) ChangePriority(value interface{}, priority int) error {
@@ -50,7 +50,7 @@ func (pq *PriorityQueue) ChangePriority(value interface{}, priority int) error {
 	}
 
 	tmp := queue.New()
-	var popped Element
+	var popped PriorityElement
 	for pq.Length() > 0 {
 		popped = pq.Extract()
 		if popped.value == value {
@@ -67,7 +67,7 @@ func (pq *PriorityQueue) ChangePriority(value interface{}, priority int) error {
 	}
 	for tmp.Length() > 0 {
 		// recover pq
-		pq.data.Insert(tmp.Pop().(Element))
+		pq.data.Insert(tmp.Pop().(PriorityElement))
 	}
 	return err
 }
