@@ -5,19 +5,20 @@ import (
     "fmt"
 )
 
-var m *Manager
+var instance *Manager
 
 var once sync.Once
 
 func GetInstance() *Manager {
     once.Do(func() {
-        m = &Manager{}
+        fmt.Println("Create new instance")
+        instance = &Manager{}
     })
-    return m
+    return instance
 }
 
 type Manager struct{}
 
 func (m Manager) SayHello() {
-    fmt.Println(“Hello”)
+    fmt.Println("Hello")
 }
