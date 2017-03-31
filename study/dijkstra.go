@@ -1,4 +1,5 @@
 package study
+
 // O(|V|^2) Dijkstra's algorithm (Greedy algorithm) is an algorithm for finding the shortest paths between nodes in a graph
 
 import (
@@ -67,7 +68,7 @@ func (g *graph) dijkstra(source int) map[int]int {
 		return nil // source doesn't exist
 	}
 
-	const MAX_DIST int = int(1 << 15) - 1 // 32767
+	const MAX_DIST int = int(1<<15) - 1 // 32767
 
 	dist := make(map[int]int)
 	for index := range g.nodes {
@@ -97,7 +98,7 @@ func (g *graph) dijkstra(source int) map[int]int {
 
 		// Calculate minimum edge distance
 		for _, edge := range g.edges[tmpIndex] {
-			if dist[tmpIndex] + edge.length < dist[edge.head] {
+			if dist[tmpIndex]+edge.length < dist[edge.head] {
 				dist[edge.head] = dist[tmpIndex] + edge.length
 			}
 		}

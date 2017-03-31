@@ -1,11 +1,12 @@
 package hammingdistance
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_HamDist(t *testing.T) {
-	hammingDistance(0, 255)
+	var a, b uint8 = 0, 255
+	result := hammingDistance(a, b)
+	fmt.Printf("HammingDistance: %08b and %08b = %d\n", byte(a), byte(b), result)
 }
-
-// func Test_totalHammingDistance(t *testing.T) {
-// 	totalHammingDistance([...]int{0, 255})
-// }
