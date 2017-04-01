@@ -1,7 +1,5 @@
 package tries
 
-import "fmt"
-
 type Node struct {
 	parent   *Node
 	children map[byte]*Node
@@ -32,7 +30,6 @@ func (n *Node) add(bytes []byte) *Node {
 			return currNode.add(bytes[i+1:])
 		} else {
 			child = newNode()
-			fmt.Println("newnode")
 			currNode.children[c] = child
 			child.parent = currNode
 			currNode = child
@@ -92,7 +89,6 @@ func (n *Node) remove(bytes []byte) bool {
 		c := bytes[i]
 		parentNode = currNode.parent
 		if len(currNode.children) == 0 && currNode.end == false {
-			fmt.Println(string(c))
 			delete(parentNode.children, c)
 		}
 		currNode = parentNode
