@@ -1,14 +1,14 @@
 package tries
 
 type Node struct {
-	parent   *Node
-	children map[byte]*Node
-	end      bool
+	parent    *Node
+	children  map[byte]*Node
+	completed bool
 }
 
 func NewRoot() *Node {
 	root := newNode()
-	root.end = true
+	root.completed = true
 	return root
 }
 
@@ -30,12 +30,12 @@ func (n *Node) add(bytes []byte) *Node {
 			return currNode.add(bytes[i+1:])
 		} else {
 			child = newNode()
-			currNode.children[c] = child
 			child.parent = currNode
+			currNode.children[c] = child
 			currNode = child
 		}
 	}
-	currNode.end = true
+	currNode.completed = true
 	return currNode
 }
 
@@ -48,7 +48,7 @@ func (n *Node) search(bytes []byte) *Node {
 	if currNode == nil {
 		return nil
 	}
-	if currNode.end != true {
+	if currNode.completed != true {
 		return nil
 	}
 	return currNode
@@ -82,17 +82,16 @@ func (n *Node) remove(bytes []byte) bool {
 	if currNode == nil {
 		return false
 	}
-	currNode.end = false
+	currNode.completed = false
 
 	var parentNode *Node
 	for i := len(bytes) - 1; i >= 0; i-- {
 		c := bytes[i]
 		parentNode = currNode.parent
-		if len(currNode.children) == 0 && currNode.end == false {
+		if len(currNode.children) == 0 && currNode.completed == false {
 			delete(parentNode.children, c)
 		}
 		currNode = parentNode
 	}
-
 	return true
 }
