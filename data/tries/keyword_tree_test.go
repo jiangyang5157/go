@@ -2,23 +2,8 @@ package tries
 
 import (
 	"fmt"
-	"os"
 	"testing"
 )
-
-func setup() {
-	fmt.Println("setup")
-}
-func teardown() {
-	fmt.Println("teardown")
-}
-
-func TestMain(m *testing.M) {
-	setup()
-	exitCode := m.Run()
-	teardown()
-	os.Exit(exitCode)
-}
 
 func Test_Add(t *testing.T) {
 	root := NewRoot()

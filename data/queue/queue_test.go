@@ -1,8 +1,6 @@
 package queue
 
-import (
-	"testing"
-)
+import "testing"
 
 func Test_Queue(t *testing.T) {
 	queue := New()
@@ -21,7 +19,7 @@ func Test_Queue(t *testing.T) {
 	}
 
 	if queue.Pop() != 1 {
-		t.Error("remove doesn't work as expected")
+		t.Error("Remove doesn't work as expected")
 	}
 
 	if queue.Length() != 3 {
@@ -30,5 +28,25 @@ func Test_Queue(t *testing.T) {
 
 	if queue.Peek() != 2 {
 		t.Error("Peek doesn't work as expected")
+	}
+
+	if queue.Length() != 3 {
+		t.Error("Length doesn't work as expected")
+	}
+
+	if queue.Pop() != 2 {
+		t.Error("Remove doesn't work as expected")
+	}
+
+	if queue.Pop() != 3 {
+		t.Error("Remove doesn't work as expected")
+	}
+
+	if queue.Pop() != 4 {
+		t.Error("Remove doesn't work as expected")
+	}
+
+	if queue.Pop() != nil {
+		t.Error("Pop on an empty queue doesn't work as expected")
 	}
 }

@@ -2,15 +2,31 @@ package sort
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/jiangyang5157/go/number"
 )
 
-func Test_Sort(t *testing.T) {
-	arr := number.RandomArray(10)
-	fmt.Printf("%v as the unsorted array\n", arr)
+var arr []int
 
+func setup() {
+	fmt.Println("setup")
+	arr = number.RandomArray(10)
+	fmt.Printf("%v as the unsorted array\n", arr)
+}
+func teardown() {
+	fmt.Println("teardown")
+}
+
+func TestMain(m *testing.M) {
+	setup()
+	exitCode := m.Run()
+	teardown()
+	os.Exit(exitCode)
+}
+
+func Test_Sort(t *testing.T) {
 	fmt.Printf("%v from BubbleSort\n", BubbleSort(arr))
 	fmt.Printf("%v from CocktailSort\n", CocktailSort(arr))
 	fmt.Printf("%v from CombSort\n", CombSort(arr))

@@ -9,26 +9,29 @@ func New() *Queue {
 	return &Queue{data: make([]interface{}, 0), length: 0}
 }
 
-func (queue *Queue) Length() int {
-	return queue.length
+func (q *Queue) Length() int {
+	return q.length
 }
 
-func (queue *Queue) IsEmpty() bool {
-	return queue.Length() == 0
+func (q *Queue) IsEmpty() bool {
+	return q.Length() == 0
 }
 
-func (queue *Queue) Peek() interface{} {
-	return queue.data[0]
+func (q *Queue) Peek() interface{} {
+	return q.data[0]
 }
 
-func (queue *Queue) Pop() interface{} {
-	tmp := queue.Peek()
-	queue.data = queue.data[1:]
-	queue.length--
-	return tmp
+func (q *Queue) Pop() interface{} {
+	if q.IsEmpty() {
+		return nil
+	}
+	ret := q.Peek()
+	q.data = q.data[1:]
+	q.length--
+	return ret
 }
 
-func (queue *Queue) Push(data interface{}) {
-	queue.data = append(queue.data, data)
-	queue.length++
+func (q *Queue) Push(data interface{}) {
+	q.data = append(q.data, data)
+	q.length++
 }
