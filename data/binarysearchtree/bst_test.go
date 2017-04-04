@@ -23,13 +23,11 @@ func Test_BinaryTree(t *testing.T) {
 	root.Insert(3)
 	root.Insert(4)
 
-	findTree := root.Search(3)
-	if findTree.value != 3 {
+	if root.Search(3).value != 3 {
 		t.Error("Search doesn't work as expected")
 	}
 
-	findNilTree := root.Search(222)
-	if findNilTree != nil {
+	if root.Search(222) != nil {
 		t.Error("Search doesn't work as expected")
 	}
 }
