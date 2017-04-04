@@ -64,7 +64,7 @@ func Test_MaxHeap(t *testing.T) {
 	for i := 0; i < len(sorted); i++ {
 		fmt.Printf("%v, ", sorted[i])
 	}
-	fmt.Println("")
+	fmt.Println()
 }
 
 func Test_MinHeap(t *testing.T) {
@@ -104,5 +104,5 @@ func Test_MinHeap(t *testing.T) {
 	for i := 0; i < len(sorted); i++ {
 		fmt.Printf("%v, ", sorted[i])
 	}
-	fmt.Println("")
+	fmt.Println()
 }

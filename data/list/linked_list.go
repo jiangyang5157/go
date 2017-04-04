@@ -40,12 +40,12 @@ func (list *List) Last() *Element {
 	return list.last
 }
 
-func (element *Element) Prev() *Element {
-	return element.prev
+func (e *Element) Prev() *Element {
+	return e.prev
 }
 
-func (element *Element) Next() *Element {
-	return element.next
+func (e *Element) Next() *Element {
+	return e.next
 }
 
 func (list *List) Concat(other *List) {

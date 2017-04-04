@@ -3,7 +3,7 @@ package redblacktree
 import "fmt"
 
 const (
-	RED = 0
+	RED   = 0
 	BLACK = 1
 )
 
@@ -177,7 +177,6 @@ func (t *Tree) Delete(key KeyType) {
 	t.size -= 1
 }
 
-
 // Return the node's successor as an iterator
 func (n *node) Next() *node {
 	return successor(n)
@@ -195,7 +194,6 @@ func successor(x *node) *node {
 	}
 	return y
 }
-
 
 // Transplant the subtree u and v
 func (t *Tree) transplant(u, v *node) {

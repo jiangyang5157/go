@@ -13,30 +13,30 @@ func New(compare Comparable) *Node {
 	return &Node{compare: compare}
 }
 
-func (node *Node) Insert(value interface{}) {
-	if node.value == nil {
-		node.value = value
-		node.right = New(node.compare)
-		node.left = New(node.compare)
+func (n *Node) Insert(value interface{}) {
+	if n.value == nil {
+		n.value = value
+		n.right = New(n.compare)
+		n.left = New(n.compare)
 	} else {
-		if node.compare(value, node.value) < 0 {
-			node.left.Insert(value)
+		if n.compare(value, n.value) < 0 {
+			n.left.Insert(value)
 		} else {
-			node.right.Insert(value)
+			n.right.Insert(value)
 		}
 	}
 }
 
-func (node *Node) Search(value interface{}) *Node {
-	if node.value == nil {
+func (n *Node) Search(value interface{}) *Node {
+	if n.value == nil {
 		return nil
-	} else if node.value == value {
-		return node
+	} else if n.value == value {
+		return n
 	} else {
-		if node.compare(value, node.value) < 0 {
-			return node.left.Search(value)
+		if n.compare(value, n.value) < 0 {
+			return n.left.Search(value)
 		} else {
-			return node.right.Search(value)
+			return n.right.Search(value)
 		}
 	}
 }

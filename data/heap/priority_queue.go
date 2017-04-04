@@ -19,19 +19,19 @@ func NewPriorityQueue(compare Comparable) *Heap {
 	return New(compare)
 }
 
-func (pq *Heap) ChangePriority(value interface{}, priority int) error {
-	length := pq.Length()
+func (h *Heap) ChangePriority(value interface{}, priority int) error {
+	length := h.Length()
 	if length == 0 {
 		return errors.New("Empty priority queue")
 	}
 
 	tmp := queue.New()
 	var popped PriorityElement
-	for pq.Length() > 0 {
-		popped = pq.Extract().(PriorityElement)
+	for h.Length() > 0 {
+		popped = h.Extract().(PriorityElement)
 		if popped.value == value {
 			popped.priority = priority
-			pq.Insert(popped)
+			h.Insert(popped)
 			break
 		} else {
 			tmp.Push(popped)
@@ -43,7 +43,7 @@ func (pq *Heap) ChangePriority(value interface{}, priority int) error {
 	}
 	for tmp.Length() > 0 {
 		// recover pq
-		pq.Insert(tmp.Pop().(PriorityElement))
+		h.Insert(tmp.Pop().(PriorityElement))
 	}
 	return err
 }

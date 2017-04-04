@@ -9,26 +9,26 @@ func New() *Stack {
 	return &Stack{data: make([]interface{}, 0), length: 0}
 }
 
-func (stack *Stack) Length() int {
-	return stack.length
+func (s *Stack) Length() int {
+	return s.length
 }
 
-func (stack *Stack) IsEmpty() bool {
-	return stack.Length() == 0
+func (s *Stack) IsEmpty() bool {
+	return s.Length() == 0
 }
 
-func (stack *Stack) Peek() interface{} {
-	return stack.data[stack.length-1]
+func (s *Stack) Peek() interface{} {
+	return s.data[s.length-1]
 }
 
-func (stack *Stack) Pop() interface{} {
-	tmp := stack.Peek()
-	stack.data = stack.data[0:stack.length]
-	stack.length--
+func (s *Stack) Pop() interface{} {
+	tmp := s.Peek()
+	s.data = s.data[0:s.length]
+	s.length--
 	return tmp
 }
 
-func (stack *Stack) Push(data interface{}) {
-	stack.data = append(stack.data, data)
-	stack.length++
+func (s *Stack) Push(data interface{}) {
+	s.data = append(s.data, data)
+	s.length++
 }
