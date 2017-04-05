@@ -103,7 +103,8 @@ func getColor(n *node) int {
 
 // Find the node by key and return it,if not exists return nil
 func (t *Tree) findNode(key KeyType) *node {
-	for x := t.root; x != nil; {
+	x := t.root
+	for x != nil {
 		if key.LessThan(x.Key) {
 			x = x.left
 		} else {
@@ -378,6 +379,7 @@ func (t *Tree) right_rotate(x *node) {
 	x.parent = y
 }
 
+// Iterator create the rbtree's iterator that points to the minmum node
 func (t *Tree) Iterator() *node {
 	return minimum(t.root)
 }
