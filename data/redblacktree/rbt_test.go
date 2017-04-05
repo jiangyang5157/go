@@ -1,26 +1,22 @@
 package redblacktree
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
-type key int
+type Int int
 
-func (n key) LessThan(b interface{}) bool {
-	value, _ := b.(key)
-	return n < value
+func (a Int) LessThan(b KeyType) bool {
+	return a < b.(Int)
 }
 
 func Test_Print(t *testing.T) {
 	tree := NewTree()
 
-	tree.Insert(key(1), "123")
-	tree.Insert(key(3), "234")
-	tree.Insert(key(4), "dfa3")
-	tree.Insert(key(6), "sd4")
-	tree.Insert(key(5), "jcd4")
-	tree.Insert(key(2), "bcd4")
+	tree.Insert(Int(1), "123")
+	tree.Insert(Int(3), "234")
+	tree.Insert(Int(4), "dfa3")
+	tree.Insert(Int(6), "sd4")
+	tree.Insert(Int(5), "jcd4")
+	tree.Insert(Int(2), "bcd4")
 	if tree.Size() != 6 {
 		t.Error("Error size")
 		return
@@ -28,17 +24,17 @@ func Test_Print(t *testing.T) {
 	tree.Print()
 }
 
-func Test_Find(t *testing.T) {
+func Test_Search(t *testing.T) {
 	tree := NewTree()
 
-	tree.Insert(key(1), "123")
-	tree.Insert(key(3), "234")
-	tree.Insert(key(4), "dfa3")
-	tree.Insert(key(6), "sd4")
-	tree.Insert(key(5), "jcd4")
-	tree.Insert(key(2), "bcd4")
+	tree.Insert(Int(1), "123")
+	tree.Insert(Int(3), "234")
+	tree.Insert(Int(4), "dfa3")
+	tree.Insert(Int(6), "sd4")
+	tree.Insert(Int(5), "jcd4")
+	tree.Insert(Int(2), "bcd4")
 
-	n := tree.Find(key(4))
+	n := tree.Search(Int(4))
 	if n.Value != "dfa3" {
 		t.Error("Error value")
 		return
@@ -48,50 +44,33 @@ func Test_Find(t *testing.T) {
 		t.Error("Error value modify")
 		return
 	}
-	value := tree.FindValue(key(5)).(string)
+	value := tree.FindValue(Int(5)).(string)
 	if value != "jcd4" {
 		t.Error("Error value after modifyed other node")
 		return
 	}
 }
 
-func Test_Iterator(t *testing.T) {
-	tree := NewTree()
-
-	tree.Insert(key(1), "123")
-	tree.Insert(key(3), "234")
-	tree.Insert(key(4), "dfa3")
-	tree.Insert(key(6), "sd4")
-	tree.Insert(key(5), "jcd4")
-	tree.Insert(key(2), "bcd4")
-
-	it := tree.Iterator()
-	for it != nil {
-		fmt.Printf("[%v]{value=%v}\n", it.Key, it.Value)
-		it = it.Next()
-	}
-}
-
 func Test_Delete(t *testing.T) {
 	tree := NewTree()
 
-	tree.Insert(key(1), "123")
-	tree.Insert(key(3), "234")
-	tree.Insert(key(4), "dfa3")
-	tree.Insert(key(6), "sd4")
-	tree.Insert(key(5), "jcd4")
-	tree.Insert(key(2), "bcd4")
+	tree.Insert(Int(1), "123")
+	tree.Insert(Int(3), "234")
+	tree.Insert(Int(4), "dfa3")
+	tree.Insert(Int(6), "sd4")
+	tree.Insert(Int(5), "jcd4")
+	tree.Insert(Int(2), "bcd4")
 
 	for i := 1; i <= 6; i++ {
-		tree.Delete(key(i))
+		tree.Delete(Int(i))
 		if tree.Size() != 6-i {
 			t.Error("Delete Error")
 		}
 	}
-	tree.Insert(key(1), "bcd4")
+	tree.Insert(Int(1), "bcd4")
 	tree.Clear()
 	tree.Print()
-	if tree.FindValue(key(1)) != nil {
+	if tree.FindValue(Int(1)) != nil {
 		t.Error("Can't clear")
 		return
 	}
