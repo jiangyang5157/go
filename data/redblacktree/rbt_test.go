@@ -1,6 +1,7 @@
 package redblacktree
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func (n key) LessThan(b interface{}) bool {
 	return n < value
 }
 
-func Test_Preorder(t *testing.T) {
+func Test_Print(t *testing.T) {
 	tree := NewTree()
 
 	tree.Insert(key(1), "123")
@@ -24,7 +25,7 @@ func Test_Preorder(t *testing.T) {
 		t.Error("Error size")
 		return
 	}
-	tree.Preorder()
+	tree.Print()
 }
 
 func Test_Find(t *testing.T) {
@@ -37,7 +38,7 @@ func Test_Find(t *testing.T) {
 	tree.Insert(key(5), "jcd4")
 	tree.Insert(key(2), "bcd4")
 
-	n := tree.FindIt(key(4))
+	n := tree.Find(key(4))
 	if n.Value != "dfa3" {
 		t.Error("Error value")
 		return
@@ -53,6 +54,7 @@ func Test_Find(t *testing.T) {
 		return
 	}
 }
+
 func Test_Iterator(t *testing.T) {
 	tree := NewTree()
 
@@ -65,6 +67,7 @@ func Test_Iterator(t *testing.T) {
 
 	it := tree.Iterator()
 	for it != nil {
+		fmt.Printf("[%v]{value=%v}\n", it.Key, it.Value)
 		it = it.Next()
 	}
 }
@@ -81,13 +84,13 @@ func Test_Delete(t *testing.T) {
 
 	for i := 1; i <= 6; i++ {
 		tree.Delete(key(i))
-		if tree.Size() != 6 - i {
+		if tree.Size() != 6-i {
 			t.Error("Delete Error")
 		}
 	}
 	tree.Insert(key(1), "bcd4")
 	tree.Clear()
-	tree.Preorder()
+	tree.Print()
 	if tree.FindValue(key(1)) != nil {
 		t.Error("Can't clear")
 		return

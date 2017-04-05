@@ -1,8 +1,8 @@
 package builder
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_builder(t *testing.T) {

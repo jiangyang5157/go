@@ -1,5 +1,20 @@
 package redblacktree
 
+/*
+It is a special BST, where:
++ Each node is either BLACK or RED
++ Root is BLACK
++ All leaves (nil children) are BLACK
++ Every RED node has two BLACK children
++ Every path from root to leaf has the same number of BLACK nodes, the number also called "black-height"
+
+It is not a completed balance BST, but it guarantees a almost-balanced BST:
++ It sacrifices balanced-hight for a O(log(n)) Insert/Delete/Search
++ Any un-almost-balanced situation caused by Insert/Delete can be fix in maximum 3 times rotation
+
+eg: JDK.TreeMap, JDK.TreeSet
+*/
+
 import "fmt"
 
 const (
@@ -7,15 +22,15 @@ const (
 	BLACK = 1
 )
 
-type ValueType interface{}
-
 type KeyType interface {
 	LessThan(interface{}) bool
 }
 
+type ValueType interface{}
+
 type node struct {
-	left, right, parent *node
 	color               int
+	left, right, parent *node
 	Key                 KeyType
 	Value               ValueType
 }
@@ -23,6 +38,38 @@ type node struct {
 type Tree struct {
 	root *node
 	size int
+}
+
+func (n *node) Print() {
+	fmt.Printf("[%v]{value=%v, ", n.Key, n.Value)
+
+	if n.color == RED {
+		fmt.Printf("color=RED, ")
+	} else {
+		fmt.Printf("color=BLACK, ")
+	}
+
+	if n.parent == nil {
+		fmt.Printf("parent=nil\n")
+	} else {
+		fmt.Printf("parent.key=%v\n", n.parent.Key)
+	}
+
+	if n.left != nil {
+		fmt.Printf("left=\n")
+		n.left.Print()
+	}
+	if n.right != nil {
+		fmt.Printf("right=\n")
+		n.right.Print()
+	}
+	fmt.Printf("}[%v]\n", n.Key)
+}
+
+func (t *Tree) Print() {
+	if t.root != nil {
+		t.root.Print()
+	}
 }
 
 // Return a new rbtree
@@ -54,27 +101,6 @@ func getColor(n *node) int {
 	return n.color
 }
 
-// Find the minimum node of subtree n.
-func minimum(n *node) *node {
-	for n.left != nil {
-		n = n.left
-	}
-	return n
-}
-
-// Find the maximum node of subtree n.
-func maximum(n *node) *node {
-	for n.right != nil {
-		n = n.right
-	}
-	return n
-}
-
-// Create the rbtree's iterator that points to the minmum node
-func (t *Tree) Iterator() *node {
-	return minimum(t.root)
-}
-
 // Find the node by key and return it,if not exists return nil
 func (t *Tree) findNode(key KeyType) *node {
 	for x := t.root; x != nil; {
@@ -91,8 +117,7 @@ func (t *Tree) findNode(key KeyType) *node {
 	return nil
 }
 
-// Find the node and return it as a iterator
-func (t *Tree) FindIt(key KeyType) *node {
+func (t *Tree) Find(key KeyType) *node {
 	return t.findNode(key)
 }
 
@@ -103,6 +128,22 @@ func (t *Tree) FindValue(key KeyType) ValueType {
 		return n.Value
 	}
 	return nil
+}
+
+// Find the minimum node of the subtree-n: n, n.left, n.right.
+func minimum(n *node) *node {
+	for n.left != nil {
+		n = n.left
+	}
+	return n
+}
+
+// Find the maximum node of the subtree-n: n, n.left, n.right.
+func maximum(n *node) *node {
+	for n.right != nil {
+		n = n.right
+	}
+	return n
 }
 
 // Insert the key-value pair into the rbtree
@@ -130,7 +171,46 @@ func (t *Tree) Insert(key KeyType, value ValueType) {
 		y.right = z
 	}
 	t.rb_insert_fixup(z)
+}
 
+func (t *Tree) rb_insert_fixup(z *node) {
+	var y *node
+	for z.parent != nil && z.parent.color == RED {
+		if z.parent == z.parent.parent.left {
+			y = z.parent.parent.right
+			if y != nil && y.color == RED {
+				z.parent.color = BLACK
+				y.color = BLACK
+				z.parent.parent.color = BLACK
+				z = z.parent.parent
+			} else {
+				if z == z.parent.right {
+					z = z.parent
+					t.left_rotate(z)
+				}
+				z.parent.color = BLACK
+				z.parent.parent.color = RED
+				t.right_rotate(z.parent.parent)
+			}
+		} else {
+			y = z.parent.parent.left
+			if y != nil && y.color == RED {
+				z.parent.color = BLACK
+				y.color = BLACK
+				z.parent.parent.color = RED
+				z = z.parent.parent
+			} else {
+				if z == z.parent.left {
+					z = z.parent
+					t.right_rotate(z)
+				}
+				z.parent.color = BLACK
+				z.parent.parent.color = RED
+				t.left_rotate(z.parent.parent)
+			}
+		}
+	}
+	t.root.color = BLACK
 }
 
 // Delete the node by key
@@ -177,24 +257,6 @@ func (t *Tree) Delete(key KeyType) {
 	t.size -= 1
 }
 
-// Return the node's successor as an iterator
-func (n *node) Next() *node {
-	return successor(n)
-}
-
-// Return the successor of the node
-func successor(x *node) *node {
-	if x.right != nil {
-		return minimum(x.right)
-	}
-	y := x.parent
-	for y != nil && x == y.right {
-		x = y
-		y = x.parent
-	}
-	return y
-}
-
 // Transplant the subtree u and v
 func (t *Tree) transplant(u, v *node) {
 	if u.parent == nil {
@@ -208,46 +270,6 @@ func (t *Tree) transplant(u, v *node) {
 		return
 	}
 	v.parent = u.parent
-}
-
-func (t *Tree) rb_insert_fixup(z *node) {
-	var y *node
-	for z.parent != nil && z.parent.color == RED {
-		if z.parent == z.parent.parent.left {
-			y = z.parent.parent.right
-			if y != nil && y.color == RED {
-				z.parent.color = BLACK
-				y.color = BLACK
-				z.parent.parent.color = BLACK
-				z = z.parent.parent
-			} else {
-				if z == z.parent.right {
-					z = z.parent
-					t.left_rotate(z)
-				}
-				z.parent.color = BLACK
-				z.parent.parent.color = RED
-				t.right_rotate(z.parent.parent)
-			}
-		} else {
-			y = z.parent.parent.left
-			if y != nil && y.color == RED {
-				z.parent.color = BLACK
-				y.color = BLACK
-				z.parent.parent.color = RED
-				z = z.parent.parent
-			} else {
-				if z == z.parent.left {
-					z = z.parent
-					t.right_rotate(z)
-				}
-				z.parent.color = BLACK
-				z.parent.parent.color = RED
-				t.left_rotate(z.parent.parent)
-			}
-		}
-	}
-	t.root.color = BLACK
 }
 
 func (t *Tree) rb_delete_fixup(x, parent *node) {
@@ -356,32 +378,26 @@ func (t *Tree) right_rotate(x *node) {
 	x.parent = y
 }
 
-func (n *node) preorder() {
-	fmt.Printf("(%v %v)", n.Key, n.Value)
-	if n.parent == nil {
-		fmt.Printf("nil")
-	} else {
-		fmt.Printf("whose parent is %v", n.parent.Key)
-	}
-	if n.color == RED {
-		fmt.Println(" and color RED")
-	} else {
-		fmt.Println(" and color BLACK")
-	}
-	if n.left != nil {
-		fmt.Printf("%v's left child is ", n.Key)
-		n.left.preorder()
-	}
-	if n.right != nil {
-		fmt.Printf("%v's right child is ", n.Key)
-		n.right.preorder()
-	}
+func (t *Tree) Iterator() *node {
+	return minimum(t.root)
 }
 
-func (t *Tree) Preorder() {
-	fmt.Println("preorder begin!")
-	if t.root != nil {
-		t.root.preorder()
+// Return the node's successor
+func (n *node) Next() *node {
+	return successor(n)
+}
+
+// Return the successor of the node
+func successor(x *node) *node {
+	if x.right != nil {
+		// successor is the minimum node of the subtree-x.right:
+		return minimum(x.right)
 	}
-	fmt.Println("preorder end!")
+	y := x.parent
+	for y != nil && x == y.right {
+		// Skip parent that less than x
+		x = y
+		y = y.parent
+	}
+	return y
 }

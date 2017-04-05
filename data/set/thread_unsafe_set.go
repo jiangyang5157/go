@@ -23,12 +23,7 @@ func (set *threadUnsafeSet) Equals(other Set) bool {
 	if set.Size() != other.Size() {
 		return false
 	}
-	for e := range *set {
-		if !other.Contains(e) {
-			return false
-		}
-	}
-	return true
+	return set.IsSubset(other)
 }
 
 func (set *threadUnsafeSet) Size() int {

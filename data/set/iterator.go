@@ -20,5 +20,6 @@ func (iter *Iterator) Stop() {
 	}()
 	close(iter.stop)
 	for _ = range iter.ch {
+
 	}
 }

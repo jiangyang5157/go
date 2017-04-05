@@ -1,5 +1,10 @@
 package binarysearchtree
 
+/*
+BST (ordered) is good at search: balanced BST O(log(n))
+Worst case, becomes "linked list"
+*/
+
 type Comparable func(a interface{}, b interface{}) int
 
 type Node struct {
@@ -13,6 +18,7 @@ func New(compare Comparable) *Node {
 	return &Node{compare: compare}
 }
 
+// O(log(n))
 func (n *Node) Insert(value interface{}) {
 	if n.value == nil {
 		n.value = value
@@ -27,6 +33,7 @@ func (n *Node) Insert(value interface{}) {
 	}
 }
 
+// O(log(n))
 func (n *Node) Search(value interface{}) *Node {
 	if n.value == nil {
 		return nil

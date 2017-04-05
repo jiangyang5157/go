@@ -1,5 +1,10 @@
 package heap
 
+/*
+Heap is good at find Min/Max O(1)
+Heap would take O(n) time to search
+*/
+
 type Comparable func(a interface{}, b interface{}) int
 
 type Heap struct {
@@ -67,6 +72,7 @@ func (heap *Heap) Insert(data interface{}) {
 }
 
 // Extract the root element
+// O(1)
 func (heap *Heap) Extract() interface{} {
 	length := heap.Length()
 	if length == 0 {
@@ -82,6 +88,7 @@ func (heap *Heap) Extract() interface{} {
 }
 
 // Peek at the root
+// O(1)
 func (heap *Heap) Peek() interface{} {
 	if heap.Length() == 0 {
 		return nil
