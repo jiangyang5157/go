@@ -22,6 +22,7 @@ const (
 	BLACK = 1
 )
 
+//http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
 //https://github.com/yasushi-saito/rbtree/blob/master/rbtree.go
 type KeyType interface {
 	LessThan(KeyType) bool
