@@ -1,9 +1,9 @@
 package nn
 
 import (
-	"time"
-	"math/rand"
 	"math"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -11,8 +11,8 @@ const (
 )
 
 var (
-	guassCache float64 = 0.0
-	guassCacheReady bool = false
+	guassCache      float64 = 0.0
+	guassCacheReady bool    = false
 )
 
 func RandSeed() {
@@ -44,7 +44,7 @@ func Tanh(x float64) float64 {
 
 //https://www.google.co.nz/search?q=1+-+x+*+x&oq=1+-+x+*+x&aqs=chrome..69i57.398j0j7&sourceid=chrome&ie=UTF-8
 func TanhDerivative(x float64) float64 {
-	return 1 - x * x
+	return 1 - x*x
 }
 
 //https://en.wikipedia.org/wiki/Marsaglia_polar_method
@@ -55,9 +55,9 @@ func RandStdGuass() float64 {
 	}
 	var u, v, s float64
 	for s >= 1.0 || s == 0.0 {
-		u = 2.0 * rand.Float64() - 1.0
-		v = 2.0 * rand.Float64() - 1.0
-		s = u * u + v * v
+		u = 2.0*rand.Float64() - 1.0
+		v = 2.0*rand.Float64() - 1.0
+		s = u*u + v*v
 	}
 	s = math.Sqrt(-2.0 * math.Log(s) / s)
 	guassCache = v * s
@@ -66,5 +66,5 @@ func RandStdGuass() float64 {
 }
 
 func RandGuass(mean, stdDev float64) float64 {
-	return mean + RandStdGuass() * stdDev
+	return mean + RandStdGuass()*stdDev
 }

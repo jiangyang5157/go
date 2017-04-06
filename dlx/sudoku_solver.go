@@ -34,7 +34,7 @@ func (p *puzzle) solvePuzzle(maxSolutionSize int) string {
 			x0ci := x0.c.i    // x0ci = [offset1 + 1, offset2]
 			x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
 			// append by raw, index = [0, cellSize - 1]
-			bs[x0ci - 1] = byte((x0rci - 1) % p.edgeLength) + '1'
+			bs[x0ci-1] = byte((x0rci-1)%p.edgeLength) + '1'
 		}
 		ret = append(ret, SOLUTION_PREFIX)
 		ret = append(ret, bs...)

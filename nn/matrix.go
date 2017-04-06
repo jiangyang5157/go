@@ -1,8 +1,8 @@
 package nn
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 )
 
 type Matrix struct {
@@ -51,14 +51,14 @@ func (mat *Matrix) T() *Matrix {
 }
 
 func (mat *Matrix) Reshape(m, n int) *Matrix {
-	if m * n != mat.M * mat.N {
+	if m*n != mat.M*mat.N {
 		return nil
 	}
 	ret := NewMatrix(m, n)
 	for i := 0; i < mat.M; i++ {
 		for j := 0; j < mat.N; j++ {
-			k := i * mat.N + j
-			ret.Data[k / n][k % n] = mat.Data[i][j]
+			k := i*mat.N + j
+			ret.Data[k/n][k%n] = mat.Data[i][j]
 		}
 	}
 	return ret
@@ -74,12 +74,12 @@ func (mat *Matrix) Fill(value float64) *Matrix {
 }
 
 func (mat *Matrix) FillArray(data []float64) *Matrix {
-	if len(data) != mat.M * mat.N {
+	if len(data) != mat.M*mat.N {
 		return nil
 	}
 	for i := 0; i < mat.M; i++ {
 		for j := 0; j < mat.N; j++ {
-			mat.Data[i][j] = data[i * mat.N + j]
+			mat.Data[i][j] = data[i*mat.N+j]
 		}
 	}
 	return mat
@@ -154,7 +154,7 @@ func (x *Matrix) ScalableAdd(y *Matrix, s1, s2 float64) *Matrix {
 	ret := NewMatrix(x.M, x.N)
 	for i := 0; i < x.M; i++ {
 		for j := 0; j < x.N; j++ {
-			ret.Data[i][j] = x.Data[i][j] * s1 + y.Data[i][j] * s2
+			ret.Data[i][j] = x.Data[i][j]*s1 + y.Data[i][j]*s2
 		}
 	}
 	return ret
@@ -180,7 +180,7 @@ func (x *Matrix) ScalableSub(y *Matrix, s1, s2 float64) *Matrix {
 	ret := NewMatrix(x.M, x.N)
 	for i := 0; i < x.M; i++ {
 		for j := 0; j < x.N; j++ {
-			ret.Data[i][j] = x.Data[i][j] * s1 - y.Data[i][j] * s2
+			ret.Data[i][j] = x.Data[i][j]*s1 - y.Data[i][j]*s2
 		}
 	}
 	return ret

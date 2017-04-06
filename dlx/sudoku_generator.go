@@ -50,7 +50,7 @@ func GeneratePuzzle(squareLength int, minSubGivens int, minTotalGivens int) stri
 				digit := rtp[i]
 				rtp[i] = 0
 				p.init(rtp)
-				if (p.hasUniqueSolution()) {
+				if p.hasUniqueSolution() {
 					remainTotalGivens--
 					remainColumnGivens[c]--
 					remainRowGivens[r]--
@@ -83,9 +83,9 @@ func (p *puzzle) randomTerminalPattern() []int {
 		for i := 0; i < edgeLength; i += squareLength + 1 {
 			var d []int = disorderArray(tmp)
 			for j := 0; j < edgeLength; j++ {
-				r := j / squareLength + (i / squareLength) * squareLength
-				c := j % squareLength + (i / squareLength) * squareLength
-				digits[p.cellIndex(r, c)] = d[j];
+				r := j/squareLength + (i/squareLength)*squareLength
+				c := j%squareLength + (i/squareLength)*squareLength
+				digits[p.cellIndex(r, c)] = d[j]
 			}
 		}
 
@@ -97,7 +97,7 @@ func (p *puzzle) randomTerminalPattern() []int {
 				x0ci := x0.c.i    // x0ci = [offset1 + 1, offset2]
 				x0rci := x0.r.c.i // x0rci = [offset2 + 1, offset3]
 				// append by raw, index = [0, cellSize - 1]
-				ret[x0ci - 1] = (x0rci - 1) % edgeLength + 1
+				ret[x0ci-1] = (x0rci-1)%edgeLength + 1
 			}
 			ok = true
 			return true

@@ -1,8 +1,8 @@
 package dlx
 
 import (
-	"time"
 	"math/rand"
+	"time"
 )
 
 /*
@@ -48,7 +48,7 @@ func (p *puzzle) init(digits []int) {
 
 	edgeLength := p.edgeLength
 	for r, i := 0, 0; r < edgeLength; r++ {
-		for c := 0; c < edgeLength; c, i = c + 1, i + 1 {
+		for c := 0; c < edgeLength; c, i = c+1, i+1 {
 			s := p.squareIndex(r, c)
 			digit := digits[i]
 			p.addDigit(digit, i, r, c, s)
@@ -62,28 +62,28 @@ func (p *puzzle) addDigit(digit int, i int, r int, c int, s int) {
 		// valid digit
 		p.addRow([]int{
 			p.offset1 + i + 1,
-			p.offset2 + r * edgeLength + digit,
-			p.offset3 + c * edgeLength + digit,
-			p.offset4 + s * edgeLength + digit})
+			p.offset2 + r*edgeLength + digit,
+			p.offset3 + c*edgeLength + digit,
+			p.offset4 + s*edgeLength + digit})
 	} else {
 		// unknown digit, consider all possibilities
 		for digit = 1; digit <= edgeLength; digit++ {
 			p.addRow([]int{
 				p.offset1 + i + 1,
-				p.offset2 + r * edgeLength + digit,
-				p.offset3 + c * edgeLength + digit,
-				p.offset4 + s * edgeLength + digit})
+				p.offset2 + r*edgeLength + digit,
+				p.offset3 + c*edgeLength + digit,
+				p.offset4 + s*edgeLength + digit})
 		}
 	}
 }
 
 func (p *puzzle) squareIndex(r int, c int) int {
 	squareLength := p.squareLength
-	return r / squareLength * squareLength + c / squareLength
+	return r/squareLength*squareLength + c/squareLength
 }
 
 func (p *puzzle) cellIndex(r int, c int) int {
-	return r * p.edgeLength + c
+	return r*p.edgeLength + c
 }
 
 func (p *puzzle) rcIndex(cellIndex int) (int, int) {

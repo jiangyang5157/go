@@ -1,8 +1,8 @@
 package study
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_dijkstra(t *testing.T) {

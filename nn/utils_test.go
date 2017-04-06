@@ -1,8 +1,8 @@
 package nn
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestUtils_RandGuass(t *testing.T) {

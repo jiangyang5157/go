@@ -1,8 +1,8 @@
 package nn
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestMatrix_String(t *testing.T) {
@@ -109,5 +109,5 @@ func TestMatrix_Dot(t *testing.T) {
 	dot := mat1.Dot(mat2)
 	fmt.Printf("mat1:\n%v\n", mat1.String()) // 2...
 	fmt.Printf("mat2:\n%v\n", mat2.String()) // 3...
-	fmt.Printf("dot:\n%v\n", dot.String()) // 18...
+	fmt.Printf("dot:\n%v\n", dot.String())   // 18...
 }

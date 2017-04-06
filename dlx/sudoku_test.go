@@ -20,36 +20,36 @@ func printSudokuByRaw(squareLength int, raw string) {
 	fmt.Println("================================================================")
 	switch squareLength {
 	case 1:
-		for r, i := 0, 0; r < 1; r, i = r + 1, i + 1 {
+		for r, i := 0, 0; r < 1; r, i = r+1, i+1 {
 			fmt.Printf("%c\n", raw[i])
 		}
 	case 2:
-		for r, i := 0, 0; r < 4; r, i = r + 1, i + 4 {
+		for r, i := 0, 0; r < 4; r, i = r+1, i+4 {
 			fmt.Printf("%c %c | %c %c\n",
-				raw[i], raw[i + 1],
-				raw[i + 2], raw[i + 3])
+				raw[i], raw[i+1],
+				raw[i+2], raw[i+3])
 			if r == 1 {
 				fmt.Println("----+----")
 			}
 		}
 	case 3:
-		for r, i := 0, 0; r < 9; r, i = r + 1, i + 9 {
+		for r, i := 0, 0; r < 9; r, i = r+1, i+9 {
 			fmt.Printf("%c %c %c | %c %c %c | %c %c %c\n",
-				raw[i], raw[i + 1], raw[i + 2],
-				raw[i + 3], raw[i + 4], raw[i + 5],
-				raw[i + 6], raw[i + 7], raw[i + 8])
+				raw[i], raw[i+1], raw[i+2],
+				raw[i+3], raw[i+4], raw[i+5],
+				raw[i+6], raw[i+7], raw[i+8])
 			if r == 2 || r == 5 {
 				fmt.Println("------+-------+------")
 			}
 		}
 	case 4:
 		// Ascii for chars after '9' can convert into integer by minus '0' for clear display.
-		for r, i := 0, 0; r < 16; r, i = r + 1, i + 16 {
+		for r, i := 0, 0; r < 16; r, i = r+1, i+16 {
 			fmt.Printf("%c %c %c %c | %c %c %c %c | %c %c %c %c | %c %c %c %c\n",
-				raw[i], raw[i + 1], raw[i + 2], raw[i + 3],
-				raw[i + 4], raw[i + 5], raw[i + 6], raw[i + 7],
-				raw[i + 8], raw[i + 9], raw[i + 10], raw[i + 11],
-				raw[i + 12], raw[i + 13], raw[i + 14], raw[i + 15])
+				raw[i], raw[i+1], raw[i+2], raw[i+3],
+				raw[i+4], raw[i+5], raw[i+6], raw[i+7],
+				raw[i+8], raw[i+9], raw[i+10], raw[i+11],
+				raw[i+12], raw[i+13], raw[i+14], raw[i+15])
 			if r == 3 || r == 7 || r == 11 {
 				fmt.Println("--------+---------+---------+--------")
 			}
