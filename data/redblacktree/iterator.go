@@ -8,7 +8,7 @@ func (t *RbTree) Ascend(pivot KeyType, iterator Iterator) {
 	t.ascend(t.root, pivot, iterator)
 }
 
-func (t *RbTree) ascend(x *node, pivot KeyType, iterator Iterator) bool {
+func (t *RbTree) ascend(x *Node, pivot KeyType, iterator Iterator) bool {
 	// if x == t.NIL {
 	// 	return true
 	// }
@@ -31,7 +31,7 @@ func (t *RbTree) Descend(pivot KeyType, iterator Iterator) {
 	t.descend(t.root, pivot, iterator)
 }
 
-func (t *RbTree) descend(x *node, pivot KeyType, iterator Iterator) bool {
+func (t *RbTree) descend(x *Node, pivot KeyType, iterator Iterator) bool {
 	// if x == t.NIL {
 	// 	return true
 	// }
@@ -55,7 +55,7 @@ func (t *RbTree) AscendRange(ge, lt KeyType, iterator Iterator) {
 	t.ascendRange(t.root, ge, lt, iterator)
 }
 
-func (t *RbTree) ascendRange(x *node, inf, sup KeyType, iterator Iterator) bool {
+func (t *RbTree) ascendRange(x *Node, inf, sup KeyType, iterator Iterator) bool {
 	// if x == t.NIL {
 	// 	return true
 	// }
