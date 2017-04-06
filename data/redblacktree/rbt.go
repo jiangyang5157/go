@@ -18,111 +18,45 @@ eg: JDK.TreeMap, JDK.TreeSet
 import "fmt"
 
 const (
-	RED   = 0
-	BLACK = 1
+	BLACK = 0
+	RED   = 1
 )
 
-//http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
-//https://github.com/yasushi-saito/rbtree/blob/master/rbtree.go
-type KeyType interface {
-	LessThan(KeyType) bool
-}
+type Element interface{}
 
-type ValueType interface{}
-
-func lessThan(a, b KeyType) bool {
-	return a.LessThan(b)
-}
+type CompareFunc func(a, b Element) int
 
 type Node struct {
-	color               int
 	left, right, parent *Node
-	Key                 KeyType
-	Value               ValueType
+	color               int
+	element             Element
 }
 
 type RbTree struct {
-	root *Node
-	size int
+	root    *Node
+	size    int
+	compare CompareFunc
 }
 
-func (t *RbTree) Print() {
-	if t.root != nil {
-		t.root.Print()
+func NewRbTree(compare CompareFunc) *RbTree {
+	if compare == nil {
+		return nil
 	}
-}
-
-func (n *Node) Print() {
-	fmt.Printf("[%v]{value=%v, ", n.Key, n.Value)
-
-	if n.color == RED {
-		fmt.Printf("color=RED, ")
-	} else {
-		fmt.Printf("color=BLACK, ")
-	}
-
-	if n.parent == nil {
-		fmt.Printf("parent=nil\n")
-	} else {
-		fmt.Printf("parent.key=%v\n", n.parent.Key)
-	}
-
-	if n.left != nil {
-		fmt.Printf("left=\n")
-		n.left.Print()
-	}
-	if n.right != nil {
-		fmt.Printf("right=\n")
-		n.right.Print()
-	}
-	fmt.Printf("}[%v]\n", n.Key)
-}
-
-func NewTree() *RbTree {
-	return &RbTree{root: nil, size: 0}
+	return &RbTree{root: nil, size: 0, compare: compare}
 }
 
 func (n *Node) isLeftChild() bool {
-	if n == nil || n.parent == nil {
+	if n.parent == nil {
 		return false
-	} else {
-		return n == n.parent.left
 	}
+	return n == n.parent.left
 }
 
 func (n *Node) isRightChild() bool {
-	if n == nil || n.parent == nil {
+	if n.parent == nil {
 		return false
-	} else {
-		return n == n.parent.right
 	}
-}
-
-func (t *RbTree) Size() int {
-	return t.size
-}
-
-func (t *RbTree) IsEmpty() bool {
-	return t.Size() == 0
-}
-
-func (t *RbTree) Clear() {
-	t.root = nil
-	t.size = 0
-}
-
-func minimum(n *Node) *Node {
-	for n.left != nil {
-		n = n.left
-	}
-	return n
-}
-
-func maximum(n *Node) *Node {
-	for n.right != nil {
-		n = n.right
-	}
-	return n
+	return n == n.parent.right
 }
 
 /*
@@ -136,11 +70,10 @@ func maximum(n *Node) *Node {
 		 A is D/E's grandparent
 */
 func (n *Node) grandparent() *Node {
-	if n != nil && n.parent != nil {
-		return n.parent.parent
-	} else {
+	if n.parent == nil {
 		return nil
 	}
+	return n.parent.parent
 }
 
 /*
@@ -174,7 +107,7 @@ func (n *Node) uncle() *Node {
 		C is B's sibling
 */
 func (n *Node) sibling() *Node {
-	if n == nil || n.parent == nil {
+	if n.parent == nil {
 		return nil
 	}
 	if n.isLeftChild() {
@@ -184,15 +117,79 @@ func (n *Node) sibling() *Node {
 	}
 }
 
+// Traverse from the node to left recursively until left is nil.
+func minimum(n *Node) *Node {
+	if n == nil {
+		return nil
+	}
+	for n.left != nil {
+		n = n.left
+	}
+	return n
+}
+
+// Traverse from the node to right recursively until right is nil.
+func maximum(n *Node) *Node {
+	if n == nil {
+		return nil
+	}
+	for n.right != nil {
+		n = n.right
+	}
+	return n
+}
+
+func (n *Node) next() *Node {
+	if n.right != nil {
+		return minimum(n.right)
+	}
+	p := n.parent
+	for n.isRightChild() {
+		n = p
+		p = p.parent
+	}
+	return p
+}
+
+func (n *Node) previous() *Node {
+	if n.left != nil {
+		return maximum(n.left)
+	}
+	p := n.parent
+	for n.isLeftChild() {
+		n = p
+		p = p.parent
+	}
+	return p
+}
+
+func (t *RbTree) find(item Element) *Node {
+	n := t.root
+	for n != nil {
+		x := t.compare(item, n.element)
+		if x < 0 {
+			n = n.left
+		} else if x > 0 {
+			n = n.right
+		} else {
+			break
+		}
+	}
+	return n
+}
+
 /*
       |                         |
-      A       right rotate      B
+      y       right rotate      x
      / \       -------->       / \
-  	B  C       <--------      D  A
+  	x  C       <--------      A  y
    / \        left rotate       / \
-  D  E                         E  C
+  A  B                         B  C
 */
 func (t *RbTree) rightRotate(x *Node) {
+	if x == nil {
+		return
+	}
 	y := x.left
 	if y == nil {
 		// right rotation, the left child should not be nil
@@ -213,7 +210,7 @@ func (t *RbTree) rightRotate(x *Node) {
 		// if we're at the root
 		t.root = x
 	} else {
-		if x == x.parent.left {
+		if x.isLeftChild() {
 			x.parent.left = y
 		} else {
 			x.parent.right = y
@@ -235,6 +232,9 @@ func (t *RbTree) rightRotate(x *Node) {
   A  B                         B  C
 */
 func (t *RbTree) leftRotate(x *Node) {
+	if x == nil {
+		return
+	}
 	y := x.right
 	if y == nil {
 		// left rotation, the right child should not be nil
@@ -255,7 +255,7 @@ func (t *RbTree) leftRotate(x *Node) {
 		// if we're at the root
 		t.root = y
 	} else {
-		if x == x.parent.left {
+		if x.isLeftChild() {
 			x.parent.left = y
 		} else {
 			x.parent.right = y
@@ -268,127 +268,125 @@ func (t *RbTree) leftRotate(x *Node) {
 	y.left = x
 }
 
-// ################################################################
-
-func (t *RbTree) search(key KeyType) *Node {
-	x := t.root
-	for x != nil {
-		if key.LessThan(x.Key) {
-			x = x.left
-		} else if x.Key.LessThan(key) {
-			x = x.right
-		} else {
-			break
-		}
-	}
-	return x
-}
-
-// Find the node and return its value
-func (t *RbTree) SearchValue(key KeyType) ValueType {
-	n := t.search(key)
-	if n != nil {
-		return n.Value
-	}
-	return nil
-}
-
-// insert the key-value pair into the rbtree
-func (t *RbTree) insert(key KeyType, value ValueType) *Node {
-	var x, y, z *Node = t.root, nil, nil
-	// locate z's parent y
-	for x != nil {
-		y = x
-		if key.LessThan(x.Key) {
-			x = x.left
-		} else if x.Key.LessThan(key) {
-			x = x.right
-		} else {
-			// return existing node has same key
-			return x
-		}
+func (t *RbTree) insert(item Element) *Node {
+	if item == nil {
+		return nil
 	}
 
-	z = &Node{parent: y, color: RED, Key: key, Value: value}
-	if y == nil {
-		t.root = z
-	} else if z.Key.LessThan(y.Key) {
-		y.left = z
+	var node *Node
+	if t.root == nil {
+		// new node is root
+		node = &Node{parent: nil, element: item}
+		t.root = node
+		t.size++
 	} else {
-		y.right = z
+		parent := t.root
+		for {
+			x := t.compare(item, parent.element)
+			if x < 0 {
+				if parent.left == nil {
+					node = &Node{parent: parent, element: item}
+					parent.left = node
+					t.size++
+					break
+				} else {
+					parent = parent.left
+				}
+			} else if x > 0 {
+				if parent.right == nil {
+					node = &Node{parent: parent, element: item}
+					parent.right = node
+					t.size++
+					break
+				} else {
+					parent = parent.right
+				}
+			} else {
+				// item exist, new node is not required
+				break
+			}
+		}
 	}
-	t.size++
-	t.insertFixup(z)
-	return z
+
+	t.insertFixup(node)
+	return node
 }
 
 func (t *RbTree) insertFixup(n *Node) {
-	for n.parent != nil && n.parent.color == RED {
-		// Since the color of the parent is RED, so the parent is not root.
-		// The grandparent must be exist.
-		g := n.grandparent()
-		if n.parent == g.left {
-			uncle := g.right
-			if uncle != nil && uncle.color == RED {
-				// Parent and uncle are both RED, the grandparent must be BLACK
-				n.parent.color = BLACK
-				uncle.color = BLACK
-				g.color = RED
-				n = g
-			} else {
-				if n == n.parent.right {
-					// Parent is RED and uncle is BLACK, the current node is right child
-					n = n.parent
-					t.leftRotate(n)
-				}
-				n.parent.color = BLACK
-				g.color = RED
-				t.rightRotate(g)
-			}
-		} else {
-			uncle := g.left
-			if uncle != nil && uncle.color == RED {
-				n.parent.color = BLACK
-				uncle.color = BLACK
-				g.color = RED
-				n = g
-			} else {
-				if n == n.parent.left {
-					n = n.parent
-					t.rightRotate(n)
-				}
-				n.parent.color = BLACK
-				g.color = RED
-				t.leftRotate(g)
-			}
-		}
-	}
-	t.root.color = BLACK
-}
-
-// Delete the node by key
-func (t *RbTree) Delete(key KeyType) {
-	z := t.search(key)
-	if z == nil {
+	if n == nil {
 		return
 	}
 
-	var x, y, parent *Node
-	y = z
-	y_original_color := y.color
-	parent = z.parent
-	if z.left == nil {
-		x = z.right
-		t.transplant(z, z.right)
-	} else if z.right == nil {
-		x = z.left
-		t.transplant(z, z.left)
+	n.color = RED
+	for {
+		if n.parent == nil {
+			// n is root
+			n.color = BLACK
+			break
+		}
+		if n.parent.color == BLACK {
+			// parent is BLACK, nothing required
+			break
+		}
+		// parent is RED
+
+		grandparent := n.grandparent()
+		uncle := n.uncle()
+		if uncle != nil && uncle.color == RED {
+			// If parent and uncle are both RED, paint both BLACK and make grandparent RED. Then repeat.
+			n.parent.color = BLACK
+			uncle.color = BLACK
+			grandparent.color = RED
+			n = grandparent
+			continue
+		}
+		// parent is RED, uncle is BLACK - step 1
+
+		if n.isRightChild() && n.parent.isLeftChild() {
+			t.leftRotate(n.parent)
+			n = n.left
+			continue
+		}
+		if n.isLeftChild() && n.parent.isRightChild() {
+			t.rightRotate(n.parent)
+			n = n.right
+			continue
+		}
+		// parent is RED, uncle is BLACK - step 2
+
+		n.parent.color = BLACK
+		grandparent.color = RED
+		if n.isLeftChild() {
+			t.rightRotate(grandparent)
+		} else {
+			t.leftRotate(grandparent)
+		}
+
+		break
+	}
+}
+
+func (t *RbTree) delete(n *Node) {
+	if n == nil {
+		return
+	}
+
+	parent := n.parent
+	var x *Node
+	y := n
+	yColor := y.color
+	if n.left == nil {
+		x = n.right
+		t.transplant(n, x)
+	} else if n.right == nil {
+		x = n.left
+		t.transplant(n, x)
 	} else {
-		y = minimum(z.right)
-		y_original_color = y.color
+		y = minimum(n.right)
+		yColor = y.color
 		x = y.right
 
-		if y.parent == z {
+		if y.parent == n {
 			if x == nil {
 				parent = y
 			} else {
@@ -396,25 +394,25 @@ func (t *RbTree) Delete(key KeyType) {
 			}
 		} else {
 			t.transplant(y, y.right)
-			y.right = z.right
+			y.right = n.right
 			y.right.parent = y
 		}
-		t.transplant(z, y)
-		y.left = z.left
+		t.transplant(n, y)
+		y.left = n.left
 		y.left.parent = y
-		y.color = z.color
+		y.color = n.color
 	}
-	if y_original_color == BLACK {
+	if yColor == BLACK {
 		t.deleteFixup(x, parent)
 	}
-	t.size -= 1
+	t.size--
 }
 
 // Transplant the subtree u and v
 func (t *RbTree) transplant(u, v *Node) {
 	if u.parent == nil {
 		t.root = v
-	} else if u == u.parent.left {
+	} else if u.isLeftChild() {
 		u.parent.left = v
 	} else {
 		u.parent.right = v
@@ -431,7 +429,7 @@ func (t *RbTree) deleteFixup(x, parent *Node) {
 		if x != nil {
 			parent = x.parent
 		}
-		if x == parent.left {
+		if x.isLeftChild() {
 			w = parent.right
 			if w.color == RED {
 				w.color = BLACK
@@ -494,86 +492,39 @@ func (t *RbTree) deleteFixup(x, parent *Node) {
 	}
 }
 
-// Create the rbtree's iterator that points to the minmum node
-func (t *RbTree) Iterator() *Node {
-	return minimum(t.root)
-}
-
-func (n *Node) Next() *Node {
-	return successor(n)
-}
-
-// Return the successor of the node
-func successor(x *Node) *Node {
-	if x.right != nil {
-		// Get the minimum from the right sub-tree if it existed.
-		return minimum(x.right)
-	}
-	y := x.parent
-	for y != nil && x == y.right {
-		// Skip parent that less than x
-		x = y
-		y = y.parent
-	}
-	return y
-}
-
-// // Return the minimum node that's larger than N. Return nil if no such
-// // node is found.
-// func (n *node) doNext() *node {
-// 	if n.right != nil {
-// 		m := n.right
-// 		for m.left != nil {
-// 			m = m.left
-// 		}
-// 		return m
-// 	}
-//
-// 	for n != nil {
-// 		p := n.parent
-// 		if p == nil {
-// 			return nil
-// 		}
-// 		if n.isLeftChild() {
-// 			return p
-// 		}
-// 		n = p
-// 	}
-// 	return nil
-// }
-// // Return the maximum node that's smaller than N. Return nil if no
-// // such node is found.
-// func (n *node) doPrev() *node {
-// 	if n.left != nil {
-// 		return maxPredecessor(n)
-// 	}
-//
-// 	for n != nil {
-// 		p := n.parent
-// 		if p == nil {
-// 			break
-// 		}
-// 		if n.isRightChild() {
-// 			return p
-// 		}
-// 		n = p
-// 	}
-// 	return negativeLimitNode
-// }
-// // Return the predecessor of "n".
-// func maxPredecessor(n *node) *node {
-// 	doAssert(n.left != nil)
-// 	m := n.left
-// 	for m.right != nil {
-// 		m = m.right
-// 	}
-// 	return m
-// }
-
-// Get color of the node
 func getColor(n *Node) int {
 	if n == nil {
 		return BLACK
 	}
 	return n.color
+}
+
+func (t *RbTree) print() {
+	if t.root != nil {
+		t.root.print()
+	}
+}
+
+func (n *Node) print() {
+	fmt.Printf("%v{", n.element)
+
+	fmt.Printf("color=%v, ", n.color)
+
+	if n.parent == nil {
+		fmt.Printf("parent=nil\n")
+	} else {
+		fmt.Printf("parent=%v\n", n.parent.element)
+	}
+
+	if n.left != nil {
+		fmt.Printf("left=\n")
+		n.left.print()
+	}
+
+	if n.right != nil {
+		fmt.Printf("right=\n")
+		n.right.print()
+	}
+
+	fmt.Printf("}%v\n", n.element)
 }

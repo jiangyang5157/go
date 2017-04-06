@@ -1,97 +1,125 @@
 package redblacktree
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
-type Int int
-
-func (a Int) LessThan(b KeyType) bool {
-	return a < b.(Int)
+type MyElement struct {
+	key   int
+	value string
 }
 
-func Test_Print(t *testing.T) {
-	tree := NewTree()
+func MyCompareFunc(a, b Element) int {
+	return a.(MyElement).key - b.(MyElement).key
+}
 
-	tree.insert(Int(1), "123")
-	tree.insert(Int(3), "234")
-	tree.insert(Int(4), "dfa3")
-	tree.insert(Int(6), "sd4")
-	tree.insert(Int(5), "jcd4")
-	tree.insert(Int(2), "bcd4")
-	if tree.Size() != 6 {
+func Test_Insert(t *testing.T) {
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
+	if tree.size != 6 {
 		t.Error("Error size")
 		return
 	}
-	tree.Print()
+	// tree.Print()
 }
 
-func Test_Iterator(t *testing.T) {
-	tree := NewTree()
+func Test_Find(t *testing.T) {
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
+	if tree.find(MyElement{key: 2}) == nil {
+		t.Error("Should find")
+		return
+	}
 
-	tree.insert(Int(1), "123")
-	tree.insert(Int(3), "234")
-	tree.insert(Int(4), "dfa3")
-	tree.insert(Int(6), "sd4")
-	tree.insert(Int(5), "jcd4")
-	tree.insert(Int(2), "bcd4")
-
-	it := tree.Iterator()
-	for it != nil {
-		fmt.Printf("[%v]{value=%v}\n", it.Key, it.Value)
-		it = it.Next()
+	if tree.find(MyElement{key: 2222}) != nil {
+		t.Error("Should not find")
+		return
 	}
 }
 
-func Test_Search(t *testing.T) {
-	tree := NewTree()
+func Test_MinAndMax(t *testing.T) {
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
 
-	tree.insert(Int(1), "123")
-	tree.insert(Int(3), "234")
-	tree.insert(Int(4), "dfa3")
-	tree.insert(Int(6), "sd4")
-	tree.insert(Int(5), "jcd4")
-	tree.insert(Int(2), "bcd4")
-
-	n := tree.search(Int(4))
-	if n.Value != "dfa3" {
-		t.Error("Error value")
+	if minimum(tree.root).element.(MyElement).key != 1 {
+		t.Error("Should find minimum element: key = 1")
 		return
 	}
-	n.Value = "bdsf"
-	if n.Value != "bdsf" {
-		t.Error("Error value modify")
+
+	if maximum(tree.root).element.(MyElement).key != 22 {
+		t.Error("Should find maximum element: key = 22")
 		return
 	}
-	value := tree.SearchValue(Int(5)).(string)
-	if value != "jcd4" {
-		t.Error("Error value after modifyed other node")
+}
+
+func Test_Next(t *testing.T) {
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
+
+	// tree.Print()
+	n := tree.find(MyElement{key: 1})
+	// n.Print() // 1
+	// n.next().Print() // 2
+	// n.next().next().Print() // 10
+	// n.next().next().next().Print() // 11
+	// n.next().next().next().next().Print() // 20
+	// n.next().next().next().next().next().Print() // 22
+	if n.next().next().next().next().next().next() != nil {
+		t.Error("Should not have next value")
+		return
+	}
+}
+
+func Test_Previous(t *testing.T) {
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
+
+	// tree.Print()
+	n := tree.find(MyElement{key: 22})
+	// n.Print() // 22
+	// n.previous().Print() // 20
+	// n.previous().previous().Print() // 11
+	// n.previous().previous().previous().Print() // 10
+	// n.previous().previous().previous().previous().Print() // 2
+	// n.previous().previous().previous().previous().previous().Print() // 1
+	if n.previous().previous().previous().previous().previous().previous() != nil {
+		t.Error("Should not have previous value")
 		return
 	}
 }
 
 func Test_Delete(t *testing.T) {
-	tree := NewTree()
+	tree := NewRbTree(MyCompareFunc)
+	tree.insert(MyElement{10, "value_10"})
+	tree.insert(MyElement{20, "value_20"})
+	tree.insert(MyElement{11, "value_11"})
+	tree.insert(MyElement{22, "value_22"})
+	tree.insert(MyElement{1, "value_1"})
+	tree.insert(MyElement{2, "value_2"})
 
-	tree.insert(Int(1), "123")
-	tree.insert(Int(3), "234")
-	tree.insert(Int(4), "dfa3")
-	tree.insert(Int(6), "sd4")
-	tree.insert(Int(5), "jcd4")
-	tree.insert(Int(2), "bcd4")
-
-	for i := 1; i <= 6; i++ {
-		tree.Delete(Int(i))
-		if tree.Size() != 6-i {
-			t.Error("Delete Error")
-		}
-	}
-	tree.insert(Int(1), "bcd4")
-	tree.Clear()
-	tree.Print()
-	if tree.SearchValue(Int(1)) != nil {
-		t.Error("Can't clear")
-		return
-	}
+	tree.delete(tree.find(MyElement{key: 11}))
+	// tree.print()
 }
