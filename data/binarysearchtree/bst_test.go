@@ -16,7 +16,7 @@ func compare(a interface{}, b interface{}) int {
 }
 
 func Test_BinaryTree(t *testing.T) {
-	root := New(compare)
+	root := NewNode(compare)
 
 	root.Insert(1)
 	root.Insert(2)

@@ -6,7 +6,7 @@ import (
 )
 
 func Test_Add(t *testing.T) {
-	root := NewRoot()
+	root := NewTries()
 	fmt.Println(root)
 	root.Add("abAB")
 	root.Add("abABCD")
@@ -17,7 +17,7 @@ func Test_Add(t *testing.T) {
 }
 
 func Test_Search(t *testing.T) {
-	root := NewRoot()
+	root := NewTries()
 	root.Add("abAB")
 	root.Add("abABCD")
 	root.Add("bc")
@@ -35,7 +35,7 @@ func Test_Search(t *testing.T) {
 }
 
 func Test_Remove(t *testing.T) {
-	root := NewRoot()
+	root := NewTries()
 	root.Add("abAB")
 	root.Add("abABCD")
 	root.Add("bc")

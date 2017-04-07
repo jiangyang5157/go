@@ -6,7 +6,7 @@ type Node struct {
 	completed bool
 }
 
-func NewRoot() *Node {
+func NewTries() *Node {
 	root := newNode()
 	root.completed = true
 	return root

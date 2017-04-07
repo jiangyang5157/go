@@ -5,45 +5,57 @@ BST (ordered) is good at search: balanced BST O(log(n))
 Worst case, becomes "linked list"
 */
 
-type Comparable func(a interface{}, b interface{}) int
+type CompareFunc func(a interface{}, b interface{}) int
 
 type Node struct {
-	value   interface{}
-	compare Comparable
-	left    *Node
-	right   *Node
+	left, right *Node
+	value       interface{}
+	compare     CompareFunc
 }
 
-func New(compare Comparable) *Node {
+func NewNode(compare CompareFunc) *Node {
 	return &Node{compare: compare}
 }
 
 // O(log(n))
 func (n *Node) Insert(value interface{}) {
+	if value == nil {
+		return
+	}
+
 	if n.value == nil {
 		n.value = value
-		n.right = New(n.compare)
-		n.left = New(n.compare)
+		n.right = NewNode(n.compare)
+		n.left = NewNode(n.compare)
+	}
+
+	x := n.compare(value, n.value)
+	if x < 0 {
+		n.left.Insert(value)
+	} else if x > 0 {
+		n.right.Insert(value)
 	} else {
-		if n.compare(value, n.value) < 0 {
-			n.left.Insert(value)
-		} else {
-			n.right.Insert(value)
-		}
+		// exist, new node is not required
+		return
 	}
 }
 
 // O(log(n))
 func (n *Node) Search(value interface{}) *Node {
+	if value == nil {
+		return nil
+	}
+
 	if n.value == nil {
 		return nil
-	} else if n.value == value {
-		return n
+	}
+
+	x := n.compare(value, n.value)
+	if x < 0 {
+		return n.left.Search(value)
+	} else if x > 0 {
+		return n.right.Search(value)
 	} else {
-		if n.compare(value, n.value) < 0 {
-			return n.left.Search(value)
-		} else {
-			return n.right.Search(value)
-		}
+		return n
 	}
 }

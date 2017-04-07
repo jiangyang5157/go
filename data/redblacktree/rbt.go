@@ -28,8 +28,8 @@ type CompareFunc func(a, b Element) int
 
 type Node struct {
 	left, right, parent *Node
-	color               int
 	element             Element
+	color               int
 }
 
 type RbTree struct {
@@ -302,7 +302,7 @@ func (t *RbTree) insert(item Element) *Node {
 					parent = parent.right
 				}
 			} else {
-				// item exist, new node is not required
+				// exist, new node is not required
 				break
 			}
 		}

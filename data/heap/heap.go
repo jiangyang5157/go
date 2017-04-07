@@ -5,14 +5,14 @@ Heap is good at find Min/Max O(1)
 Heap would take O(n) time to search
 */
 
-type Comparable func(a interface{}, b interface{}) int
+type CompareFunc func(a interface{}, b interface{}) int
 
 type Heap struct {
 	data    []interface{}
-	compare Comparable
+	compare CompareFunc
 }
 
-func New(compare Comparable) *Heap {
+func New(compare CompareFunc) *Heap {
 	return &Heap{data: make([]interface{}, 0), compare: compare}
 }
 

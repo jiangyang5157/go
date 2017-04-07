@@ -5,7 +5,7 @@ type Queue struct {
 	length int
 }
 
-func New() *Queue {
+func NewQueue() *Queue {
 	return &Queue{data: make([]interface{}, 0), length: 0}
 }
 

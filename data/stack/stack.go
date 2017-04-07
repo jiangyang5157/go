@@ -5,7 +5,7 @@ type Stack struct {
 	length int
 }
 
-func New() *Stack {
+func NewStack() *Stack {
 	return &Stack{data: make([]interface{}, 0), length: 0}
 }
 

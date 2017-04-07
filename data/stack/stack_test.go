@@ -5,7 +5,7 @@ import (
 )
 
 func Test_Stack(t *testing.T) {
-	stack := New()
+	stack := NewStack()
 
 	if stack.IsEmpty() != true {
 		t.Error("IsEmpty doesn't work as expected")

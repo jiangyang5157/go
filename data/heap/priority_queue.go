@@ -15,7 +15,7 @@ func NewPriorityElement(value interface{}, priority int) *PriorityElement {
 	return &PriorityElement{value: value, priority: priority}
 }
 
-func NewPriorityQueue(compare Comparable) *Heap {
+func NewPriorityQueue(compare CompareFunc) *Heap {
 	return New(compare)
 }
 
@@ -25,7 +25,7 @@ func (h *Heap) ChangePriority(value interface{}, priority int) error {
 		return errors.New("Empty priority queue")
 	}
 
-	tmp := queue.New()
+	tmp := queue.NewQueue()
 	var popped PriorityElement
 	for h.Length() > 0 {
 		popped = h.Extract().(PriorityElement)

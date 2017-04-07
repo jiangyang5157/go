@@ -3,7 +3,7 @@ package queue
 import "testing"
 
 func Test_Queue(t *testing.T) {
-	queue := New()
+	queue := NewQueue()
 
 	if queue.IsEmpty() != true {
 		t.Error("IsEmpty doesn't work as expected")
