@@ -1,5 +1,20 @@
 package sort
 
+// O(n log n) always
+func MergeSort(arr []int) []int {
+	arrLen := len(arr)
+	if arrLen <= 1 {
+		return arr
+	}
+
+	middleIndex := arrLen / 2
+
+	leftPart := MergeSort(arr[:middleIndex])
+	rightPart := MergeSort(arr[middleIndex:])
+
+	return merge(leftPart, rightPart)
+}
+
 func merge(left, right []int) []int {
 	leftLen := len(left)
 	rightLen := len(right)
@@ -21,19 +36,4 @@ func merge(left, right []int) []int {
 		}
 	}
 	return ret
-}
-
-// O(n log n) always
-func MergeSort(arr []int) []int {
-	arrLen := len(arr)
-	if arrLen <= 1 {
-		return arr
-	}
-
-	middleIndex := arrLen / 2
-
-	leftPart := MergeSort(arr[:middleIndex])
-	rightPart := MergeSort(arr[middleIndex:])
-
-	return merge(leftPart, rightPart)
 }
