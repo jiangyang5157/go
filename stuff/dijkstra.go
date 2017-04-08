@@ -1,4 +1,4 @@
-package study
+package stuff
 
 // O(|V|^2) Dijkstra's algorithm (Greedy algorithm) is an algorithm for finding the shortest paths between nodes in a graph
 
