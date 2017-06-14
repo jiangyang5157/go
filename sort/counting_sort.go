@@ -1,20 +1,5 @@
 package sort
 
-func getK(arr []int) int {
-	arrLen := len(arr)
-	if arrLen == 0 {
-		return 1
-	}
-
-	k := arr[0]
-	for _, item := range arr {
-		if item > k {
-			k = item
-		}
-	}
-	return k + 1
-}
-
 // O(n + k) where k is the range of numbers and n is the input size
 func CountingSort(arr []int) []int {
 	k := getK(arr)
@@ -37,4 +22,19 @@ func CountingSort(arr []int) []int {
 		}
 	}
 	return arr
+}
+
+func getK(arr []int) int {
+	arrLen := len(arr)
+	if arrLen == 0 {
+		return 1
+	}
+
+	k := arr[0]
+	for _, item := range arr {
+		if item > k {
+			k = item
+		}
+	}
+	return k + 1
 }
