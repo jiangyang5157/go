@@ -3,7 +3,7 @@ package heap
 import (
 	"errors"
 
-	"github.com/jiangyang5157/go/data/queue"
+	"github.com/jiangyang5157/golang-start/data/queue"
 )
 
 type PriorityElement struct {
