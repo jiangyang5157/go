@@ -23,7 +23,7 @@ func (s *Stack) Peek() interface{} {
 
 func (s *Stack) Pop() interface{} {
 	tmp := s.Peek()
-	s.data = s.data[0 : s.length-1]
+	s.data = s.data[:s.length-1]
 	s.length--
 	return tmp
 }
