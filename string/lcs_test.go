@@ -3,7 +3,7 @@ package string_test
 import (
 	"testing"
 
-	"github.com/jiangyang5157/go/string"
+	"github.com/jiangyang5157/golang-start/string"
 )
 
 func Test_Lcs(t *testing.T) {

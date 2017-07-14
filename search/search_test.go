@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jiangyang5157/go/number"
-	"github.com/jiangyang5157/go/sort"
+	"github.com/jiangyang5157/golang-start/number"
+	"github.com/jiangyang5157/golang-start/sort"
 )
 
 func Test_Sort(t *testing.T) {

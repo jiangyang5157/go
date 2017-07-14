@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jiangyang5157/go/number"
+	"github.com/jiangyang5157/golang-start/number"
 )
 
 var arr []int
